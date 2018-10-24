@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-activity-card demo</title>
+		<script src="../../../webcomponentsjs/webcomponents-loader.js"></script>
+		<link rel="import" href="../../../iron-demo-helpers/demo-pages-shared-styles.html">
+		<link rel="import" href="../../../iron-demo-helpers/demo-snippet.html">
+		<link rel="import" href="../../../d2l-typography/d2l-typography.html">
+		<link rel="import" href="../../components/d2l-activity-card/d2l-activity-card.html">
+		<custom-style>
+			<style is="custom-style" include="demo-pages-shared-styles"></style>
+		</custom-style>
+		<custom-style include="d2l-typography">
+			<style is="custom-style" include="d2l-typography"></style>
+		</custom-style>
+		<style>
+			html {
+				font-size: 20px;
+			}
+			.container {
+				display: flex;
+				flex-direction: column;
+			}
+			d2l-activity-card {
+				padding: 1rem;
+			}
+		</style>
+	</head>
+	<body unresolved class="d2l-typography">
+		<div class="vertical-section-container centered">
+
+			<h3>Slow loading d2l-activity-card</h3>
+			<demo-snippet>
+				<template>
+					<d2l-activity-card id="slow-activity-card"></d2l-activity-card>
+				</template>
+			</demo-snippet>
+
+			<h3>d2l-activity-card with different status</h3>
+			<demo-snippet>
+				<template>
+					<div class="container">
+						<d2l-activity-card
+							data-href="./data/data.json">
+						</d2l-activity-card>
+						<d2l-activity-card
+							data-href="./data/data1.json">
+						</d2l-activity-card>
+						<d2l-activity-card
+							data-href="./data/data2.json">
+						</d2l-activity-card>
+						<d2l-activity-card
+							data-href="./data/data3.json">
+						</d2l-activity-card>
+					</div>
+				</template>
+			</demo-snippet>
+		</div>
+	</body>
+
+	<script>
+		document.body.classList.add('d2l-typography');
+	</script>
+	<script>
+		'use strict';
+
+		var slowActivityCard;
+
+		setTimeout(function() {
+			slowActivityCard = document.getElementById('slow-activity-card');
+			// slowActivityCard._imageSource = "https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg";
+			slowActivityCard._fetchSirenEntity('./data/image.json')
+				.then(function(hydratedImageEntity) {
+					slowActivityCard._image = hydratedImageEntity;
+				});
+			slowActivityCard._activityUrl = "javascript:void(0)";
+			slowActivityCard.addEventListener('d2l-activity-card-clicked', (e) => {
+				console.log('Received a d2l-activity-card-clicked event within the slow loading activity card');
+			});
+		}, 1000);
+
+		setTimeout(function() {
+			slowActivityCard._title = "Some title that is quite long 1 2 3 4 5 6 7 8 9 10";
+		}, 1500);
+		setTimeout(function() {
+			slowActivityCard._duration = 123456;
+		}, 2000);
+		setTimeout(function() {
+			slowActivityCard._durationUnit = 'Years';
+		}, 2500);
+		setTimeout(function() {
+			slowActivityCard._status = 'list';
+		}, 3000);
+		setTimeout(function() {
+			slowActivityCard._status = 'progress';
+		}, 3500);
+		setTimeout(function() {
+			slowActivityCard._status = 'complete';
+		}, 4000);
+		setTimeout(function() {
+			slowActivityCard._status = 'overdue';
+		}, 4500);
+	</script>
+	<script>
+		window.addEventListener('d2l-activity-card-clicked', (e) => {
+			console.log('Received a d2l-activity-card-clicked event');
+		});
+	</script>
+</html>

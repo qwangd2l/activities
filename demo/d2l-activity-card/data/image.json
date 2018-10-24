@@ -1,0 +1,19 @@
+{
+  "class":[
+     "course-image"
+  ],
+  "links":[
+     {
+        "class":[
+           "tile",
+           "low-density",
+           "max"
+        ],
+        "rel":[
+           "alternate"
+        ],
+        "type":"image/jpeg",
+        "href":"./images/image.jpg"
+     }
+  ]
+}

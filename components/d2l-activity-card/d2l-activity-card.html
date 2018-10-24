@@ -1,0 +1,275 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../../../d2l-card/d2l-card.html">
+<link rel="import" href="../../../d2l-course-image/d2l-course-image.html">
+<link rel="import" href="../../../d2l-fetch/d2l-fetch.html">
+<link rel="import" href="../../../d2l-icons/d2l-icon.html">
+<link rel="import" href="../../../d2l-icons/tier2-icons.html">
+<link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
+<link rel="import" href="../../../siren-parser-import/siren-parser.html">
+<link rel="import" href="localize-mixin.html">
+
+<!--
+`d2l-activity-card`
+
+@demo demo/index.html
+-->
+<dom-module id="d2l-activity-card">
+	<template strip-whitespace>
+		<style>
+			:host {
+				display: inline-block;
+				width: 340px;
+				--d2l-icon-height: 1rem;
+				--d2l-icon-width: 1rem;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+
+			.course-image {
+				width: 340px;
+				height: 122px;
+			}
+
+			.heading-3 {
+				@apply --d2l-heading-3;
+				margin-top: 0 !important;
+				margin-bottom: 0 !important;
+			}
+
+			.content {
+				margin-top: -1.2rem;
+				text-align: center;
+			}
+
+			.durationContainer {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: flex-end;
+			}
+
+			.timeIcon {
+				padding-right: 0.4rem;
+			}
+
+			.badge {
+				background-color: #FFFFFF;
+				box-shadow: 0 0 0 2px #FFFFFF;
+				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
+				opacity: 1;
+
+				margin-top: -0.55rem;
+				margin-bottom: 0.1rem;
+				text-align: center;
+			}
+
+			.durationLabel {
+				@apply --d2l-body-compact-text;
+			}
+		</style>
+
+		<d2l-card text="[[_title]]" href$="[[_activityUrl]]" on-click="_clicked">
+			<!-- <img slot="header" alt="" class="course-image" src="[[_imageSource]]"/> -->
+			<d2l-course-image
+				slot="header"
+				class="course-image"
+				image="[[_image]]"
+				sizes="[[_tileSizes]]"
+				type="tile">
+			</d2l-course-image>
+
+			<template is="dom-if" if="[[_statusExists]]">
+				<div class="badge" slot="badge">
+					<d2l-status-indicator class="badge" state="[[_state]]" text="[[_statusLabel]]"></d2l-status-indicator>
+				</div>
+			</template>
+
+			<div class="content" slot="content">
+				<h3 class="heading-3">[[_title]]</h3>
+				<span class="durationContainer">
+					<div class="timeIcon">
+						<d2l-icon icon="d2l-tier2:time"></d2l-icon>
+					</div>
+					<span class="durationLabel">[[_duration]] [[_durationUnit]]</span>
+				</span>
+			</div>
+		</d2l-card>
+	</template>
+	<script>
+		class ActivityCard extends
+			D2L.PolymerMixins.Activity.Card.LocalizeMixin(Polymer.Element) {
+			/**
+			 * Fired when the card is clicked on
+			 * @event d2l-activity-card-clicked
+			 */
+			static get is() {
+				return 'd2l-activity-card';
+			}
+			static get properties() {
+				return {
+					dataHref: {
+						type: String,
+						value: null
+					},
+					/**
+					 * Type of status to display. Valid values are
+					 * list', 'progress', complete', and 'overdue'.
+					 */
+					_status: {
+						type: String,
+						value: 'none',
+					},
+					_statusLabel: {
+						type: String,
+					},
+					_state: {
+						type: String,
+						computed: '_computeState(_status)',
+					},
+					_statusExists: {
+						type: Boolean,
+						computed: '_computeStatusExists(_status)',
+					},
+					// _imageSource: String,
+					_title: String,
+					_duration: Number,
+					_durationUnit: String,
+					_activityUrl: String,
+					_image: Object,
+					_tileSizes: {
+						type: Object,
+						value: function() {
+							return {
+								mobile: {
+									maxwidth: 767,
+									size: 100
+								},
+								tablet: {
+									maxwidth: 1243,
+									size: 67
+								},
+								desktop: {
+									size: 25
+								}
+							};
+						}
+					},
+				}
+			}
+			static get observers() {
+				return [
+					'_statusChanged(_status)',
+					'_dataHrefChange(dataHref)'
+				];
+			}
+			ready() {
+				super.ready();
+				if (!this._durationUnit) {
+					this._durationUnit = this.localize('minutes');
+				}
+			}
+			_computeState(status) {
+				switch (status) {
+					case 'list':
+						return 'none';
+					case 'progress':
+						return 'default';
+					case 'complete':
+						return 'success';
+					case 'overdue':
+						return 'alert';
+				}
+				return 'default';
+			}
+			_computeStatusExists(status) {
+				return (status === 'list' ||
+					status === 'progress' ||
+					status === 'complete' ||
+					status === 'overdue');
+			}
+			_statusChanged(status) {
+				switch (status) {
+					case 'list':
+						return this._statusLabel = this.localize('onMyList');
+					case 'progress':
+						return this._statusLabel = this.localize('inProgress');
+					case 'complete':
+						return this._statusLabel = this.localize('complete');
+					case 'overdue':
+						return this._statusLabel = this.localize('overdue');
+				}
+				return '';
+			}
+			_clicked() {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-activity-card-clicked',
+					{bubbles: true, composed: false}
+				));
+			}
+			_dataHrefChange(dataHref) {
+				if (!dataHref) {
+					return Promise.resolve();
+				}
+
+				return this._fetchSirenEntity(dataHref)
+					.then(this._handleActivityData.bind(this));
+			}
+			_fetchSirenEntity(url) {
+				if(!url) {
+					return;
+				}
+
+				return window.d2lfetch
+					.fetch(new Request(url, {
+						headers: { Accept: 'application/vnd.siren+json' },
+					}))
+					.then(this._responseToSirenEntity.bind(this));
+			}
+			_handleActivityData(activity) {
+				if (!activity) return;
+
+				this._title = activity.title;
+
+				if (activity.hasProperty('status')) {
+					this._status = activity.properties.status;
+				}
+
+				// var courseImage = activity.getSubEntityByClasses(['course-image']);
+				// if (courseImage) {
+				// 	this._imageSource = courseImage.href;
+				// }
+
+				if (activity.hasProperty('duration')) {
+					this._duration = activity.properties.duration;
+				}
+
+				if (activity.hasProperty('durationUnit')) {
+					this._durationUnit = activity.properties.durationUnit;
+				}
+
+				if (activity.hasProperty('href')) {
+					this._activityUrl = activity.properties.href;
+				}
+
+				if (activity.hasProperty('imageHref')) {
+					this._fetchSirenEntity(activity.properties.imageHref)
+						.then(function(hydratedImageEntity) {
+							this._image = hydratedImageEntity;
+						}.bind(this));
+				}
+			}
+			_responseToSirenEntity(response) {
+				if (response.ok) {
+					return response
+						.json()
+						.then((json) => {
+							return window.D2L.Hypermedia.Siren.Parse(json);
+						});
+				}
+				return Promise.reject(response.status + ' ' + response.statusText);
+			}
+		}
+		window.customElements.define(ActivityCard.is, ActivityCard);
+	</script>
+</dom-module>

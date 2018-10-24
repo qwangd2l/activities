@@ -1,0 +1,65 @@
+<link rel="import" href="../../../polymer/polymer-element.html">
+<link rel="import" href="../../../d2l-localize-behavior/d2l-localize-behavior.html">
+<!-- <link rel="import" href="build/lang/ar.html">
+<link rel="import" href="build/lang/de.html">
+<link rel="import" href="build/lang/en.html">
+<link rel="import" href="build/lang/es.html">
+<link rel="import" href="build/lang/fi.html">
+<link rel="import" href="build/lang/fr.html">
+<link rel="import" href="build/lang/ja.html">
+<link rel="import" href="build/lang/ko.html">
+<link rel="import" href="build/lang/nl.html">
+<link rel="import" href="build/lang/pt.html">
+<link rel="import" href="build/lang/sv.html">
+<link rel="import" href="build/lang/tr.html">
+<link rel="import" href="build/lang/zh-tw.html">
+<link rel="import" href="build/lang/zh.html"> -->
+
+<link rel="import" href="lang/en.html">
+<link rel="import" href="lang/fr.html">
+
+<script>
+    window.D2L = window.D2L || {};
+    window.D2L.PolymerMixins = window.D2L.PolymerMixins || {};
+	window.D2L.PolymerMixins.Activity = window.D2L.PolymerMixins.Activity || {};
+	window.D2L.PolymerMixins.Activity.Card = window.D2L.PolymerMixins.Activity.Card || {};
+
+    const LocalizeMixin = (superClass) =>
+    	class extends Polymer.mixinBehaviors([D2L.PolymerBehaviors.LocalizeBehavior], superClass) {
+        	static get properties() {
+				return {
+					locale: {
+						type: String,
+						value: function() {
+							return document.documentElement.lang
+								|| document.documentElement.getAttribute('data-lang-default')
+								|| 'en-us';
+						}
+					},
+					resources: {
+						value: () => {
+							return {
+								'en': D2L.PolymerMixins.Activity.Card.LangEn,
+								'fr': D2L.PolymerMixins.Activity.Card.LangFr,
+								// 'ar': this.ar,
+								// 'de': this.de,
+								// 'es': this.es,
+								// 'fi': this.fi,
+								// 'fr': this.fr,
+								// 'ja': this.ja,
+								// 'ko': this.ko,
+								// 'nl': this.nl,
+								// 'pt': this.pt,
+								// 'sv': this.sv,
+								// 'tr': this.tr,
+								// 'zh': this.zh,
+								// 'zh-tw': this.zhTw
+							};
+						},
+					},
+				};
+			}
+		};
+
+    window.D2L.PolymerMixins.Activity.Card.LocalizeMixin = Polymer.dedupingMixin(LocalizeMixin);
+</script>
