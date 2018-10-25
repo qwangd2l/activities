@@ -70,7 +70,6 @@
 
 		setTimeout(function() {
 			slowActivityCard = document.getElementById('slow-activity-card');
-			// slowActivityCard._imageSource = "https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg";
 			slowActivityCard._fetchSirenEntity('./data/image.json')
 				.then(function(hydratedImageEntity) {
 					slowActivityCard._image = hydratedImageEntity;

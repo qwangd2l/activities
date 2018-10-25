@@ -1,14 +1,5 @@
 {
   "title": "Excel and Other Tips to Improve Efficiency",
-  "entities": [{
-    "class":[
-       "course-image"
-    ],
-    "rel":[
-       "https://api.brightspace.com/rels/organization-image"
-    ],
-    "href":"https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"
- }],
   "properties": {
     "href": "javascript:void(0)",
     "status": "list",

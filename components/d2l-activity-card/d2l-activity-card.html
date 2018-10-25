@@ -70,7 +70,6 @@
 		</style>
 
 		<d2l-card text="[[_title]]" href$="[[_activityUrl]]" on-click="_clicked">
-			<!-- <img slot="header" alt="" class="course-image" src="[[_imageSource]]"/> -->
 			<d2l-course-image
 				slot="header"
 				class="course-image"
@@ -131,7 +130,6 @@
 						type: Boolean,
 						computed: '_computeStatusExists(_status)',
 					},
-					// _imageSource: String,
 					_title: String,
 					_duration: Number,
 					_durationUnit: String,
@@ -234,11 +232,6 @@
 				if (activity.hasProperty('status')) {
 					this._status = activity.properties.status;
 				}
-
-				// var courseImage = activity.getSubEntityByClasses(['course-image']);
-				// if (courseImage) {
-				// 	this._imageSource = courseImage.href;
-				// }
 
 				if (activity.hasProperty('duration')) {
 					this._duration = activity.properties.duration;

@@ -1,26 +1,23 @@
 <link rel="import" href="../../../polymer/polymer-element.html">
 <link rel="import" href="../../../d2l-localize-behavior/d2l-localize-behavior.html">
-<!-- <link rel="import" href="build/lang/ar.html">
-<link rel="import" href="build/lang/de.html">
-<link rel="import" href="build/lang/en.html">
-<link rel="import" href="build/lang/es.html">
-<link rel="import" href="build/lang/fi.html">
-<link rel="import" href="build/lang/fr.html">
-<link rel="import" href="build/lang/ja.html">
-<link rel="import" href="build/lang/ko.html">
-<link rel="import" href="build/lang/nl.html">
-<link rel="import" href="build/lang/pt.html">
-<link rel="import" href="build/lang/sv.html">
-<link rel="import" href="build/lang/tr.html">
-<link rel="import" href="build/lang/zh-tw.html">
-<link rel="import" href="build/lang/zh.html"> -->
-
+<link rel="import" href="lang/ar.html">
+<link rel="import" href="lang/de.html">
 <link rel="import" href="lang/en.html">
+<link rel="import" href="lang/es.html">
+<link rel="import" href="lang/fi.html">
 <link rel="import" href="lang/fr.html">
+<link rel="import" href="lang/ja.html">
+<link rel="import" href="lang/ko.html">
+<link rel="import" href="lang/nl.html">
+<link rel="import" href="lang/pt.html">
+<link rel="import" href="lang/sv.html">
+<link rel="import" href="lang/tr.html">
+<link rel="import" href="lang/zh-tw.html">
+<link rel="import" href="lang/zh.html">
 
 <script>
-    window.D2L = window.D2L || {};
-    window.D2L.PolymerMixins = window.D2L.PolymerMixins || {};
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerMixins = window.D2L.PolymerMixins || {};
 	window.D2L.PolymerMixins.Activity = window.D2L.PolymerMixins.Activity || {};
 	window.D2L.PolymerMixins.Activity.Card = window.D2L.PolymerMixins.Activity.Card || {};
 
@@ -40,20 +37,19 @@
 						value: () => {
 							return {
 								'en': D2L.PolymerMixins.Activity.Card.LangEn,
+								'ar': D2L.PolymerMixins.Activity.Card.LangAr,
+								'de': D2L.PolymerMixins.Activity.Card.LangDe,
+								'es': D2L.PolymerMixins.Activity.Card.LangEs,
+								'fi': D2L.PolymerMixins.Activity.Card.LangFi,
 								'fr': D2L.PolymerMixins.Activity.Card.LangFr,
-								// 'ar': this.ar,
-								// 'de': this.de,
-								// 'es': this.es,
-								// 'fi': this.fi,
-								// 'fr': this.fr,
-								// 'ja': this.ja,
-								// 'ko': this.ko,
-								// 'nl': this.nl,
-								// 'pt': this.pt,
-								// 'sv': this.sv,
-								// 'tr': this.tr,
-								// 'zh': this.zh,
-								// 'zh-tw': this.zhTw
+								'ja': D2L.PolymerMixins.Activity.Card.LangJa,
+								'ko': D2L.PolymerMixins.Activity.Card.LangKo,
+								'nl': D2L.PolymerMixins.Activity.Card.LangNl,
+								'pt': D2L.PolymerMixins.Activity.Card.LangPt,
+								'sv': D2L.PolymerMixins.Activity.Card.LangSv,
+								'tr': D2L.PolymerMixins.Activity.Card.LangTr,
+								'zh': D2L.PolymerMixins.Activity.Card.LangZh,
+								'zh-tw': D2L.PolymerMixins.Activity.Card.LangZhtw
 							};
 						},
 					},

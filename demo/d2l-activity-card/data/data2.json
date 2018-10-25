@@ -1,14 +1,5 @@
 {
-  "title": "01234567890 01234567890 01234567890 01234567890 01234567890 01234567890 01234567890 ",
-  "entities": [{
-    "class":[
-       "course-image"
-    ],
-    "rel":[
-       "https://api.brightspace.com/rels/organization-image"
-    ],
-    "href":"https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"
- }],
+  "title": "01234567890 0123456ABC0 01234567890 0@#A4567890 01234567890 01234567890 01234567890 ",
   "properties": {
     "href": "javascript:void(0)",
     "status": "complete",
