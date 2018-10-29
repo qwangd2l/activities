@@ -131,6 +131,7 @@
 						computed: '_computeStatusExists(_status)',
 					},
 					_title: String,
+					_activityId: Number,
 					_duration: Number,
 					_durationUnit: String,
 					_activityUrl: String,
@@ -201,9 +202,13 @@
 			}
 			_clicked() {
 				this.dispatchEvent(new CustomEvent(
-					'd2l-activity-card-clicked',
-					{bubbles: true, composed: false}
-				));
+					'd2l-activity-card-clicked', {
+						detail: {
+							activityId: this._activityId,
+						},
+						bubbles: true,
+						composed: false
+					}));
 			}
 			_dataHrefChange(dataHref) {
 				if (!dataHref) {
@@ -228,6 +233,10 @@
 				if (!activity) return;
 
 				this._title = activity.title;
+
+				if (activity.hasProperty('activityId')) {
+					this._activityId = activity.properties.activityId;
+				}
 
 				if (activity.hasProperty('status')) {
 					this._status = activity.properties.status;

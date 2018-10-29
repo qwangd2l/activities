@@ -1,6 +1,7 @@
 describe('d2l-activity-card', () => {
 
 	const testTitle = 'test title';
+	const testActivityId = 654321;
 	const testStatus = 'overdue';
 	const testActivityUrl = 'javascripvoid(0)';
 	const testDuration = 123456;
@@ -57,6 +58,7 @@ describe('d2l-activity-card', () => {
 		activityEntity = window.D2L.Hypermedia.Siren.Parse({
 			title: testTitle,
 			properties: {
+				activityId: testActivityId,
 				href: testActivityUrl,
 				status: testStatus,
 				duration: testDuration,
@@ -68,6 +70,7 @@ describe('d2l-activity-card', () => {
 		activityEntity2 = window.D2L.Hypermedia.Siren.Parse({
 			title: testTitle,
 			properties: {
+				activityId: testActivityId,
 				href: testActivityUrl,
 				duration: testDuration,
 				imageHref: testImageHref
@@ -109,6 +112,10 @@ describe('d2l-activity-card', () => {
 
 		it('should set the title', () => {
 			expect(component._title).to.equal(testTitle);
+		});
+
+		it('should set the activityId', () => {
+			expect(component._activityId).to.equal(testActivityId);
 		});
 
 		it('should set the status', () => {
