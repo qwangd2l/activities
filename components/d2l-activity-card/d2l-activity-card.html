@@ -4,6 +4,7 @@
 <link rel="import" href="../../../d2l-fetch/d2l-fetch.html">
 <link rel="import" href="../../../d2l-icons/d2l-icon.html">
 <link rel="import" href="../../../d2l-icons/tier2-icons.html">
+<link rel="import" href="../../../d2l-organizations/d2l-organization-name.html">
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="localize-mixin.html">
@@ -18,7 +19,6 @@
 		<style>
 			:host {
 				display: inline-block;
-				width: 340px;
 				--d2l-icon-height: 1rem;
 				--d2l-icon-width: 1rem;
 			}
@@ -26,20 +26,19 @@
 				display: none;
 			}
 
-			.course-image {
-				width: 340px;
-				height: 122px;
-			}
-
-			.heading-3 {
-				@apply --d2l-heading-3;
-				margin-top: 0 !important;
-				margin-bottom: 0 !important;
+			d2l-card {
+				height: 100%;
+				width: 100%;
 			}
 
 			.content {
 				margin-top: -1.2rem;
 				text-align: center;
+				overflow: hidden;
+				word-wrap: break-word; /* IE/Edge */
+				overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
+				display: flex;
+				flex-direction: column;
 			}
 
 			.durationContainer {
@@ -72,7 +71,6 @@
 		<d2l-card text="[[_title]]" href$="[[_activityUrl]]" on-click="_clicked">
 			<d2l-course-image
 				slot="header"
-				class="course-image"
 				image="[[_image]]"
 				sizes="[[_tileSizes]]"
 				type="tile">
@@ -85,7 +83,9 @@
 			</template>
 
 			<div class="content" slot="content">
-				<h3 class="heading-3">[[_title]]</h3>
+				<template is="dom-if" if="[[dataHref]]">
+					<d2l-organization-name href="[[dataHref]]"></d2l-organization-name>
+				</template>
 				<span class="durationContainer">
 					<div class="timeIcon">
 						<d2l-icon icon="d2l-tier2:time"></d2l-icon>
@@ -130,7 +130,6 @@
 						type: Boolean,
 						computed: '_computeStatusExists(_status)',
 					},
-					_title: String,
 					_activityId: Number,
 					_duration: Number,
 					_durationUnit: String,
@@ -231,8 +230,6 @@
 			}
 			_handleActivityData(activity) {
 				if (!activity) return;
-
-				this._title = activity.title;
 
 				if (activity.hasProperty('activityId')) {
 					this._activityId = activity.properties.activityId;

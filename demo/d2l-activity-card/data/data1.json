@@ -1,10 +1,10 @@
 {
-  "title": "Excel",
   "properties": {
     "activityId": 1,
     "href": "javascript:void(0)",
     "status": "progress",
     "duration": 60,
-    "imageHref": "./data/image.json"
+    "imageHref": "./data/image.json",
+    "name": "Excel"
   }
 }

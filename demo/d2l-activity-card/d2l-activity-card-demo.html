@@ -79,28 +79,27 @@
 				console.log('Received a d2l-activity-card-clicked event within the slow loading activity card');
 			});
 		}, 1000);
-
 		setTimeout(function() {
-			slowActivityCard._title = "Some title that is quite long 1 2 3 4 5 6 7 8 9 10";
+			slowActivityCard._duration = 98765;
 		}, 1500);
 		setTimeout(function() {
-			slowActivityCard._duration = 123456;
+			slowActivityCard._durationUnit = 'Hours';
 		}, 2000);
 		setTimeout(function() {
-			slowActivityCard._durationUnit = 'Years';
+			slowActivityCard._status = 'list';
 		}, 2500);
 		setTimeout(function() {
-			slowActivityCard._status = 'list';
+			slowActivityCard._status = 'progress';
 		}, 3000);
 		setTimeout(function() {
-			slowActivityCard._status = 'progress';
+			slowActivityCard._status = 'complete';
 		}, 3500);
 		setTimeout(function() {
-			slowActivityCard._status = 'complete';
+			slowActivityCard._status = 'overdue';
 		}, 4000);
 		setTimeout(function() {
-			slowActivityCard._status = 'overdue';
-		}, 4500);
+			slowActivityCard.dataHref = './data/data.json';
+		}, 4500)
 	</script>
 	<script>
 		window.addEventListener('d2l-activity-card-clicked', (e) => {

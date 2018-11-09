@@ -1,11 +1,11 @@
 {
-  "title": "Excel and Other Tips to Improve Efficiency",
   "properties": {
     "activityId": 0,
     "href": "javascript:void(0)",
     "status": "list",
     "duration": 12312312321,
     "durationUnit": "Years",
-    "imageHref": "./data/image.json"
+    "imageHref": "./data/image.json",
+    "name": "Excel and Other Tips to Improve Efficiency"
   }
 }

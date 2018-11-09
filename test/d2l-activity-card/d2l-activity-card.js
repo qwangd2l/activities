@@ -56,24 +56,24 @@ describe('d2l-activity-card', () => {
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
 		activityEntity = window.D2L.Hypermedia.Siren.Parse({
-			title: testTitle,
 			properties: {
 				activityId: testActivityId,
 				href: testActivityUrl,
 				status: testStatus,
 				duration: testDuration,
 				durationUnit: testDurationUnit,
-				imageHref: testImageHref
+				imageHref: testImageHref,
+				name: testTitle
 			}
 
 		});
 		activityEntity2 = window.D2L.Hypermedia.Siren.Parse({
-			title: testTitle,
 			properties: {
 				activityId: testActivityId,
 				href: testActivityUrl,
 				duration: testDuration,
-				imageHref: testImageHref
+				imageHref: testImageHref,
+				name: testTitle
 			}
 
 		});
@@ -110,10 +110,6 @@ describe('d2l-activity-card', () => {
 			expect(component.dataHref).to.equal('/activities/1');
 		});
 
-		it('should set the title', () => {
-			expect(component._title).to.equal(testTitle);
-		});
-
 		it('should set the activityId', () => {
 			expect(component._activityId).to.equal(testActivityId);
 		});
@@ -132,6 +128,10 @@ describe('d2l-activity-card', () => {
 
 		it('should set the activity url', () => {
 			expect(component._activityUrl).to.equal(testActivityUrl);
+		});
+
+		it('should set the organization name', () => {
+			expect(component.$$('d2l-organization-name')).to.exist;
 		});
 
 		it('should set the image', () => {

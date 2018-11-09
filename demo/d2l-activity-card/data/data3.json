@@ -1,10 +1,10 @@
 {
-  "title": "Some title",
   "properties": {
     "activityId": 3,
     "href": "javascript:void(0)",
     "status": "overdue",
     "duration": 0,
-    "imageHref": "./data/image.json"
+    "imageHref": "./data/image.json",
+    "name": "Some title"
   }
 }

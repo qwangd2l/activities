@@ -1,10 +1,10 @@
 {
-  "title": "01234567890 0123456ABC0 01234567890 0@#A4567890 01234567890 01234567890 01234567890 ",
   "properties": {
     "activityId": 2,
     "href": "javascript:void(0)",
     "status": "complete",
     "duration": 1234567890123456789012345678901234567890,
-    "imageHref": "./data/image.json"
+    "imageHref": "./data/image.json",
+    "name": "01234567890 0123456ABC0 01234567890 0@#A4567890 01234567890 01234567890 01234567890 Some title that is quite long 1 2 3 4 5 6 7 8 9 10Some title that is quite long 1 2 3 4 5 6 7 8 9 10Some title that is quite long 1 2 3 4 5 6 7 8 9 10Some title that is quite long 1 2 3 4 5 6 7 8 9 10Some title that is quite long 1 2 3 4 5 6 7 8 9 10"
   }
 }
