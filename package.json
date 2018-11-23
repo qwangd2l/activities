@@ -38,8 +38,8 @@
 	"main": "d2l-activities.js",
 	"dependencies": {
 		"@polymer/polymer": "^3.0.0",
-		"d2l-colors": "git+https://github.com/BrightspaceUI/colors.git#polymer-3",
-		"d2l-polymer-behaviors": "git+https://github.com/Brightspace/d2l-polymer-behaviors-ui.git#polymer-3.x",
-		"d2l-typography": "git+https://github.com/BrightspaceUI/typography.git#polymer-3"
+		"d2l-colors": "BrightspaceUI/colors#semver:^4.0.0",
+		"d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2.0.0",
+		"d2l-typography": "BrightspaceUI/typography#semver:^7.0.0"
 	}
 }
