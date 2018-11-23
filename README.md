@@ -1,52 +1,6 @@
 # d2l-activities
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/BrightspaceUI/activities)
-[![Bower version][bower-image]][bower-url]
-[![Build status][ci-image]][ci-url]
 
 Web components to be used with activities entities!
-
-## Installation
-
-`d2l-activities` can be installed from [Bower][bower-url]:
-```shell
-bower install d2l-activities
-```
-
-## Usage
-
-Include the [webcomponents.js](http://webcomponents.org/polyfills/) polyfill loader (for browsers who don't natively support web components), then import `d2l-activities.html`:
-
-```html
-<head>
-	<script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-	<link rel="import" href="bower_components/d2l-activities/d2l-activities.html">
-</head>
-```
-
-<!---
-```
-<custom-element-demo>
-  <template>
-    <script src="../webcomponentsjs/webcomponents-loader.js"></script>
-    <link rel="import" href="../d2l-typography/d2l-typography.html">
-    <link rel="import" href="d2l-activities.html">
-    <custom-style include="d2l-typography">
-      <style is="custom-style" include="d2l-typography"></style>
-    </custom-style>
-    <style>
-      html {
-        font-size: 20px;
-        font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
-      }
-    </style>
-    <next-code-block></next-code-block>
-  </template>
-</custom-element-demo>
-```
--->
-```html
-<d2l-activities>My element</d2l-activities>
-```
 
 ## Developing, Testing and Contributing
 
@@ -82,7 +36,5 @@ To lint AND run local unit tests:
 npm test
 ```
 
-[bower-url]: http://bower.io/search/?q=d2l-activities
-[bower-image]: https://badge.fury.io/bo/d2l-activities.svg
 [ci-url]: https://travis-ci.org/BrightspaceUI/activities
 [ci-image]: https://travis-ci.org/BrightspaceUI/activities.svg?branch=master
