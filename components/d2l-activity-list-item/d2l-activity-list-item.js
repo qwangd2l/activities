@@ -3,9 +3,9 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {beforeNextRender, afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
 import {IronResizableBehavior} from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import 'fastdom/fastdom.min.js';
-import '../../../d2l-offscreen/d2l-offscreen-shared-styles.js';
-import '../../../d2l-icons/d2l-icon.js';
-import '../../../d2l-icons/tier1-icons.js';
+import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
+import 'd2l-icons/d2l-icon.js';
+import 'd2l-icons/tier1-icons.js';
 
 /**
  * @customElement
@@ -140,7 +140,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 			_title: String,
 			_description: {
 				type: String,
-				observe: '_onDescriptionChange'
+				observer: '_onDescriptionChange'
 			},
 			_tags: String,
 			_descriptionMaxLines: Number,
