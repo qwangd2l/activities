@@ -7,8 +7,8 @@
 	"name": "d2l-activities",
 	"scripts": {
 		"lint": "npm run lint:wc && npm run lint:js",
-    "lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
-    "lint:wc": "polymer lint",
+		"lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
+		"lint:wc": "polymer lint",
 		"test:polymer:local": "polymer test --skip-plugin sauce",
 		"test:polymer:sauce": "polymer test --skip-plugin local",
 		"test": "npm run lint && npm run test:polymer:local"
@@ -42,9 +42,10 @@
 		"@polymer/iron-resizable-behavior": "^3.0.1",
 		"@polymer/polymer": "^3.0.0",
 		"d2l-colors": "BrightspaceUI/colors#semver:^4.0.0",
-		"d2l-icons": "BrightspaceUI/icons#semver:^6.0.0",
-		"d2l-offscreen": "BrightspaceUI/offscreen#semver:^4.0.0",
-		"d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2.0.0",
-		"d2l-typography": "BrightspaceUI/typography#semver:^7.0.0"
+		"d2l-icons": "BrightspaceUI/icons#semver:^6.0.1",
+		"d2l-offscreen": "BrightspaceUI/offscreen#semver:^4.0.1",
+		"d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2.0.1",
+		"d2l-typography": "BrightspaceUI/typography#semver:^7.0.3",
+		"fastdom": "^1.0.8"
 	}
 }
