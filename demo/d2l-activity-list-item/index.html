@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-activity-list-item demo</title>
+
+		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+		<script type="module">
+			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+			import '@polymer/iron-demo-helpers/demo-snippet';
+			import '../../../d2l-typography/d2l-typography.js';
+			import '../../components/d2l-activity-list-item/d2l-activity-list-item.js';
+		</script>
+
+		<style is="custom-style" include="demo-pages-shared-styles"></style>
+		<style is="custom-style" include="d2l-typography">
+				html {
+					font-size: 20px;
+				}
+				.fixedSize {
+					max-width: 1600px;
+				}
+		</style>
+	</head>
+	<body>
+		<div class="vertical-section-container fixedSize">
+			<h3>Basic d2l-activity-list-item demo</h3>
+			<demo-snippet>
+				<template>
+					<d2l-activity-list-item id="test1" href="#"></d2l-activity-list-item>
+					<script>
+						var item = document.querySelector('#test1');
+						item._text = 'Ultra-Financial Planning & Analysis  in the 20th Century: Building a Successful Budget';
+						item._imageUrl = 'ImageUrl';
+						item._title = 'Financial Planning';
+						item._description = 'Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis  in the 20th Century: Building a Successful Budget';
+						item._tags = ['Duration 1h30m', 'Metadata', 'Metadata'];
+					</script>
+					<d2l-activity-list-item id="test2" href="#"></d2l-activity-list-item>
+					<script>
+						var item2 = document.querySelector('#test2');
+						item2._text = 'Ultra-Financial Planning & Analysis  in the 20th Century: Building a Successful Budget';
+						item2._imageUrl = 'ImageUrl';
+						item2._title = 'Financial Planning';
+						item2._description = 'Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis  in the 20th Century: Building a Successful Budget';
+						item2._tags = ['Duration 1h30m', 'Metadata', 'Metadata'];
+					</script>
+				</template>
+			</demo-snippet>
+		</div>
+	</body>
+	<!-- The class="d2l-typography" on the body doesn't always work -->
+	<script>
+		document.querySelector('body').classList.add('d2l-typography');
+	</script>
+</html>
