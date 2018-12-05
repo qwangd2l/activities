@@ -104,6 +104,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 					margin: 0.5rem 0 0 0;
 					display: flex;
 					flex-direction: column;
+					width: 100%;
 				}
 				.d2l-activity-list-item-content > * {
 					margin: 0.5rem 0.5rem 0 0.5rem;
