@@ -6,6 +6,7 @@ import 'fastdom/fastdom.min.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
+import 'd2l-typography/d2l-typography.js';
 
 /**
  * @customElement
@@ -14,6 +15,7 @@ import 'd2l-icons/tier1-icons.js';
 class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], PolymerElement) {
 	static get template() {
 		return html`
+			<style include="d2l-typography"></style>
 			<style include="d2l-offscreen-shared-styles">
 				:host {
 					display: block;
@@ -259,7 +261,8 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 	}
 	_clampDescription(description) {
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
-		const lineHeight = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/)[0];
+		const computedStyle = window.getComputedStyle(p).getPropertyValue('line-height');
+		const lineHeight = computedStyle.search(/\d+/) !== -1 ? computedStyle.match(/\d+/)[0] : 0;
 
 		if (this._descriptionMaxLines === 0 || p.offsetHeight === this._descriptionMaxLines * lineHeight) {
 			return;
