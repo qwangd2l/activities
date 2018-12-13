@@ -143,7 +143,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 			_title: String,
 			_description: {
 				type: String,
-				observer: '_onDescriptionChange',
+				observer: '_onDescriptionChange'
 			},
 			_tags: String,
 			_descriptionMaxLines: Number,
