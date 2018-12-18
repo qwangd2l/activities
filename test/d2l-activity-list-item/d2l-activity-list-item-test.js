@@ -8,13 +8,13 @@ describe('d2l-activity-list-item', () => {
 		imageEntity;
 
 	function SetupFetchStub(url, entity) {
-		const headers = new Headers();
 		const dateHeader = 'Date: Tue, 24 Oct 2017 16:00:00 GMT';
-		headers.append('Date', dateHeader);
 		fetchStub.withArgs(sinon.match.has('url', sinon.match(url)))
 			.returns(Promise.resolve({
 				ok: true,
-				headers: headers,
+				headers: {
+					get() { return dateHeader; }
+				},
 				json: () => { return Promise.resolve(entity); }
 			}));
 	}
