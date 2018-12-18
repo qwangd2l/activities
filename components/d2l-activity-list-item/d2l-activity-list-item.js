@@ -1,18 +1,26 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {MutableData} from '@polymer/polymer/lib/mixins/mutable-data.js';
 import {beforeNextRender, afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
 import {IronResizableBehavior} from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import 'fastdom/fastdom.min.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
+import 'd2l-course-image/d2l-course-image.js';
+import {Classes, Rels} from 'd2l-hypermedia-constants';
+import 'd2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.js';
+import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-typography/d2l-typography.js';
+import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
+import 'd2l-button/d2l-button.js';
+import './d2l-activity-list-item-enroll.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], PolymerElement) {
+class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], MutableData(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-typography"></style>
@@ -63,12 +71,12 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 				.d2l-activity-list-item-image {
 					flex-shrink: 0;
 					margin: 0.5rem;
-					border: 1px solid;
 					width: 273px;
 					height: 161px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
+					overflow: hidden;
 				}
 				.d2l-activity-list-item-title {
 					flex-shrink: 0;
@@ -111,15 +119,26 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 				.d2l-activity-list-item-content > * {
 					margin: 0.5rem 0.5rem 0 0.5rem;
 				}
+				:host d2l-activity-list-item-enroll {
+					margin: 0.5rem 1rem;
+				}
 			</style>
 			<div class="d2l-activity-list-item-container">
-				<a class="d2l-focusable" href$="[[href]]" hreflang="[[hreflang]]">
+				<a class="d2l-focusable" href$="[[_link]]">
 					<span class="d2l-activity-list-item-link-text">[[_text]]</span>
 				</a>
 				<div class="d2l-activity-list-item-link-container">
-					<div class="d2l-activity-list-item-image">[[_imageUrl]]</div>
+					<div class="d2l-activity-list-item-image">
+						<d2l-course-image
+							image="[[_image]]"
+							sizes="[[_tileSizes]]"
+							type="narrow">
+						</d2l-course-image>
+					</div>
 					<div class="d2l-activity-list-item-content">
-						<div class="d2l-activity-list-item-title">[[_title]]</div>
+						<div class="d2l-activity-list-item-title">
+							<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
+						</div>
 						<div class="d2l-activity-list-item-description" hidden$="[[!_descriptionMaxLines]]"><p>[[_description]]</p></div>
 						<div class="d2l-activity-list-item-footer" hidden$="[[!_tags]]">
 							<template is="dom-repeat" items="[[_tags]]">
@@ -132,12 +151,23 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 					</div>
 				</div>
 			</div>
+			<d2l-activity-list-item-enroll action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
 		`;
 	}
 
 	static get properties() {
 		return {
-			href: String,
+			href: {
+				type: String,
+				observer: '_onHrefChange'
+			},
+			entity: {
+				type: Object,
+				value: function() {
+					return {};
+				},
+				observer: '_onSirenEntityChange'
+			},
 			_text: String,
 			_imageUrl: String,
 			_title: String,
@@ -145,9 +175,47 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 				type: String,
 				observer: '_onDescriptionChange'
 			},
+			_organizationUrl: String,
 			_tags: String,
 			_descriptionMaxLines: Number,
-			_responsiveMinWidth: Number
+			_responsiveMinWidth: Number,
+			_image: Object,
+			_imageLoading: {
+				type: Boolean,
+				value: false
+			},
+			_imageLoadingProgress: {
+				type: Boolean,
+				value: false
+			},
+			_tileSizes: {
+				type: Object,
+				value: function() {
+					return {
+						mobile: {
+							maxwidth: 767,
+							size: 100
+						},
+						tablet: {
+							maxwidth: 1243,
+							size: 67
+						},
+						desktop: {
+							size: 25
+						}
+					};
+				}
+			},
+			actionEnroll: {
+				type: String,
+				value: ''
+			},
+			_link: String,
+			_accessibilityData: {
+				type: Object,
+				value: function() { return {}; },
+				observer: '_accessibilityDataToString'
+			}
 		};
 	}
 
@@ -155,18 +223,50 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 		super.ready();
 		this._onLinkBlur = this._onLinkBlur.bind(this);
 		this._onLinkFocus = this._onLinkFocus.bind(this);
+		this._onIronSize = () => this._setResponsiveSizes(this.offsetWidth);
+		this.addEventListener('d2l-organization-accessible', this._onD2lOrganizationAccessible);
 	}
 	attached() {
 		super.attached();
 		afterNextRender(this, () => {
-			var link = this.shadowRoot.querySelector('a');
+			const link = this.shadowRoot.querySelector('a');
 			link.addEventListener('blur', this._onLinkBlur);
 			link.addEventListener('focus', this._onLinkFocus);
-			this.addEventListener('iron-resize', () => this._setResponsiveSizes(this.offsetWidth));
+			this.addEventListener('iron-resize', this._onIronSize);
 			this._setResponsiveSizes(this.offsetWidth);
 		});
 	}
+	_onD2lOrganizationAccessible(e) {
+		if (e.detail.organization) {
+			if (e.detail.organization.name) {
+				this._accessibilityData.organizationName = e.detail.organization.name;
+			}
+		}
+		if (e.detail.semesterName) {
+			this._accessibilityData.semesterName = e.detail.semesterName;
+		}
 
+		this.notifyPath('_accessibilityData');
+	}
+
+	_accessibilityDataToString(accessibility) {
+		if (!accessibility) {
+			return;
+		}
+
+		const textData = [
+			accessibility.organizationName
+		];
+		return textData.filter(function(text) {
+			return text && typeof text === 'string';
+		}).join(', ');
+	}
+	detached() {
+		const link = this.$.querySelector('a');
+		link.removeEventListener('blur', this._onLinkBlur);
+		link.removeEventListener('focus', this._onLinkFocus);
+		this.removeEventListener('iron-resize', this._onIronSize);
+	}
 	get _responsiveSizes() {
 		return [
 			{
@@ -220,6 +320,12 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 		];
 	}
 
+	_reset() {
+		Object.keys(D2lActivityListItem.properties).forEach((key) => {
+			this.set(key, D2lActivityListItem.properties[key].default);
+		});
+	}
+
 	_onLinkBlur() {
 		window.fastdom.mutate(function() {
 			this.removeAttribute('active', 'active');
@@ -261,10 +367,10 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 	}
 	_clampDescription(description) {
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
-		const computedStyle = window.getComputedStyle(p).getPropertyValue('line-height');
-		const lineHeight = computedStyle.search(/\d+/) !== -1 ? computedStyle.match(/\d+/)[0] : 0;
+		const height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
+		const lineHeight = height && height[0];
 
-		if (this._descriptionMaxLines === 0 || p.offsetHeight === this._descriptionMaxLines * lineHeight) {
+		if (this._descriptionMaxLines === 0 || p.offsetHeight === this._descriptionMaxLines * lineHeight || !lineHeight) {
 			return;
 		}
 
@@ -276,6 +382,53 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior], Polyme
 				}
 			});
 		});
+	}
+	_onHrefChange(href) {
+		if (!href || (this.entity.hasLinkByRel && this.entity.hasLinkByRel('self') && this.entity.getLinkByRel('self').href !== href)) {
+			return;
+		}
+
+		this._fetchEntity(href)
+			.then((sirenEntity) => this.entity = sirenEntity);
+	}
+	_onSirenEntityChange(sirenEntity) {
+		if (!sirenEntity ||
+			!sirenEntity.hasAction ||
+			!sirenEntity.hasLink
+		) {
+			return;
+		}
+		this._description = sirenEntity.properties && sirenEntity.properties.description;
+
+		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
+			this._actionEnroll = sirenEntity.getAction('assign').href;
+		}
+
+		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
+		if (this._organizationUrl) {
+			this._fetchEntity(this._organizationUrl)
+				.then(this._handleOrganizationResponse.bind(this));
+		}
+
+		this.href = sirenEntity.hasLink('self') && sirenEntity.getLinkByRel('self').href;
+	}
+
+	_handleOrganizationResponse(organization) {
+		this._organization = organization;
+
+		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
+			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
+			if (imageEntity.href) {
+				this._fetchEntity(imageEntity.href)
+					.then(function(hydratedImageEntity) {
+						this._image = hydratedImageEntity;
+					}.bind(this));
+			} else {
+				this._image = imageEntity;
+			}
+		}
+
+		return Promise.resolve();
 	}
 }
 
