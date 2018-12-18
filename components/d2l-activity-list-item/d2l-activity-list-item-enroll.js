@@ -1,8 +1,9 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.js';
 import 'd2l-typography/d2l-typography.js';
 import 'd2l-button/d2l-button.js';
+import SirenParse from 'siren-parser';
+import 'd2l-fetch/d2l-fetch.js';
 
 /**
  * @customElement
@@ -71,6 +72,28 @@ class D2lActivityListItemEnroll extends mixinBehaviors([D2L.PolymerBehaviors.Fet
 			enrollButton.removeEventListener('keypress', this._onEnrollKeyPress);
 			enrollButton.removeEventListener('mouseup', this._onEnrollMouseUp);
 		}
+	}
+
+	_fetchEntity(url) {
+		if (!url) {
+			return;
+		}
+
+		return window.d2lfetch
+			.fetch(new Request(url, {
+				headers: { Accept: 'application/vnd.siren+json' },
+			}))
+			.then(this._responseToSirenEntity.bind(this));
+	}
+	_responseToSirenEntity(response) {
+		if (response.ok) {
+			return response
+				.json()
+				.then(function(json) {
+					return SirenParse(json);
+				});
+		}
+		return Promise.reject(response.status + ' ' + response.statusText);
 	}
 }
 

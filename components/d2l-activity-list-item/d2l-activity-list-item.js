@@ -9,12 +9,13 @@ import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-course-image/d2l-course-image.js';
 import {Classes, Rels} from 'd2l-hypermedia-constants';
-import 'd2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.js';
+import 'd2l-fetch/d2l-fetch.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-typography/d2l-typography.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'd2l-button/d2l-button.js';
 import './d2l-activity-list-item-enroll.js';
+import SirenParse from 'siren-parser';
 
 /**
  * @customElement
@@ -421,6 +422,28 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}
 
 		return Promise.resolve();
+	}
+
+	_fetchEntity(url) {
+		if (!url) {
+			return;
+		}
+
+		return window.d2lfetch
+			.fetch(new Request(url, {
+				headers: { Accept: 'application/vnd.siren+json' },
+			}))
+			.then(this._responseToSirenEntity.bind(this));
+	}
+	_responseToSirenEntity(response) {
+		if (response.ok) {
+			return response
+				.json()
+				.then(function(json) {
+					return SirenParse(json);
+				});
+		}
+		return Promise.reject(response.status + ' ' + response.statusText);
 	}
 }
 
