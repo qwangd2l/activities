@@ -235,14 +235,8 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		});
 	}
 	_onD2lOrganizationAccessible(e) {
-		if (e.detail.organization) {
-			if (e.detail.organization.name) {
-				this._accessibilityData.organizationName = e.detail.organization.name;
-			}
-		}
-		if (e.detail.semesterName) {
-			this._accessibilityData.semesterName = e.detail.semesterName;
-		}
+		this._accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
+		this._accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
 
 		this.notifyPath('_accessibilityData');
 	}
@@ -415,7 +409,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._organization = organization;
 
 		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
+			const imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
 			if (imageEntity.href) {
 				this._fetchEntity(imageEntity.href)
 					.then(function(hydratedImageEntity) {
