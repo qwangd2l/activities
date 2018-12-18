@@ -125,7 +125,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			</style>
 			<div class="d2l-activity-list-item-container">
 				<a class="d2l-focusable" href$="[[_link]]">
-					<span class="d2l-activity-list-item-link-text">[[_text]]</span>
+					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="d2l-activity-list-item-link-container">
 					<div class="d2l-activity-list-item-image">
@@ -168,7 +168,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				},
 				observer: '_onSirenEntityChange'
 			},
-			_text: String,
 			_imageUrl: String,
 			_title: String,
 			_description: {
@@ -213,8 +212,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			_link: String,
 			_accessibilityData: {
 				type: Object,
-				value: function() { return {}; },
-				observer: '_accessibilityDataToString'
+				value: function() { return {}; }
 			}
 		};
 	}
@@ -262,7 +260,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}).join(', ');
 	}
 	detached() {
-		const link = this.$.querySelector('a');
+		const link = this.shadowRoot.querySelector('a');
 		link.removeEventListener('blur', this._onLinkBlur);
 		link.removeEventListener('focus', this._onLinkFocus);
 		this.removeEventListener('iron-resize', this._onIronSize);
