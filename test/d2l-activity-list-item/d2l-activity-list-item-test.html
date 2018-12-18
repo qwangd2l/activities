@@ -2,22 +2,26 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-
-		<title>d2l-activity-list-item test</title>
-
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 		<script src="../../../@babel/polyfill/browser.js"></script>
 		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 		<script src="../../../wct-browser-legacy/browser.js"></script>
+
+		<script type="module" src="../../../siren-parser/global.js"></script>
 		<script type="module" src="../../components/d2l-activity-list-item/d2l-activity-list-item.js"></script>
 	</head>
 	<body>
-		<test-fixture id="BasicTestFixture">
+		<test-fixture id="d2l-activity-list-item-empty-fixture">
 			<template>
 				<d2l-activity-list-item></d2l-activity-list-item>
 			</template>
 		</test-fixture>
+		<test-fixture id="d2l-activity-list-item-href-fixture">
+			<template>
+				<d2l-activity-list-item href="/activity/1"></d2l-activity-list-item>
+			</template>
+		</test-fixture>
 
-		<script src="d2l-activity-list-item-test.js"></script>
+		<script src="./d2l-activity-list-item-test.js"></script>
 	</body>
 </html>
