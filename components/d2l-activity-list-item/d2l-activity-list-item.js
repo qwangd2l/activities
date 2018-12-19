@@ -394,7 +394,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._description = sirenEntity.properties && sirenEntity.properties.description;
 
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
-			this._actionEnroll = sirenEntity.getAction('assign').href;
+			this._actionEnroll = sirenEntity.getAction('assign');
 		}
 
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;

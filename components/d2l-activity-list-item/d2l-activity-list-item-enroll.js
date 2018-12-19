@@ -45,7 +45,7 @@ class D2lActivityListItemEnroll extends mixinBehaviors([D2L.PolymerBehaviors.Fet
 	}
 	_enroll() {
 		if (this.actionEnroll) {
-			this._fetchEntity(this.actionEnroll)
+			this._fetchEntity(this.actionEnroll.href, this.actionEnroll.method)
 				.then(() => {
 					this.actionEnroll = '';
 				});
@@ -74,13 +74,14 @@ class D2lActivityListItemEnroll extends mixinBehaviors([D2L.PolymerBehaviors.Fet
 		}
 	}
 
-	_fetchEntity(url) {
+	_fetchEntity(url, method) {
 		if (!url) {
 			return;
 		}
-
+		method = method || 'GET';
 		return window.d2lfetch
 			.fetch(new Request(url, {
+				method: method,
 				headers: { Accept: 'application/vnd.siren+json' },
 			}))
 			.then(this._responseToSirenEntity.bind(this));
