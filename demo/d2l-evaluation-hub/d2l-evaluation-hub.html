@@ -6,13 +6,14 @@
 
 		<title>d2l-evaluation-hub demo</title>
 
-		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
 		<script type="module">
 			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import '../../../d2l-typography/d2l-typography.js';
 			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub.js';
+			import '../../components/d2l-evaluation-hub-activities-list/d2l-evaluation-hub-activities-list.js';
 		</script>
 
 		<style is="custom-style" include="demo-pages-shared-styles"></style>
@@ -28,6 +29,12 @@
 			<demo-snippet>
 				<template strip-whitespace>
 					<d2l-evaluation-hub href="data/activities/example.json" token="whatever"></d2l-evaluation-hub>
+				</template>
+			</demo-snippet>
+			<h3>d2l-evaluation-hub-activities-list demo</h3>
+			<demo-snippet>
+				<template strip-whitespace>
+					<d2l-evaluation-hub-activities-list href="data/activities/activitiesList/root.json" token="whatever"></d2l-evaluation-hub-activities-list>
 				</template>
 			</demo-snippet>
 		</div>
