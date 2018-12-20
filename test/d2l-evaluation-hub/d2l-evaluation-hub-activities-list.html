@@ -19,10 +19,18 @@
 		</test-fixture>
 
 		<script>
-			var list;
 			suite('d2l-evaluation-hub-activities-list', function() {
-				setup(function() {
+				var list;
+				setup(function(done) {
 					list = fixture('basic');
+					function waitForLoad() {
+						if (list._loading) {
+							setTimeout(waitForLoad, 500);
+						} else {
+							done();
+						}
+					}
+					waitForLoad();
 				});
 				test('instantiating the element works', function() {
 					assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
@@ -31,20 +39,16 @@
 					assert.equal(list.href, 'data/root.json');
 					assert.equal(list.token, 't');
 				});
-				test('headers display correctly', function(done) {
+				test('headers display correctly', function() {
 					var expected = [
 						'Submitter', 'Activity Name', 'Course Name', 'Submission Date'
 					];
-
-					flush(function() {
-						var headers = list.shadowRoot.querySelectorAll('d2l-th');
-						for (var i = 0; i < expected.length; i++) {
-							assert.equal(expected[i], headers[i].innerHTML);
-						}
-						done();
-					});
+					var headers = list.shadowRoot.querySelectorAll('d2l-th');
+					for (var i = 0; i < expected.length; i++) {
+						assert.equal(expected[i], headers[i].innerHTML);
+					}
 				});
-				test('data is imported correctly', function(done) {
+				test('data is imported correctly', function() {
 					var expected = [
 						{
 							displayName: 'User Name',
@@ -54,23 +58,17 @@
 							activityLink: 'link to activity'
 						}
 					];
-					flush(function() {
-						assert.equal(list._data.length, expected.length);
-						assert.deepEqual(list._data, expected);
-						done();
-					});
+					assert.equal(list._data.length, expected.length);
+					assert.deepEqual(list._data, expected);
 				});
-				test('data displays correctly', function(done) {
+				test('data displays correctly', function() {
 					var expected = [
 						'User Name', 'Assignment Name', 'Org Name', '2018-02-03T17:00:00.000Z'
 					];
-					flush(function() {
-						var data = list.shadowRoot.querySelectorAll('d2l-td');
-						for (var i = 0; i < expected.length; i++) {
-							assert.equal(expected[i], data[i].innerHTML);
-						}
-						done();
-					});
+					var data = list.shadowRoot.querySelectorAll('d2l-td');
+					for (var i = 0; i < expected.length; i++) {
+						assert.equal(expected[i], data[i].innerHTML);
+					}
 				});
 			});
 		</script>

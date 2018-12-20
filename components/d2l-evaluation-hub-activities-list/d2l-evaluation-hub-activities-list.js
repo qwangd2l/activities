@@ -164,7 +164,7 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return self.followLink(me.entity, self._rels.activities);
 			})
 			.then(function(act) {
-				self.parseActivities(act);
+				return self.parseActivities(act);
 			}.bind(this))
 			.catch(function() {
 
@@ -207,13 +207,13 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}));
 		});
 
-		Promise.all(promises).then(function(result) {
-			self.set('_data', self._data.concat(result));
-		});
-
 		self._filterHref = self.getHref(act.entity, self._rels.filter);
 		self._sortHref = self.getHref(act.entity, self._rels.sort);
 		self._pageNextHref = self.getHref(act.entity, self._rels.pageNext);
+
+		return Promise.all(promises).then(function(result) {
+			self.set('_data', self._data.concat(result));
+		});
 	}
 
 	getHref(entity, rel) {
@@ -236,6 +236,7 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					item.activityName = a.entity.properties.name;
 				});
 		}
+		return Promise.resolve();
 	}
 
 	getCoursePromise(entity, item) {
@@ -246,6 +247,7 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					item.courseName = o.entity.properties.name;
 				});
 		}
+		return Promise.resolve();
 	}
 
 	getUserPromise(entity, item) {
