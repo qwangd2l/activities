@@ -1,7 +1,11 @@
 {
   "plugins": {
     "local": {
-      "browsers": ["chrome"],
+      "browsers": [
+        {
+          "browserName": "chrome"
+        }
+      ],
       "browserOptions": {
         "chrome": ["headless", "disable-gpu", "no-sandbox"]
       }
@@ -27,11 +31,6 @@
           "browserName": "microsoftedge",
           "platform": "Windows 10",
           "version": ""
-        },
-        {
-          "browserName": "internet explorer",
-          "platform": "Windows 10",
-          "version": "11"
         }
       ]
     }

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-activity-list-item demo</title>
+
+		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+		<script type="module">
+			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+			import '@polymer/iron-demo-helpers/demo-snippet';
+			import 'd2l-typography/d2l-typography.js';
+			import '../../components/d2l-activity-list-item/d2l-activity-list-item.js';
+		</script>
+
+		<style is="custom-style" include="demo-pages-shared-styles"></style>
+		<style is="custom-style" include="d2l-typography">
+				html {
+					font-size: 20px;
+				}
+				.fixedSize {
+					max-width: 1600px;
+				}
+		</style>
+	</head>
+	<body class="d2l-typography">
+		<div class="vertical-section-container fixedSize">
+			<h3>Basic d2l-activity-list-item demo</h3>
+			<demo-snippet>
+				<template>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<script>
+						var items = document.querySelectorAll('d2l-activity-list-item');
+
+						items.forEach(function(item) {
+							item._tags = ['Duration 1h30m', 'Metadata', 'Metadata'];
+						});
+
+					</script>
+				</template>
+			</demo-snippet>
+		</div>
+	</body>
+</html>
