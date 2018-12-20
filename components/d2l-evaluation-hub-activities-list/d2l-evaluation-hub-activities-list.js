@@ -78,10 +78,6 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_pageNextHref: {
 				type: String,
 				value: ''
-			},
-			_test: {
-				type: Object,
-				value: { }
 			}
 		};
 	}
@@ -149,7 +145,6 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	loadData(entity) {
-		this._test = entity;
 		if (!entity) {
 			return Promise.resolve();
 		}
