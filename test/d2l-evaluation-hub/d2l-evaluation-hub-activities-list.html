@@ -17,20 +17,43 @@
 				<d2l-evaluation-hub-activities-list href="data/root.json" token="t"></d2l-evaluation-hub-activities-list>
 			</template>
 		</test-fixture>
+		<test-fixture id="loadedFromActivities">
+			<template strip-whitespace>
+				<d2l-evaluation-hub-activities-list href="data/unassessedActivities.json" token="t"></d2l-evaluation-hub-activities-list>
+			</template>
+		</test-fixture>
 
 		<script>
-			suite('d2l-evaluation-hub-activities-list', function() {
-				var list;
-				setup(function(done) {
-					list = fixture('basic');
-					function waitForLoad() {
-						if (list._loading) {
-							setTimeout(waitForLoad, 500);
-						} else {
-							done();
-						}
+			var list;
+
+			function loadAndWait(id, done) {
+				list = fixture(id);
+				function waitForLoad() {
+					if (list._loading) {
+						setTimeout(waitForLoad, 250);
+					} else {
+						done();
 					}
-					waitForLoad();
+				}
+				waitForLoad();
+			}
+
+			var expectedData = [
+				{
+					displayName: 'User Name',
+					courseName: 'Org Name',
+					activityName: 'Assignment Name',
+					submissionDate: '2018-02-03T17:00:00.000Z',
+					activityLink: 'link to activity'
+				}
+			];
+			var expectedHeaders = [
+				'Submitter', 'Activity Name', 'Course Name', 'Submission Date'
+			];
+
+			suite('d2l-evaluation-hub-activities-list', function() {
+				setup(function(done) {
+					loadAndWait('basic', done);
 				});
 				test('instantiating the element works', function() {
 					assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
@@ -40,26 +63,14 @@
 					assert.equal(list.token, 't');
 				});
 				test('headers display correctly', function() {
-					var expected = [
-						'Submitter', 'Activity Name', 'Course Name', 'Submission Date'
-					];
 					var headers = list.shadowRoot.querySelectorAll('d2l-th');
-					for (var i = 0; i < expected.length; i++) {
-						assert.equal(expected[i], headers[i].innerHTML);
+					for (var i = 0; i < expectedHeaders.length; i++) {
+						assert.equal(expectedHeaders[i], headers[i].innerHTML);
 					}
 				});
 				test('data is imported correctly', function() {
-					var expected = [
-						{
-							displayName: 'User Name',
-							courseName: 'Org Name',
-							activityName: 'Assignment Name',
-							submissionDate: '2018-02-03T17:00:00.000Z',
-							activityLink: 'link to activity'
-						}
-					];
-					assert.equal(list._data.length, expected.length);
-					assert.deepEqual(list._data, expected);
+					assert.equal(list._data.length, expectedData.length);
+					assert.deepEqual(list._data, expectedData);
 				});
 				test('data displays correctly', function() {
 					var expected = [
@@ -69,6 +80,19 @@
 					for (var i = 0; i < expected.length; i++) {
 						assert.equal(expected[i], data[i].innerHTML);
 					}
+				});
+			});
+
+			suite('d2l-evaluation-hub-activities-list load direct from activities', function() {
+				setup(function(done) {
+					loadAndWait('loadedFromActivities', done);
+				});
+				test('instantiating the element works', function() {
+					assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
+				});
+				test('data is imported correctly', function() {
+					assert.equal(list._data.length, expectedData.length);
+					assert.deepEqual(list._data, expectedData);
 				});
 			});
 		</script>

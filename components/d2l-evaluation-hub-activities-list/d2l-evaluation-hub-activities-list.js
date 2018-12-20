@@ -161,10 +161,10 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return self.followLink(data, self._rels.me);
 			})
 			.then(function(me) {
-				return self.followLink(me.entity, self._rels.activities);
+				return self.followLink(me.entity || me, self._rels.activities);
 			})
 			.then(function(act) {
-				return self.parseActivities(act);
+				return self.parseActivities(act.entity || act);
 			}.bind(this))
 			.catch(function() {
 
@@ -184,7 +184,7 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	parseActivities(act) {
 		var self = this;
 		var promises = [];
-		act.entity.entities.forEach(function(activity) {
+		act.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
 				var item = {
 					displayName: '',
@@ -207,9 +207,9 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}));
 		});
 
-		self._filterHref = self.getHref(act.entity, self._rels.filter);
-		self._sortHref = self.getHref(act.entity, self._rels.sort);
-		self._pageNextHref = self.getHref(act.entity, self._rels.pageNext);
+		self._filterHref = self.getHref(act, self._rels.filter);
+		self._sortHref = self.getHref(act, self._rels.sort);
+		self._pageNextHref = self.getHref(act, self._rels.pageNext);
 
 		return Promise.all(promises).then(function(result) {
 			self.set('_data', self._data.concat(result));
