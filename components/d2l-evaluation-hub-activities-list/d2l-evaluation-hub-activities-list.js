@@ -1,5 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-table/d2l-table.js';
+import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
@@ -16,7 +17,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return html`
 			<style include="d2l-table-style">
 				d2l-tr:hover {
-					background: #eaedf0;
+					background: var(--d2l-color-gypsum, #E6EAF0);
 					cursor: pointer;
 				}
 			</style>
@@ -121,6 +122,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			return Promise.resolve();
 		}
 
+		this.set('_loading', true);
 		var self = this;
 
 		return Promise.resolve(entity)
