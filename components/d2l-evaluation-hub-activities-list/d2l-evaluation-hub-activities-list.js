@@ -1,16 +1,17 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import '../../../d2l-table/d2l-table.js';
-import '../../../d2l-offscreen/d2l-offscreen.js';
-import '../../../d2l-polymer-siren-behaviors/store/entity-behavior.js';
-import '../../../d2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+import 'd2l-table/d2l-table.js';
+import 'd2l-offscreen/d2l-offscreen.js';
+import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
+import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {Rels} from 'd2l-hypermedia-constants';
 
 /**
  * @customElement
  * @polymer
  */
 
-class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
+class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
@@ -53,15 +54,16 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return {
 			_headers: {
 				type: String,
-				computed: 'getHeaders()'
+				value: [
+					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter'},
+					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name'},
+					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name'},
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date'}
+				]
 			},
 			_data: {
 				type: Array,
 				value: [ ]
-			},
-			_rels: {
-				type: Object,
-				computed: 'getRels()'
 			},
 			_loading: {
 				type: Boolean,
@@ -95,36 +97,6 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	constructor() { super(); }
 
-	getHeaders() {
-		return [
-			{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter'},
-			{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name'},
-			{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name'},
-			{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date'}
-		];
-	}
-
-	getRels() {
-		return {
-			me: this.getRel('whoami'),
-			activities: this.getRel('my-unassessed-activities', 'activities'),
-			user: this.getRel('user'),
-			org: this.getRel('organization'),
-			assignment: this.getRel('assignment'),
-			displayName: this.getRel('display-name'),
-			firstName: this.getRel('first-name'),
-			lastName: this.getRel('last-name'),
-			date: this.getRel('date'),
-			filter: this.getRel('filters'),
-			sort: this.getRel(''),
-			pageNext: this.getRel('')
-		};
-	}
-
-	getRel(post, pre) {
-		return `https://${pre ? pre + '.' : ''}api.brightspace.com/rels/${post}`;
-	}
-
 	fetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
@@ -153,13 +125,13 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		return Promise.resolve(entity)
 			.then(function(data) {
-				return self.followLink(data, self._rels.me);
+				return self.followLink(data, Rels.whoami);
 			})
 			.then(function(me) {
-				return self.followLink(me.entity || me, self._rels.activities);
+				return self.followLink(me, Rels.Activities.myUnassessedActivities);
 			})
 			.then(function(act) {
-				return self.parseActivities(act.entity || act);
+				return self.parseActivities(act);
 			}.bind(this))
 			.catch(function() {
 
@@ -170,16 +142,18 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	followLink(data, rel) {
-		if (data.hasLinkByRel(rel)) {
-			return this.fetch(data.getLinkByRel(rel).href);
+		var entity = data.entity || data;
+		if (entity.hasLinkByRel(rel)) {
+			return this.fetch(entity.getLinkByRel(rel).href);
 		}
 		return Promise.resolve(data);
 	}
 
-	parseActivities(act) {
+	async parseActivities(act) {
 		var self = this;
 		var promises = [];
-		act.entities.forEach(function(activity) {
+		var entity = act.entity || act;
+		entity.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
 				var item = {
 					displayName: '',
@@ -202,13 +176,12 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}));
 		});
 
-		self._filterHref = self.getHref(act, self._rels.filter);
-		self._sortHref = self.getHref(act, self._rels.sort);
-		self._pageNextHref = self.getHref(act, self._rels.pageNext);
+		self._filterHref = self.getHref(entity, Rels.filters);
+		//self._sortHref = self.getHref(entity, Rels.sort);
+		//self._pageNextHref = self.getHref(entity, Rels.pageNext);
 
-		return Promise.all(promises).then(function(result) {
-			self.set('_data', self._data.concat(result));
-		});
+		const result = await Promise.all(promises);
+		self.set('_data', self._data.concat(result));
 	}
 
 	getHref(entity, rel) {
@@ -219,13 +192,13 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getActivityLink(/*entity*/) {
-		// TODO: figure out how to construct this link!!!
+		// TODO: get this link from api once enabled!!!
 		return 'link to activity';
 	}
 
 	getActivityPromise(entity, item) {
-		if (entity.hasLinkByRel(this._rels.assignment)) {
-			var assignment = entity.getLinkByRel(this._rels.assignment);
+		if (entity.hasLinkByRel(Rels.assignment)) {
+			var assignment = entity.getLinkByRel(Rels.assignment);
 			return this.fetch(assignment.href)
 				.then(function(a) {
 					item.activityName = a.entity.properties.name;
@@ -235,8 +208,8 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getCoursePromise(entity, item) {
-		if (entity.hasLinkByRel(this._rels.org)) {
-			var org = entity.getLinkByRel(this._rels.org);
+		if (entity.hasLinkByRel(Rels.organization)) {
+			var org = entity.getLinkByRel(Rels.organization);
 			return this.fetch(org.href)
 				.then(function(o) {
 					item.courseName = o.entity.properties.name;
@@ -246,13 +219,12 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getUserPromise(entity, item) {
-		if (entity.hasLinkByRel(this._rels.user)) {
-			var user = entity.getLinkByRel(this._rels.user);
-			var self = this;
+		if (entity.hasLinkByRel(Rels.user)) {
+			var user = entity.getLinkByRel(Rels.user);
 			return this.fetch(user.href)
 				.then(function(u) {
-					if (u.entity.hasSubEntityByRel(self._rels.displayName)) {
-						item.displayName = u.entity.getSubEntityByRel(self._rels.displayName).properties.name;
+					if (u.entity.hasSubEntityByRel(Rels.displayName)) {
+						item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
 					}
 				});
 		}
@@ -262,8 +234,8 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	getSubmissionDate(entity) {
 		if (entity.hasSubEntityByRel('item')) {
 			var i = entity.getSubEntityByRel('item');
-			if (i.hasSubEntityByRel(this._rels.date)) {
-				return i.getSubEntityByRel(this._rels.date).properties.date;
+			if (i.hasSubEntityByRel(Rels.date)) {
+				return i.getSubEntityByRel(Rels.date).properties.date;
 			}
 		}
 		return '';
@@ -283,4 +255,4 @@ class D2lEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 }
 
-window.customElements.define(D2lEvaluationHubActivitiesList.is, D2lEvaluationHubActivitiesList);
+window.customElements.define(D2LEvaluationHubActivitiesList.is, D2LEvaluationHubActivitiesList);

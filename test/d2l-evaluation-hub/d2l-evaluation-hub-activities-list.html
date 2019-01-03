@@ -14,28 +14,18 @@
 	<body>
 		<test-fixture id="basic">
 			<template strip-whitespace>
-				<d2l-evaluation-hub-activities-list href="data/root.json" token="t"></d2l-evaluation-hub-activities-list>
-			</template>
-		</test-fixture>
-		<test-fixture id="loadedFromActivities">
-			<template strip-whitespace>
-				<d2l-evaluation-hub-activities-list href="data/unassessedActivities.json" token="t"></d2l-evaluation-hub-activities-list>
+				<d2l-evaluation-hub-activities-list href="blah" token="t"></d2l-evaluation-hub-activities-list>
 			</template>
 		</test-fixture>
 
 		<script>
 			var list;
 
-			function loadAndWait(id, done) {
-				list = fixture(id);
-				function waitForLoad() {
-					if (list._loading) {
-						setTimeout(waitForLoad, 250);
-					} else {
-						done();
-					}
-				}
-				waitForLoad();
+			function loadPromise(url) {
+				return window.D2L.Siren.EntityStore.fetch(url, '')
+					.then(function(entity) {
+						return list.loadData(entity);
+					});
 			}
 
 			var expectedData = [
@@ -52,47 +42,52 @@
 			];
 
 			suite('d2l-evaluation-hub-activities-list', function() {
-				setup(function(done) {
-					loadAndWait('basic', done);
+				setup(function() {
+					list = fixture('basic');
 				});
 				test('instantiating the element works', function() {
 					assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
 				});
 				test('attributes are set correctly', function() {
-					assert.equal(list.href, 'data/root.json');
+					assert.equal(list.href, 'blah');
 					assert.equal(list.token, 't');
 				});
 				test('headers display correctly', function() {
-					var headers = list.shadowRoot.querySelectorAll('d2l-th');
-					for (var i = 0; i < expectedHeaders.length; i++) {
-						assert.equal(expectedHeaders[i], headers[i].innerHTML);
-					}
+					flush(function() {
+						var headers = list.shadowRoot.querySelectorAll('d2l-th');
+						for (var i = 0; i < expectedHeaders.length; i++) {
+							assert.equal(expectedHeaders[i], headers[i].innerHTML);
+						}
+					});
 				});
-				test('data is imported correctly', function() {
+				test('data is imported from root correctly', async() => {
+					await loadPromise('data/root.json');
+
 					assert.equal(list._data.length, expectedData.length);
 					assert.deepEqual(list._data, expectedData);
 				});
-				test('data displays correctly', function() {
-					var expected = [
-						'User Name', 'Assignment Name', 'Org Name', '2018-02-03T17:00:00.000Z'
-					];
+				test('data is imported from activities correctly', async() => {
+					await loadPromise('data/unassessedActivities.json');
+
+					assert.equal(list._data.length, expectedData.length);
+					assert.deepEqual(list._data, expectedData);
+				});
+				test('data displays correctly', async() => {
+					var expected = [];
+
+					expectedData.forEach(function(item) {
+						expected.push(item.displayName);
+						expected.push(item.activityName);
+						expected.push(item.courseName);
+						expected.push(item.submissionDate);
+					});
+
+					await loadPromise('data/root.json');
+
 					var data = list.shadowRoot.querySelectorAll('d2l-td');
 					for (var i = 0; i < expected.length; i++) {
 						assert.equal(expected[i], data[i].innerHTML);
 					}
-				});
-			});
-
-			suite('d2l-evaluation-hub-activities-list load direct from activities', function() {
-				setup(function(done) {
-					loadAndWait('loadedFromActivities', done);
-				});
-				test('instantiating the element works', function() {
-					assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
-				});
-				test('data is imported correctly', function() {
-					assert.equal(list._data.length, expectedData.length);
-					assert.deepEqual(list._data, expectedData);
 				});
 			});
 		</script>
