@@ -16,18 +16,20 @@ import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'd2l-button/d2l-button.js';
 import './d2l-activity-list-item-enroll.js';
 import SirenParse from 'siren-parser';
+import {ActivityListItemResponsiveConstants} from './ActivityListItemResponsiveConstants.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], MutableData(PolymerElement)) {
+class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], ActivityListItemResponsiveConstants(MutableData(PolymerElement))) {
 	static get template() {
 		return html`
 			<style include="d2l-typography"></style>
 			<style include="d2l-offscreen-shared-styles">
 				:host {
 					display: block;
+					max-width: 842px;
 				}
 				:host([active]) {
 					border-color: rgba(0, 111, 191, 0.4);
@@ -71,18 +73,30 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 				.d2l-activity-list-item-image {
 					flex-shrink: 0;
-					margin: 0.5rem;
+					margin-right: 1.2rem;
 					width: 273px;
 					height: 161px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					overflow: hidden;
+					border: 1px solid var(--d2l-color-gypsum);
+					border-radius: 6px;
 				}
 				.d2l-activity-list-item-title {
 					flex-shrink: 0;
-					@apply --d2l-heading-3;
-					color: var(--d2l-color-ferrite);
+					@apply --d2l-heading-2;
+					font-size: 0.95rem;
+					line-height: 1.58rem;
+					max-height: 3.16rem;
+					overflow: hidden;
+					color: var(--d2l-color-celestine);
+					margin: 0.2rem 0rem;
+				}
+				.d2l-activity-list-item-container:hover .d2l-activity-list-item-title ,
+				.d2l-activity-list-item-container:focus .d2l-activity-list-item-title {
+					color: var(--d2l-color-celestine-minus-1);
+					text-decoration: underline;
 				}
 				.d2l-activity-list-item-description p {
 					margin: 0;
@@ -98,13 +112,15 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 				.d2l-activity-list-item-footer {
 					height: 1rem;
+					margin: 0;
+					margin-top: 0.45rem;
 					overflow: hidden;
 				}
 				.d2l-activity-list-item-footer span d2l-icon {
 					--d2l-icon-width: 18px;
 					--d2l-icon-height: 18px;
 				}
-				.d2l-activity-list-item-footer span:first-child d2l-icon{
+				.d2l-activity-list-item-footer span:first-child d2l-icon {
 					display: none;
 				}
 				.d2l-activity-list-item-footer span {
@@ -112,16 +128,21 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 				.d2l-activity-list-item-content {
 					flex-grow: 1;
-					margin: 0.5rem 0 0 0;
 					display: flex;
 					flex-direction: column;
 					width: 100%;
 				}
-				.d2l-activity-list-item-content > * {
-					margin: 0.5rem 0.5rem 0 0.5rem;
-				}
 				:host d2l-activity-list-item-enroll {
 					margin: 0.5rem 1rem;
+				}
+				.d2l-activity-list-item-category {
+					flex-shrink: 0;
+					@apply --d2l-body-small-text;
+					line-height: 0.9rem;
+					margin: 0;
+					overflow: hidden;
+					height: 0.9rem;
+					white-space: nowrap;
 				}
 			</style>
 			<div class="d2l-activity-list-item-container">
@@ -137,10 +158,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 						</d2l-course-image>
 					</div>
 					<div class="d2l-activity-list-item-content">
-						<div class="d2l-activity-list-item-title">
+						<div class="d2l-activity-list-item-category">[[_category]]</div>
+						<h2 class="d2l-activity-list-item-title">
 							<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
-						</div>
-						<div class="d2l-activity-list-item-description" hidden$="[[!_descriptionMaxLines]]"><p>[[_description]]</p></div>
+						</h2>
+						<div class="d2l-activity-list-item-description" hidden$="[[!_showDescription]]"><p>[[_description]]</p></div>
 						<div class="d2l-activity-list-item-footer" hidden$="[[!_tags]]">
 							<template is="dom-repeat" items="[[_tags]]">
 								<span>
@@ -171,14 +193,14 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			},
 			_imageUrl: String,
 			_title: String,
+			_category: String,
 			_description: {
 				type: String,
 				observer: '_onDescriptionChange'
 			},
 			_organizationUrl: String,
 			_tags: String,
-			_descriptionMaxLines: Number,
-			_responsiveMinWidth: Number,
+			_showDescription: Boolean,
 			_image: Object,
 			_imageLoading: {
 				type: Boolean,
@@ -216,6 +238,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				value: function() { return {}; }
 			}
 		};
+	}
+
+	constructor() {
+		super();
+		this._currentResponsiveConfig = undefined;
 	}
 
 	ready() {
@@ -260,58 +287,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		link.removeEventListener('focus', this._onLinkFocus);
 		this.removeEventListener('iron-resize', this._onIronSize);
 	}
-	get _responsiveSizes() {
-		return [
-			{
-				minWidth: 0,
-				imageSize: {
-					width: 89,
-					height: 50
-				},
-				descriptionMaxLines: 0
-			},
-			{
-				minWidth: 400,
-				imageSize: {
-					width: 135,
-					height: 75
-				},
-				descriptionMaxLines: 0
-			},
-			{
-				minWidth: 500,
-				imageSize: {
-					width: 183,
-					height: 102
-				},
-				descriptionMaxLines: 2
-			},
-			{
-				minWidth: 600,
-				imageSize: {
-					width: 212,
-					height: 125
-				},
-				descriptionMaxLines: 2
-			},
-			{
-				minWidth: 700,
-				imageSize: {
-					width: 273,
-					height: 161
-				},
-				descriptionMaxLines: 3
-			},
-			{
-				minWidth: 900,
-				imageSize: {
-					width: 273,
-					height: 161
-				},
-				descriptionMaxLines: 4
-			}
-		];
-	}
 
 	_reset() {
 		Object.keys(D2lActivityListItem.properties).forEach((key) => {
@@ -332,47 +307,73 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 	}
 
 	_setResponsiveSizes(currentWidth) {
-		let currentSize = this._responsiveSizes[0];
-		for (var nextSize of this._responsiveSizes) {
-			if (nextSize.minWidth > currentWidth) {
-				break;
-			}
-			currentSize = nextSize;
-		}
+		const currentConfig = this._getResponsiveConfig(currentWidth);
+		this._showDescription = currentConfig.showDescription;
+		this._clampDescription(this._description);
 
-		if (this._responsiveMinWidth === currentSize.minWidth) {
+		if (this._currentResponsiveConfig && this._currentResponsiveConfig.minWidth === currentConfig.minWidth) {
 			return;
 		}
 
-		this._descriptionMaxLines = currentSize.descriptionMaxLines;
-		this._responsiveMinWidth = currentSize.minWidth;
-
+		this._currentResponsiveConfig = currentConfig;
 		window.fastdom.mutate(() => {
-			const image = this.shadowRoot.querySelector('.d2l-activity-list-item-image');
-			image.style.width = currentSize.imageSize.width + 'px';
-			image.style.height = currentSize.imageSize.height + 'px';
-		});
+			const container = this.shadowRoot.querySelector('.d2l-activity-list-item-container');
+			container.style.padding = currentConfig.padding;
 
-		this._clampDescription(this._description);
+			const image = this.shadowRoot.querySelector('.d2l-activity-list-item-image');
+			image.style.width = currentConfig.image.width + 'px';
+			image.style.height = currentConfig.image.height + 'px';
+			image.style.marginRight = currentConfig.image.marginRight;
+
+			const title = this.shadowRoot.querySelector('.d2l-activity-list-item-title');
+			title.style.fontSize = currentConfig.title.fontSize + 'rem';
+			title.style.fontWeight = currentConfig.title.fontWeight;
+			title.style.lineHeight = currentConfig.title.lineHeight + 'rem';
+			title.style.maxHeight = 2 * currentConfig.title.lineHeight + 'rem';
+			title.style.margin = currentConfig.title.margin;
+		});
 	}
 	_onDescriptionChange(description) {
 		this._clampDescription(description);
 	}
 	_clampDescription(description) {
+		if (!this._showDescription) {
+			return;
+		}
+
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		const height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
 		const lineHeight = height && height[0];
 
-		if (this._descriptionMaxLines === 0 || p.offsetHeight === this._descriptionMaxLines * lineHeight || !lineHeight) {
-			return;
-		}
-
 		beforeNextRender(this, () => {
 			window.fastdom.mutate(() => {
 				p.textContent = description;
-				while (p.offsetHeight > this._descriptionMaxLines * lineHeight || p.textContent === '...')  {
-					p.textContent = p.textContent.replace(/\W*\s(\S)*$/, '...');
+				const currentLineNumber = p.offsetHeight / lineHeight;
+				if (currentLineNumber <= this._descriptionLineCount) {
+					return;
 				}
+				// The idea is to mathematically find the most probable point to clamp.
+				// Take the average per line while distrbuting the characters from the last line between all the lines.
+				// So the average line length is between 1 to (1 + 1/(this._descriptionLineCount+1)) the actual average.
+				// The `+1` in the previous line is because the description has to be more than the this._descriptionLineCount
+				// For example if the description max number of lines is 2 then the average count would be between 1 to 1.33 times the actual average.
+				const avgCharPerLine = description.length / ((currentLineNumber - 1));
+
+				// This is where we clamp using the ~average length of a line. We want the clamp to not be exactly at the edge
+				// so clamp 75% of the last line. Since the average line could be larger we need to make sure that this cut
+				// is still lower then the average line.
+				// So we need to prove 1 <= 3/4*(1 + 1/(this._descriptionLineCount+1))
+				// The above line simplifies to this._descriptionLineCount >= 2
+				// So as long as we clamp down to two lines this will work.
+				p.textContent = description.substring(0, avgCharPerLine * (this._descriptionLineCount - 0.75));
+
+				// Okay what about when this._descriptionLineCount = 1? We will do a loop through this step to solve that case.
+				// This loop will make sure the clamping is done on words and will make sure that if our quick cut above
+				// wasn't enough to fix that too.
+				do {
+					p.textContent = p.textContent.replace(/\W*\s(\S)*$/, '');
+				} while (p.offsetHeight > this._descriptionLineCount * lineHeight && p.textContent);
+				p.textContent += '...';
 			});
 		});
 	}
