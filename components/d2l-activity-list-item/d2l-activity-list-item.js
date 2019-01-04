@@ -174,7 +174,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					</div>
 				</div>
 			</div>
-			<d2l-activity-list-item-enroll action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
+			<!-- <d2l-activity-list-item-enroll action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll> -->
 		`;
 	}
 
