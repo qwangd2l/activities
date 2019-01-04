@@ -1,10 +1,12 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEvaluationHub extends PolymerElement {
+class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
 	static get template() {
 		return html`
 			<style>
@@ -12,16 +14,11 @@ class D2lEvaluationHub extends PolymerElement {
 					display: block;
 				}
 			</style>
-			<div>Evaluation Hub</div>
-			<div>[[href]]</div>
+			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]"></d2l-evaluation-hub-activities-list>
 		`;
 	}
-	static get properties() {
-		return { // Should get this from the d2l-polymer-siren-behaviors once that has been converted to Polymer 3
-			href: String,
-			token: String
-		};
-	}
+	static get is() { return 'd2l-evaluation-hub'; }
+
 }
 
-window.customElements.define('d2l-evaluation-hub', D2lEvaluationHub);
+window.customElements.define('d2l-evaluation-hub', D2LEvaluationHub);
