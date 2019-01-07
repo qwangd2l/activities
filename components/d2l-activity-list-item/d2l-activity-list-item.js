@@ -91,7 +91,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					max-height: 3.16rem;
 					overflow: hidden;
 					color: var(--d2l-color-celestine);
-					margin: 0.2rem 0rem;
+					margin: 0.2rem 0;
 				}
 				.d2l-activity-list-item-container:hover .d2l-activity-list-item-title ,
 				.d2l-activity-list-item-container:focus .d2l-activity-list-item-title {
