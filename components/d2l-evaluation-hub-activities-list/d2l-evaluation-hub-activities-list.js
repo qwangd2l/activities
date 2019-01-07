@@ -93,7 +93,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		super.ready();
 		var self = this;
 		this.addEventListener('d2l-siren-entity-error', function() {
-			self.set('_loading', false);
+			self._loading = false;
 		});
 	}
 	constructor() { super(); }
@@ -122,7 +122,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			return Promise.resolve();
 		}
 
-		this.set('_loading', true);
+		this._loading = true;
 		var self = this;
 
 		return Promise.resolve(entity)
@@ -139,7 +139,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 			}.bind(this))
 			.then(function() {
-				this.set('_loading', false);
+				this._loading = false;
 			}.bind(this));
 	}
 
@@ -183,7 +183,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		//self._pageNextHref = self.getHref(entity, Rels.pageNext);
 
 		const result = await Promise.all(promises);
-		self.set('_data', self._data.concat(result));
+		self._data = self._data.concat(result);
 	}
 
 	getHref(entity, rel) {
