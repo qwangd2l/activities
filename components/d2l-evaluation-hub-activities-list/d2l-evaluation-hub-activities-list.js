@@ -199,38 +199,30 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getActivityPromise(entity, item) {
-		if (entity.hasLinkByRel(Rels.assignment)) {
-			var assignment = entity.getLinkByRel(Rels.assignment);
-			return this.fetch(assignment.href)
-				.then(function(a) {
+		return this.followLink(entity, Rels.assignment)
+			.then(function(a) {
+				if (a) {
 					item.activityName = a.entity.properties.name;
-				});
-		}
-		return Promise.resolve();
+				}
+			});
 	}
 
 	getCoursePromise(entity, item) {
-		if (entity.hasLinkByRel(Rels.organization)) {
-			var org = entity.getLinkByRel(Rels.organization);
-			return this.fetch(org.href)
-				.then(function(o) {
+		return this.followLink(entity, Rels.organization)
+			.then(function(o) {
+				if (o) {
 					item.courseName = o.entity.properties.name;
-				});
-		}
-		return Promise.resolve();
+				}
+			});
 	}
 
 	getUserPromise(entity, item) {
-		if (entity.hasLinkByRel(Rels.user)) {
-			var user = entity.getLinkByRel(Rels.user);
-			return this.fetch(user.href)
-				.then(function(u) {
-					if (u.entity.hasSubEntityByRel(Rels.displayName)) {
-						item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
-					}
-				});
-		}
-		return Promise.resolve();
+		return this.followLink(entity, Rels.user)
+			.then(function(u) {
+				if (u && u.entity.hasSubEntityByRel(Rels.displayName)) {
+					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
+				}
+			});
 	}
 
 	getSubmissionDate(entity) {
