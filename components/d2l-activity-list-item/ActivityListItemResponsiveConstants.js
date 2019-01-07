@@ -104,9 +104,6 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 			}
 		];
 	}
-	constructor() {
-		super();
-	}
 
 	_getResponsiveConfig(width) {
 		let responsiveConfig  = this._responsiveConfigs[0];

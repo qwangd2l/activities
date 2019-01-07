@@ -25,7 +25,7 @@ import {ActivityListItemResponsiveConstants} from './ActivityListItemResponsiveC
 class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], ActivityListItemResponsiveConstants(MutableData(PolymerElement))) {
 	static get template() {
 		return html`
-			<style include="d2l-typography"></style>
+			<style include="d2l-typography-shared-styles"></style>
 			<style include="d2l-offscreen-shared-styles">
 				:host {
 					display: block;
@@ -174,7 +174,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					</div>
 				</div>
 			</div>
-			<!-- <d2l-activity-list-item-enroll action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll> -->
+			<d2l-activity-list-item-enroll hidden$="[[!_actionEnroll]]" action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
 		`;
 	}
 
@@ -340,13 +340,14 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		if (!this._showDescription) {
 			return;
 		}
-
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
-		const height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
-		const lineHeight = height && height[0];
-
+		let height = 0;
+		window.fastdom.measure(() => {
+			height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
+		});
 		beforeNextRender(this, () => {
 			window.fastdom.mutate(() => {
+				const lineHeight = height && height[0];
 				p.textContent = description;
 				const currentLineNumber = p.offsetHeight / lineHeight;
 				if (currentLineNumber <= this._descriptionLineCount) {
