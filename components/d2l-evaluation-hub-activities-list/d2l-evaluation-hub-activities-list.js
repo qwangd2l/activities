@@ -127,34 +127,30 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		return Promise.resolve(entity)
 			.then(function(data) {
-				return self.followLink(data, Rels.whoami);
+				return self.followLink(data, Rels.whoami) || data;
 			})
 			.then(function(me) {
-				return self.followLink(me, Rels.Activities.myUnassessedActivities);
+				return self.followLink(me.entity, Rels.Activities.myUnassessedActivities) || me;
 			})
 			.then(function(act) {
-				return self.parseActivities(act);
+				return self.parseActivities(act.entity);
 			}.bind(this))
 			.catch(function() {
-
 			}.bind(this))
 			.then(function() {
 				this._loading = false;
 			}.bind(this));
 	}
 
-	followLink(data, rel) {
-		var entity = data.entity || data;
-		if (entity.hasLinkByRel(rel)) {
+	followLink(entity, rel) {
+		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
 			return this.fetch(entity.getLinkByRel(rel).href);
 		}
-		return Promise.resolve(data);
 	}
 
-	async parseActivities(act) {
+	async parseActivities(entity) {
 		var self = this;
 		var promises = [];
-		var entity = act.entity || act;
 		entity.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
 				var item = {
