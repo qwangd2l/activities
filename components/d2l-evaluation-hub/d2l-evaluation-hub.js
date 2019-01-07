@@ -1,6 +1,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import '../d2l-evaluation-hub-activities-list/d2l-evaluation-hub-activities-list.js';
 
 /**
  * @customElement
