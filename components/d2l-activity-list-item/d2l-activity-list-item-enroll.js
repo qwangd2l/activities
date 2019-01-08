@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {ActivityListItemLocalize} from './ActivityListItemLocalize.js';
 import 'd2l-typography/d2l-typography.js';
 import 'd2l-button/d2l-button.js';
 import SirenParse from 'siren-parser';
@@ -9,7 +9,7 @@ import 'd2l-fetch/d2l-fetch.js';
  * @customElement
  * @polymer
  */
-class D2lActivityListItemEnroll extends mixinBehaviors([D2L.PolymerBehaviors.FetchSirenEntityBehavior], PolymerElement) {
+class D2lActivityListItemEnroll extends ActivityListItemLocalize(PolymerElement) {
 	static get template() {
 		return html`
 			<style include="d2l-typography">
@@ -17,7 +17,9 @@ class D2lActivityListItemEnroll extends mixinBehaviors([D2L.PolymerBehaviors.Fet
 					display: block;
 				}
 			</style>
-			<d2l-button id="d2l-activity-list-item-enroll" primary$=[[_hasActionBoolean(actionEnroll)]] disabled$=[[!_hasActionBoolean(actionEnroll)]]>Enroll</d2l-button>
+			<d2l-button id="d2l-activity-list-item-enroll" primary$=[[_hasActionBoolean(actionEnroll)]] disabled$=[[!_hasActionBoolean(actionEnroll)]]>
+				[[localize('enroll')]]
+			</d2l-button>
 		`;
 	}
 
