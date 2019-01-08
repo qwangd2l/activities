@@ -337,10 +337,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._clampDescription(description);
 	}
 	_clampDescription(description) {
+		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		if (!this._showDescription) {
+			p.textContent = '';
 			return;
 		}
-		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		let height = 0;
 		window.fastdom.measure(() => {
 			height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
