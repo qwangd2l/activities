@@ -21,7 +21,7 @@ import SirenParse from 'siren-parser';
  * @customElement
  * @polymer
  */
-class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], MutableData(PolymerElement)) {
+class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FocusableBehavior], MutableData(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-typography"></style>
