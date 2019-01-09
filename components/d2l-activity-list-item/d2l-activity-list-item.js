@@ -31,21 +31,23 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					display: block;
 					max-width: 842px;
 				}
-				:host([active]) {
+				:host([active]) a.d2l-focusable {
 					border-color: rgba(0, 111, 191, 0.4);
 					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
+					border-radius: 6px;
 				}
 				.d2l-activity-list-item-top-line,
 				.d2l-activity-list-item-bottom-line {
 					display: none;
+					border: 0;
 					border-top: 1px solid var(--d2l-color-mica);
 					margin: 0;
 				}
 				.d2l-activity-list-item-top-line {
-					margin-top: -2px;
+					margin-top: -1px;
 				}
 				.d2l-activity-list-item-bottom-line {
-					margin-bottom: -2px;
+					margin-bottom: -1px;
 				}
 				.d2l-activity-list-item-container:hover .d2l-activity-list-item-top-line,
 				.d2l-activity-list-item-container:hover .d2l-activity-list-item-bottom-line {
@@ -53,9 +55,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 				.d2l-activity-list-item-container:hover {
 					background-color: var(--d2l-color-regolith);
-				}
-				.d2l-activity-list-item-container a.d2l-focusable:focus {
-
 				}
 				.d2l-activity-list-item-container {
 					position: relative;
@@ -112,7 +111,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					margin: 0.2rem 0;
 				}
 				.d2l-activity-list-item-container:hover .d2l-activity-list-item-title ,
-				.d2l-activity-list-item-container:focus .d2l-activity-list-item-title {
+				:host([active]) .d2l-activity-list-item-title {
 					color: var(--d2l-color-celestine-minus-1);
 					text-decoration: underline;
 				}
