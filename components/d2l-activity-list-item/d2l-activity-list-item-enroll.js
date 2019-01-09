@@ -16,6 +16,9 @@ class D2lActivityListItemEnroll extends ActivityListItemLocalize(PolymerElement)
 				:host {
 					display: block;
 				}
+				:host([hidden]) {
+					display: none;
+				}
 			</style>
 			<d2l-button id="d2l-activity-list-item-enroll" primary$=[[_hasActionBoolean(actionEnroll)]] disabled$=[[!_hasActionBoolean(actionEnroll)]]>
 				[[localize('enroll')]]
