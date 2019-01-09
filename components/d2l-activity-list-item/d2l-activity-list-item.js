@@ -35,9 +35,27 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					border-color: rgba(0, 111, 191, 0.4);
 					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
 				}
-				.d2l-activity-list-item-container:hover,
-				.d2l-activity-list-item-container:focus {
-					background-color: #FAFBFC; /* Pending Colin */
+				.d2l-activity-list-item-top-line,
+				.d2l-activity-list-item-bottom-line {
+					display: none;
+					border-top: 1px solid var(--d2l-color-mica);
+					margin: 0;
+				}
+				.d2l-activity-list-item-top-line {
+					margin-top: -2px;
+				}
+				.d2l-activity-list-item-bottom-line {
+					margin-bottom: -2px;
+				}
+				.d2l-activity-list-item-container:hover .d2l-activity-list-item-top-line,
+				.d2l-activity-list-item-container:hover .d2l-activity-list-item-bottom-line {
+					display: block;
+				}
+				.d2l-activity-list-item-container:hover {
+					background-color: var(--d2l-color-regolith);
+				}
+				.d2l-activity-list-item-container a.d2l-focusable:focus {
+
 				}
 				.d2l-activity-list-item-container {
 					position: relative;
@@ -45,7 +63,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 				.d2l-activity-list-item-link-container {
 					overflow: hidden;
-					display: flex;
+					display: inline-flex;
 					flex-direction: row;
 					flex-grow: 1;
 					flex-shrink: 1;
@@ -146,6 +164,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				}
 			</style>
 			<div class="d2l-activity-list-item-container">
+				<hr class="d2l-activity-list-item-top-line" />
 				<a class="d2l-focusable" href$="[[_link]]">
 					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
@@ -173,6 +192,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 						</div>
 					</div>
 				</div>
+				<hr class="d2l-activity-list-item-bottom-line" />
 			</div>
 			<d2l-activity-list-item-enroll hidden$="[[actionEnrollHide]]" action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
 		`;
@@ -321,8 +341,8 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 
 		this._currentResponsiveConfig = currentConfig;
 		window.fastdom.mutate(() => {
-			const container = this.shadowRoot.querySelector('.d2l-activity-list-item-container');
-			container.style.padding = currentConfig.padding;
+			const container = this.shadowRoot.querySelector('.d2l-activity-list-item-link-container');
+			container.style.margin = currentConfig.padding;
 
 			const image = this.shadowRoot.querySelector('.d2l-activity-list-item-image');
 			image.style.width = currentConfig.image.width + 'px';
