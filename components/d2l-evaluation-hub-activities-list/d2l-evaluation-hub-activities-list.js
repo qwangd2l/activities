@@ -157,12 +157,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					displayName: '',
 					courseName: '',
 					activityName: '',
-					submissionDate: '',
-					activityLink: ''
+					submissionDate: self.getSubmissionDate(activity),
+					activityLink: self.getActivityLink(activity)
 				};
-
-				item.submissionDate = self.getSubmissionDate(activity);
-				item.activityLink = self.getActivityLink(activity);
 
 				var getUserName = self.getUserPromise(activity, item);
 				var getCourseName = self.getCoursePromise(activity, item);
