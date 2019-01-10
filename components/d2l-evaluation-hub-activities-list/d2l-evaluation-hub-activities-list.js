@@ -117,34 +117,26 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		// console.log(e.model.s.activityLink);
 	}
 
-	loadData(entity) {
+	async loadData(entity) {
 		if (!entity) {
 			return Promise.resolve();
 		}
 
 		this._loading = true;
-		var self = this;
 
-		return Promise.resolve(entity)
-			.then(function(data) {
-				return self.followLink(data, Rels.whoami) || data;
-			})
-			.then(function(me) {
-				return self.followLink(me.entity, Rels.Activities.myUnassessedActivities) || me;
-			})
-			.then(function(act) {
-				return self.parseActivities(act.entity);
-			}.bind(this))
-			.catch(function() {
-			}.bind(this))
-			.then(function() {
-				this._loading = false;
-			}.bind(this));
+		try {
+			await this.parseActivities(entity);
+		} catch (e) {
+			// Unable to load activities from entity.
+		} finally {
+			this._loading = false;
+		}
 	}
 
 	followLink(entity, rel) {
-		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
-			return this.fetch(entity.getLinkByRel(rel).href);
+		var href = this.getHref(entity, rel);
+		if (href) {
+			return this.fetch(href);
 		}
 	}
 
@@ -183,7 +175,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getHref(entity, rel) {
-		if (entity.hasLinkByRel(rel)) {
+		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
 			return entity.getLinkByRel(rel).href;
 		}
 		return '';
@@ -197,7 +189,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	getActivityPromise(entity, item) {
 		return this.followLink(entity, Rels.assignment)
 			.then(function(a) {
-				if (a) {
+				if (a && a.entity && a.entity.properties) {
 					item.activityName = a.entity.properties.name;
 				}
 			});
@@ -206,7 +198,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	getCoursePromise(entity, item) {
 		return this.followLink(entity, Rels.organization)
 			.then(function(o) {
-				if (o) {
+				if (o && o.entity && o.entity.properties) {
 					item.courseName = o.entity.properties.name;
 				}
 			});
@@ -215,7 +207,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	getUserPromise(entity, item) {
 		return this.followLink(entity, Rels.user)
 			.then(function(u) {
-				if (u && u.entity.hasSubEntityByRel(Rels.displayName)) {
+				if (u && u.entity && u.entity.hasSubEntityByRel(Rels.displayName)) {
 					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
 				}
 			});
