@@ -193,7 +193,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				</div>
 				<hr class="d2l-activity-list-item-bottom-line" />
 			</div>
-			<d2l-activity-list-item-enroll hidden$="[[actionEnrollHide]]" action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
+			<d2l-activity-list-item-enroll hidden$="[[!actionEnrollShow]]" action-enroll="[[_actionEnroll]]"></d2l-activity-list-item-enroll>
 		`;
 	}
 
@@ -251,9 +251,9 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				type: String,
 				value: ''
 			},
-			actionEnrollHide: {
+			actionEnrollShow: {
 				type: Boolean,
-				value: true
+				value: false
 			},
 			_link: String,
 			_accessibilityData: {
