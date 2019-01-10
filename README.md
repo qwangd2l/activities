@@ -36,5 +36,13 @@ To lint AND run local unit tests:
 npm test
 ```
 
+## Usage
+
+The unassessed activites list should be pulled directly from `my-unassessed-activities`:
+
+```html
+<d2l-evaluation-hub href="https://activities.[[apiUrl]]/my-unassessed-activities" token="token"></d2l-evaluation-hub>
+```
+
 [ci-url]: https://travis-ci.org/BrightspaceUI/activities
 [ci-image]: https://travis-ci.org/BrightspaceUI/activities.svg?branch=master
