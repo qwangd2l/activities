@@ -176,7 +176,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 						</d2l-course-image>
 					</div>
 					<div class="d2l-activity-list-item-content">
-						<div class="d2l-activity-list-item-category">[[_category]]</div>
+						<div class="d2l-activity-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
 						<h2 class="d2l-activity-list-item-title">
 							<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
 						</h2>
@@ -212,7 +212,10 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			},
 			_imageUrl: String,
 			_title: String,
-			_category: String,
+			_category: {
+				type: String,
+				value: null
+			},
 			_description: {
 				type: String,
 				observer: '_onDescriptionChange'
