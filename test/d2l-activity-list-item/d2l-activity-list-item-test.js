@@ -1,3 +1,4 @@
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 describe('d2l-activity-list-item', () => {
 
 	var component,
@@ -105,34 +106,25 @@ describe('d2l-activity-list-item', () => {
 	].forEach((testCase) => {
 		describe(testCase.name, () => {
 
-			beforeEach(testCase.beforeEachFn);
-
-			it('should set the href', (done) => {
-				setTimeout(() => {
-					expect(component.href).to.equal('/activity/1');
-					done();
-				});
+			beforeEach(done => {
+				testCase.beforeEachFn();
+				afterNextRender(component, done);
 			});
 
-			it('should set entity', (done) => {
-				setTimeout(() => {
-					expect(component.entity).to.equal(activityEntity);
-					done();
-				});
+			it('should set the href', () => {
+				expect(component.href).to.equal('/activity/1');
 			});
 
-			it('should fetch the organization', (done) => {
-				setTimeout(() => {
-					expect(component._organizationUrl).to.equal('/organization/1');
-					done();
-				});
+			it('should set entity', () => {
+				expect(component.entity).to.equal(activityEntity);
 			});
 
-			it('should set the image entity', (done) => {
-				setTimeout(() => {
-					expect(component._image).to.equal(imageEntity);
-					done();
-				});
+			it('should fetch the organization', () => {
+				expect(component._organizationUrl).to.equal('/organization/1');
+			});
+
+			it('should set the image entity', () => {
+				expect(component._image).to.equal(imageEntity);
 			});
 
 		});
@@ -141,7 +133,10 @@ describe('d2l-activity-list-item', () => {
 
 	describe('Accessibility', () => {
 
-		beforeEach(() => component = fixture('d2l-activity-list-item-href-fixture'));
+		beforeEach(done => {
+			component = fixture('d2l-activity-list-item-href-fixture');
+			afterNextRender(component, done);
+		});
 
 		it('Organization', done => {
 			component.fire('d2l-organization-accessible', {
@@ -149,15 +144,37 @@ describe('d2l-activity-list-item', () => {
 					name: 'Course name'
 				}
 			});
-
-			setTimeout(() => {
+			afterNextRender(component, () => {
 				expect(component._accessibilityData.organizationName).to.equal('Course name');
-				var cardText = component.$$('.d2l-activity-list-item-link-text').innerHTML;
-				expect(cardText).to.contain('Course name');
+				var accessibilityText = component.$$('.d2l-activity-list-item-link-text').innerHTML;
+				expect(accessibilityText).to.contain('Course name');
 				done();
 			});
-
 		});
 
 	});
+
+	describe('Responsive Behaviour', () => {
+		it('Description is hidden at width 384', done => {
+			component = fixture('d2l-activity-list-item-responsive-384-fixture');
+			afterNextRender(component, () => {
+				expect(component._showDescription).to.be.false;
+				var description = component.$$('.d2l-activity-list-item-description');
+				expect(description.hasAttribute('hidden')).to.be.true;
+				done();
+			});
+		});
+
+		it('Description is not hidden at width 385', done => {
+			component = fixture('d2l-activity-list-item-responsive-385-fixture');
+			afterNextRender(component, () => {
+				expect(component._showDescription).to.be.true;
+				var description = component.$$('.d2l-activity-list-item-description');
+				expect(description.hasAttribute('hidden')).to.be.false;
+				done();
+			});
+		});
+
+	});
+
 });

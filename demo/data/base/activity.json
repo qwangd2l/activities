@@ -16,7 +16,7 @@
     {
       "href":"../data/base/activity.json",
       "name":"assign",
-      "method":"PUT"
+      "method":"GET"
     }
   ]
 }

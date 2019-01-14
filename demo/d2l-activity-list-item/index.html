@@ -21,7 +21,19 @@
 					font-size: 20px;
 				}
 				.fixedSize {
-					max-width: 1600px;
+					display:flex;
+					align-items: stretch;
+					flex-direction: column;
+					min-width: 0;
+					max-width: 900px;
+					flex-shrink: 1;
+					margin:auto;
+				}
+				h3 {
+					text-align: center;
+				}
+				d2l-activity-list-item {
+					border-bottom: 1px solid var(--d2l-color-mica);
 				}
 		</style>
 	</head>
@@ -47,6 +59,8 @@
 
 						items.forEach(function(item) {
 							item._tags = ['Duration 1h30m', 'Metadata', 'Metadata'];
+							item._link = '#';
+							item._category = 'Financial Planning';
 						});
 
 					</script>
