@@ -1,8 +1,0 @@
-{
-	"links":[
-		{
-			"rel":["https://activities.api.brightspace.com/rels/my-unassessed-activities"],
-			"href":"data/unassessedActivities.json"
-		}
-	]
-}

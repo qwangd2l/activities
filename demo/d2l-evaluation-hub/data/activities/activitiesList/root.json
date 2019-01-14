@@ -1,8 +1,0 @@
-{
-	"links":[
-		{
-			"rel":["https://api.brightspace.com/rels/whoami"],
-			"href":"data/activities/activitiesList/whoami.json"
-		}
-	]
-}

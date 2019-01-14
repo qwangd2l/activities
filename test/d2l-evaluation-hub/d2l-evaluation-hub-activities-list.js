@@ -1,15 +1,9 @@
 (function() {
 	var list;
 
-	function loadPromise(url, fromEntity) {
-		return window.D2L.Siren.EntityStore.fetch(url, '')
-			.then(function(entity) {
-				if (fromEntity) {
-					return list.loadData(entity.entity);
-				} else {
-					return list.loadData(entity);
-				}
-			});
+	async function loadPromise(url) {
+		var entity = await window.D2L.Siren.EntityStore.fetch(url, '');
+		await list.loadData(entity.entity);
 	}
 
 	var expectedData = [
@@ -44,14 +38,8 @@
 				}
 			});
 		});
-		test('data is imported from root correctly', async() => {
-			await loadPromise('data/root.json', true);
-
-			assert.equal(list._data.length, expectedData.length);
-			assert.deepEqual(list._data, expectedData);
-		});
-		test('data is imported from activities correctly', async() => {
-			await loadPromise('data/unassessedActivities.json', false);
+		test('data is imported correctly', async() => {
+			await loadPromise('data/unassessedActivities.json');
 
 			assert.equal(list._data.length, expectedData.length);
 			assert.deepEqual(list._data, expectedData);
@@ -66,7 +54,7 @@
 				expected.push(item.submissionDate);
 			});
 
-			await loadPromise('data/root.json', true);
+			await loadPromise('data/unassessedActivities.json');
 
 			var data = list.shadowRoot.querySelectorAll('d2l-td');
 			for (var i = 0; i < expected.length; i++) {
