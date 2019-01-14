@@ -38,7 +38,7 @@ npm test
 
 ## Usage
 
-The unassessed activites list should be pulled directly from `my-unassessed-activities`:
+The evaluation hub should be pulled directly from `my-unassessed-activities`:
 
 ```html
 <d2l-evaluation-hub href="https://activities.[[apiUrl]]/my-unassessed-activities" token="token"></d2l-evaluation-hub>
