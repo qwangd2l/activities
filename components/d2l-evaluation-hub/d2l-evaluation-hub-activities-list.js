@@ -21,6 +21,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					height:100%;
 					width:100%;
 				}
+				[hidden] {
+					display: none;
+				}
 			</style>
 			<d2l-table>
 				<d2l-thead>
@@ -39,12 +42,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 								<dom-repeat items="[[_headers]]" as="h">
 									<template>
 										<d2l-td>
-											<template is="dom-if" if="[[h.canLink]]">
-												<a href="[[s.activityLink]]">[[getProperty(s, h.key)]]</a>
-											</template>
-											<template is="dom-if" if="[[!h.canLink]]">
-												<span>[[getProperty(s, h.key)]]</span>
-											</template>
+											<a href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[getProperty(s, h.key)]]</a>
+											<span hidden$="[[h.canLink]]">[[getProperty(s, h.key)]]</span>
 										</d2l-td>
 									</template>
 								</dom-repeat>
