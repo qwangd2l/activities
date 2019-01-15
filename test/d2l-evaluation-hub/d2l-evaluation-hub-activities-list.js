@@ -46,29 +46,27 @@
 		});
 		test('data displays correctly', async() => {
 			var expected = [];
-			var expectedLink = [];
 
 			expectedData.forEach(function(item) {
-				expected.push(item.displayName);
-				expected.push(item.activityName);
-				expected.push(item.courseName);
-				expected.push(item.submissionDate);
-				expectedLink.push(item.activityLink);
+				expected.push({ text: item.displayName, link: item.activityLink });
+				expected.push({ text: item.activityName, link: '' });
+				expected.push({ text: item.courseName, link: '' });
+				expected.push({ text: item.submissionDate, link: '' });
 			});
 
 			await loadPromise('data/unassessedActivities.json');
 
 			var data = list.shadowRoot.querySelectorAll('d2l-td');
 			for (var i = 0; i < expected.length; i++) {
-				if (i % 4 === 0) {
-					var link = data[i].querySelector('a');
-					assert.equal(expected[i], link.innerHTML);
-					assert.equal(expectedLink[Math.floor(i / 4)], link.href);
-				} else {
-					var span = data[i].querySelector('span');
-					assert.equal(expected[i], span.innerHTML);
-					assert.equal(undefined, span.href);
-				}
+				var link = data[i].querySelector('a');
+				var span = data[i].querySelector('span');
+				var linkHidden = link.hasAttribute('hidden');
+				var spanHidden = span.hasAttribute('hidden');
+
+				assert.equal(expected[i].text, link.innerHTML);
+				assert.equal(expected[i].text, span.innerHTML);
+				assert.equal(!(expected[i].link), linkHidden);
+				assert.equal(!!(expected[i].link), spanHidden);
 			}
 		});
 		test('_loading is set to false after data is loaded', async() => {
