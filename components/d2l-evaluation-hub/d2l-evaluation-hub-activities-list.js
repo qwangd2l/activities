@@ -27,7 +27,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
 							<template>
-								<d2l-th on-click=sort>{{item.displayName}}</d2l-th>
+								<d2l-th on-click=sort>[[localize(item.sortKey)]]</d2l-th>
 							</template>
 						</dom-repeat>
 					</d2l-tr>
@@ -57,10 +57,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: String,
 				value: [
-					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: localize('displayName') },
-					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: localize('activityName') },
-					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: localize('courseName') },
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: localize('submissionDate') }
+					{ key: [ 'displayName' ], sortKey: 'displayName' },
+					{ key: [ 'activityName' ], sortKey: 'activityName' },
+					{ key: [ 'courseName' ], sortKey: 'courseName' },
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate' }
 				]
 			},
 			_data: {
