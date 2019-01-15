@@ -17,6 +17,7 @@ import 'd2l-button/d2l-button.js';
 import './d2l-activity-list-item-enroll.js';
 import SirenParse from 'siren-parser';
 import {ActivityListItemResponsiveConstants} from './ActivityListItemResponsiveConstants.js';
+import 'd2l-colors/d2l-colors.js';
 
 /**
  * @customElement
