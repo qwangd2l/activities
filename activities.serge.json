@@ -18,5 +18,24 @@
       "zh-cn zh",
       "zh-tw zh-tw"
     ]
+  },{
+    "name": "evaluationHub",
+    "source_dir": "components/d2l-evaluation-hub/lang",
+    "output_file_path": "components/d2l-evaluation-hub/lang/%LANG%.json",
+    "output_lang_rewrite": [
+      "ar-sa ar",
+      "de-de de",
+      "es-mx es",
+      "fi-FI fi",
+      "fr-ca fr",
+      "ja-jp ja",
+      "ko-kr ko",
+      "nl-nl nl",
+      "pt-br pt",
+      "sv-se sv",
+      "tr-tr tr",
+      "zh-cn zh",
+      "zh-tw zh-tw"
+    ]
   }
 ]

@@ -1,4 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
@@ -12,7 +13,7 @@ import {Rels} from 'd2l-hypermedia-constants';
  * @polymer
  */
 
-class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
+class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], EvaluationHubLocalize(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
@@ -46,7 +47,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				</d2l-tbody>
 			</d2l-table>
 			<d2l-offscreen>
-				<button onclick="[[loadMore]]">Load more</button>
+				<button onclick="[[loadMore]]">[[localize('loadMore')]]</button>
 			</d2l-offscreen>
 		`;
 	}
@@ -56,10 +57,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: String,
 				value: [
-					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter'},
-					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name'},
-					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name'},
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date'}
+					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: localize('displayName') },
+					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: localize('activityName') },
+					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: localize('courseName') },
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: localize('submissionDate') }
 				]
 			},
 			_data: {
