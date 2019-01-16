@@ -4,6 +4,7 @@ import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+import 'd2l-link/d2l-link.js'
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels} from 'd2l-hypermedia-constants';
 
@@ -42,7 +43,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 								<dom-repeat items="[[_headers]]" as="h">
 									<template>
 										<d2l-td>
-											<a href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[getProperty(s, h.key)]]</a>
+											<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[getProperty(s, h.key)]]</d2l-link>
 											<span hidden$="[[h.canLink]]">[[getProperty(s, h.key)]]</span>
 										</d2l-td>
 									</template>
