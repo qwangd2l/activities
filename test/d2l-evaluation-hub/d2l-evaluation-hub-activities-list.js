@@ -58,7 +58,7 @@
 
 			var data = list.shadowRoot.querySelectorAll('d2l-td');
 			for (var i = 0; i < expected.length; i++) {
-				var link = data[i].querySelector('a');
+				var link = data[i].querySelector('d2l-link');
 				var span = data[i].querySelector('span');
 				var linkHidden = link.hasAttribute('hidden');
 				var spanHidden = span.hasAttribute('hidden');
