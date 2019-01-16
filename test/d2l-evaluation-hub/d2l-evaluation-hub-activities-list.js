@@ -20,6 +20,13 @@
 			activityName: 'Quiz Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',
 			activityLink: 'https://www.example.com/'
+		},
+		{
+			displayName: 'User Name',
+			courseName: 'Org Name',
+			activityName: 'Topic Name',
+			submissionDate: '2018-02-03T17:00:00.000Z',
+			activityLink: 'https://www.example.com/'
 		}
 	];
 	var expectedHeaders = [

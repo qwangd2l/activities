@@ -182,22 +182,22 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getActivityPromise(entity, item) {
+		var rel;
 		if (entity.hasClass(Classes.activities.userQuizActivity)) {
-			return this.followLink(entity, Rels.quiz)
-				.then(function(a) {
-					if (a && a.entity && a.entity.properties) {
-						item.activityName = a.entity.properties.name;
-					}
-				});
+			rel = Rels.quiz;
 		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
-			return this.followLink(entity, Rels.assignment)
-				.then(function(a) {
-					if (a && a.entity && a.entity.properties) {
-						item.activityName = a.entity.properties.name;
-					}
-				});
+			rel = Rels.assignment;
+		} else if (entity.hasClass(Classes.activities.userDiscussionActivity)) {
+			rel = Rels.Discussions.topic;
+		} else {
+			return Promise.resolve();
 		}
-		return Promise.resolve();
+		return this.followLink(entity, rel)
+			.then(function(a) {
+				if (a && a.entity && a.entity.properties) {
+					item.activityName = a.entity.properties.name;
+				}
+			});
 	}
 
 	getCoursePromise(entity, item) {
