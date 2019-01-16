@@ -12,7 +12,7 @@
 			courseName: 'Org Name',
 			activityName: 'Assignment Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'link to activity'
+			activityLink: 'https://www.example.com/'
 		}
 	];
 	var expectedHeaders = [
@@ -48,18 +48,30 @@
 			var expected = [];
 
 			expectedData.forEach(function(item) {
-				expected.push(item.displayName);
-				expected.push(item.activityName);
-				expected.push(item.courseName);
-				expected.push(item.submissionDate);
+				expected.push({ text: item.displayName, link: item.activityLink });
+				expected.push({ text: item.activityName, link: '' });
+				expected.push({ text: item.courseName, link: '' });
+				expected.push({ text: item.submissionDate, link: '' });
 			});
 
 			await loadPromise('data/unassessedActivities.json');
 
 			var data = list.shadowRoot.querySelectorAll('d2l-td');
 			for (var i = 0; i < expected.length; i++) {
-				assert.equal(expected[i], data[i].innerHTML);
+				var link = data[i].querySelector('d2l-link');
+				var span = data[i].querySelector('span');
+				var linkHidden = link.hasAttribute('hidden');
+				var spanHidden = span.hasAttribute('hidden');
+
+				assert.equal(expected[i].text, link.innerHTML);
+				assert.equal(expected[i].text, span.innerHTML);
+				assert.equal(!(expected[i].link), linkHidden);
+				assert.equal(!!(expected[i].link), spanHidden);
 			}
+		});
+		test('_loading is set to false after data is loaded', async() => {
+			await loadPromise('data/unassessedActivities.json');
+			assert.equal(list._loading, false);
 		});
 	});
 })();

@@ -4,6 +4,7 @@ import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels} from 'd2l-hypermedia-constants';
 
@@ -16,9 +17,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-tr:hover {
-					background: var(--d2l-color-gypsum, #E6EAF0);
-					cursor: pointer;
+				d2l-table d2l-tr d2l-td a {
+					display:block;
+					height:100%;
+					width:100%;
+				}
+				[hidden] {
+					display: none;
 				}
 			</style>
 			<d2l-table>
@@ -34,10 +39,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				<d2l-tbody>
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
-							<d2l-tr on-click="selectActivity">
+							<d2l-tr>
 								<dom-repeat items="[[_headers]]" as="h">
 									<template>
-										<d2l-td>[[getProperty(s, h.key)]]</d2l-td>
+										<d2l-td>
+											<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[getProperty(s, h.key)]]</d2l-link>
+											<span hidden$="[[h.canLink]]">[[getProperty(s, h.key)]]</span>
+										</d2l-td>
 									</template>
 								</dom-repeat>
 							</d2l-tr>
@@ -56,10 +64,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: String,
 				value: [
-					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter'},
-					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name'},
-					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name'},
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date'}
+					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter', canLink: true},
+					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name', canLink: false},
+					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name', canLink: false},
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date', canLink: false}
 				]
 			},
 			_data: {
@@ -111,12 +119,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		// var sortKey = e.model.item.sortKey;
 	}
 
-	selectActivity(/*e*/) {
-		// TODO: uncomment once activity link is being constructed properly.
-		// window.location.href = e.model.s.activityLink;
-		// console.log(e.model.s.activityLink);
-	}
-
 	async loadData(entity) {
 		if (!entity) {
 			return Promise.resolve();
@@ -150,7 +152,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					courseName: '',
 					activityName: '',
 					submissionDate: self.getSubmissionDate(activity),
-					activityLink: self.getActivityLink(activity)
+					activityLink: self.getHref(activity, Rels.Assessments.assessmentApplication)
 				};
 
 				var getUserName = self.getUserPromise(activity, item);
@@ -176,11 +178,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			return entity.getLinkByRel(rel).href;
 		}
 		return '';
-	}
-
-	getActivityLink(/*entity*/) {
-		// TODO: get this link from api once enabled!!!
-		return 'link to activity';
 	}
 
 	getActivityPromise(entity, item) {
