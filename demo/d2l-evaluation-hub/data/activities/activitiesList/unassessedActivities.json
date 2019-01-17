@@ -7,6 +7,7 @@
 	],
 	"entities":[
 		{
+			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -38,6 +39,7 @@
 				}
 			]
 		},{
+			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -69,6 +71,7 @@
 				}
 			]
 		},{
+			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -100,6 +103,7 @@
 				}
 			]
 		},{
+			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -111,6 +115,262 @@
 				},{
 					"rel":["https://api.brightspace.com/rels/assignment"],
 					"href":"data/activities/activitiesList/activities/assignments/activity4.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-quiz-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity1.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity1.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/quiz"],
+					"href":"data/activities/activitiesList/activities/quizzes/quiz1.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-quiz-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity2.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity2.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/quiz"],
+					"href":"data/activities/activitiesList/activities/quizzes/quiz2.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-quiz-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity3.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity3.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/quiz"],
+					"href":"data/activities/activitiesList/activities/quizzes/quiz3.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-quiz-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity4.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity4.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/quiz"],
+					"href":"data/activities/activitiesList/activities/quizzes/quiz4.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-discussion-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity1.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity1.json"
+				},{
+					"rel":["https://discussions.api.brightspace.com/rels/topic"],
+					"href":"data/activities/activitiesList/activities/topics/topic1.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-discussion-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity2.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity2.json"
+				},{
+					"rel":["https://discussions.api.brightspace.com/rels/topic"],
+					"href":"data/activities/activitiesList/activities/topics/topic2.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-discussion-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity3.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity3.json"
+				},{
+					"rel":["https://discussions.api.brightspace.com/rels/topic"],
+					"href":"data/activities/activitiesList/activities/topics/topic3.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-12-14T15:03:53.017Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-discussion-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/activities/activitiesList/activities/users/activity4.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/activities/activitiesList/activities/orgs/activity4.json"
+				},{
+					"rel":["https://discussions.api.brightspace.com/rels/topic"],
+					"href":"data/activities/activitiesList/activities/topics/topic4.json"
 				},{
 					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
 					"href":"https://www.example.com/",

@@ -17,7 +17,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-table d2l-tr d2l-td a {
+				d2l-table d2l-tr d2l-td d2l-link {
 					display:block;
 					height:100%;
 					width:100%;
