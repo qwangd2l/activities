@@ -1,4 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
@@ -13,7 +14,7 @@ import {Rels, Classes} from 'd2l-hypermedia-constants';
  * @polymer
  */
 
-class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
+class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], EvaluationHubLocalize(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
@@ -31,7 +32,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
 							<template>
-								<d2l-th on-click=sort>{{item.displayName}}</d2l-th>
+								<d2l-th on-click=sort>[[localize(item.localizationKey)]]</d2l-th>
 							</template>
 						</dom-repeat>
 					</d2l-tr>
@@ -54,7 +55,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				</d2l-tbody>
 			</d2l-table>
 			<d2l-offscreen>
-				<button onclick="[[loadMore]]">Load more</button>
+				<button onclick="[[loadMore]]">[[localize('loadMore')]]</button>
 			</d2l-offscreen>
 		`;
 	}
@@ -64,10 +65,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: [ 'displayName' ], sortKey: 'displayName', displayName: 'Submitter', canLink: true},
-					{ key: [ 'activityName' ], sortKey: 'activityName', displayName: 'Activity Name', canLink: false},
-					{ key: [ 'courseName' ], sortKey: 'courseName', displayName: 'Course Name', canLink: false},
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', displayName: 'Submission Date', canLink: false}
+					{ key: [ 'displayName' ], sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
+					{ key: [ 'activityName' ], sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
+					{ key: [ 'courseName' ], sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false }
 				]
 			},
 			_data: {

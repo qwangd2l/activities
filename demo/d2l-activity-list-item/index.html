@@ -13,29 +13,37 @@
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
 			import '../../components/d2l-activity-list-item/d2l-activity-list-item.js';
-		</script>
 
-		<style is="custom-style" include="demo-pages-shared-styles"></style>
-		<style is="custom-style" include="d2l-typography">
-				html {
-					font-size: 20px;
-				}
-				.fixedSize {
-					display:flex;
-					align-items: stretch;
-					flex-direction: column;
-					min-width: 0;
-					max-width: 900px;
-					flex-shrink: 1;
-					margin:auto;
-				}
-				h3 {
-					text-align: center;
-				}
-				d2l-activity-list-item {
-					border-bottom: 1px solid var(--d2l-color-mica);
-				}
-		</style>
+			const $_documentContainer = document.createElement('template');
+			$_documentContainer.innerHTML = `
+				<custom-style>
+					<style is="custom-style" include="demo-pages-shared-styles"></style>
+				</custom-style>
+				<custom-style include="d2l-typography">
+					<style is="custom-style" include="d2l-typography">
+						html {
+							font-size: 20px;
+						}
+						.fixedSize {
+							display:flex;
+							align-items: stretch;
+							flex-direction: column;
+							min-width: 0;
+							max-width: 900px;
+							flex-shrink: 1;
+							margin:auto;
+						}
+						h3 {
+							text-align: center;
+						}
+						d2l-activity-list-item {
+							border-bottom: 1px solid var(--d2l-color-mica);
+						}
+					</style>
+				</custom-style>
+			`;
+			document.body.appendChild($_documentContainer.content);
+		</script>
 	</head>
 	<body class="d2l-typography">
 		<div class="vertical-section-container fixedSize">
