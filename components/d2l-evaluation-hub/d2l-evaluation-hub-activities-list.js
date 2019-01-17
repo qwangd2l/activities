@@ -7,7 +7,7 @@ import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {Rels} from 'd2l-hypermedia-constants';
+import {Rels, Classes} from 'd2l-hypermedia-constants';
 
 /**
  * @customElement
@@ -18,7 +18,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-table d2l-tr d2l-td a {
+				d2l-table d2l-tr d2l-td d2l-link {
 					display:block;
 					height:100%;
 					width:100%;
@@ -63,7 +63,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get properties() {
 		return {
 			_headers: {
-				type: String,
+				type: Array,
 				value: [
 					{ key: [ 'displayName' ], sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
 					{ key: [ 'activityName' ], sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
@@ -141,6 +141,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		if (href) {
 			return this.fetch(href);
 		}
+		return Promise.resolve();
 	}
 
 	async parseActivities(entity) {
@@ -182,7 +183,17 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	getActivityPromise(entity, item) {
-		return this.followLink(entity, Rels.assignment)
+		var rel;
+		if (entity.hasClass(Classes.activities.userQuizActivity)) {
+			rel = Rels.quiz;
+		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
+			rel = Rels.assignment;
+		} else if (entity.hasClass(Classes.activities.userDiscussionActivity)) {
+			rel = Rels.Discussions.topic;
+		} else {
+			return Promise.resolve();
+		}
+		return this.followLink(entity, rel)
 			.then(function(a) {
 				if (a && a.entity && a.entity.properties) {
 					item.activityName = a.entity.properties.name;

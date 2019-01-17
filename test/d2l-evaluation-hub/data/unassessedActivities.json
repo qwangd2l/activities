@@ -1,6 +1,7 @@
 {
 	"entities":[
 		{
+			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -12,6 +13,70 @@
 				},{
 					"rel":["https://api.brightspace.com/rels/assignment"],
 					"href":"data/assignment.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-02-03T17:00:00.000Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-quiz-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/user.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/org.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/quiz"],
+					"href":"data/quiz.json"
+				},{
+					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
+					"href":"https://www.example.com/",
+					"type":"text/html"
+				}
+			],
+			"entities":[
+				{
+					"rel":["item"],
+					"entities":[
+						{
+							"rel":["https://api.brightspace.com/rels/date"],
+							"properties":{
+								"date":"2018-02-03T17:00:00.000Z"
+							}
+						}
+					]
+				}
+			]
+		},{
+			"class": ["user-discussion-activity","activity"],
+			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+			"links":[
+				{
+					"rel":["https://api.brightspace.com/rels/user"],
+					"href":"data/user.json"
+				},{
+					"rel":["https://api.brightspace.com/rels/organization"],
+					"href":"data/org.json"
+				},{
+					"rel":["https://discussions.api.brightspace.com/rels/topic"],
+					"href":"data/topic.json"
 				},{
 					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
 					"href":"https://www.example.com/",
