@@ -8,8 +8,8 @@ const LangArImpl = (superClass) => class extends superClass {
 		super();
 		this.ar = {
 			'activityName': 'Activity Name',
-			'courseName': 'Course Name',
-			'displayName': 'Submitter',
+			'courseName': 'Course',
+			'displayName': 'First Name, Last Name',
 			'loadMore': 'Load more',
 			'submissionDate': 'Submission Date'
 		};
