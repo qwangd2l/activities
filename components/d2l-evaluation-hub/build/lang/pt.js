@@ -8,8 +8,8 @@ const LangPtImpl = (superClass) => class extends superClass {
 		super();
 		this.pt = {
 			'activityName': 'Activity Name',
-			'courseName': 'Course Name',
-			'displayName': 'Submitter',
+			'courseName': 'Course',
+			'displayName': 'First Name, Last Name',
 			'loadMore': 'Load more',
 			'submissionDate': 'Submission Date'
 		};

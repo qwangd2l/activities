@@ -30,7 +30,7 @@
 		}
 	];
 	var expectedHeaders = [
-		'Submitter', 'Activity Name', 'Course Name', 'Submission Date'
+		'First Name, Last Name', 'Activity Name', 'Course', 'Submission Date'
 	];
 
 	suite('d2l-evaluation-hub-activities-list', function() {
