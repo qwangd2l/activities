@@ -7,7 +7,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.fr = {
-			'activityName': 'Nom de l'activité',
+			'activityName': 'Nom de l\'activité',
 			'courseName': 'Cours',
 			'displayName': 'Prénom et Nom de famille',
 			'loadMore': 'En voir plus',

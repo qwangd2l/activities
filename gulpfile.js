@@ -25,7 +25,7 @@ sergeDirectories.forEach((sergeComponent) => {
 				lang: lang.replace('-', ''),
 				name: sergeComponent.name,
 				properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
-				resources: JSON.stringify(localeResources[lang], null, '\t\t\t').replace(/"/g, '\'').replace(/\n\}/g, '\n\t\t}'),
+				resources: JSON.stringify(localeResources[lang], null, '\t\t\t').replace(/'/g, '\\\'').replace(/"/g, '\'').replace(/\n\}/g, '\n\t\t}'),
 				comment: 'This file is auto-generated. Do not modify.'
 			}
 		}))
