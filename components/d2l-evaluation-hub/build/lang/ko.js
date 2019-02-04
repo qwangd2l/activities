@@ -7,11 +7,11 @@ const LangKoImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ko = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': '활동 이름',
+			'courseName': '강의',
+			'displayName': '이름, 성',
+			'loadMore': '더 많이 로드',
+			'submissionDate': '제출일'
 		};
 	}
 };

@@ -7,7 +7,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ja = {
-			'enroll': 'Enroll'
+			'enroll': '登録'
 		};
 	}
 };

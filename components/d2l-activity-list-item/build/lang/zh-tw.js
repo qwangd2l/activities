@@ -7,7 +7,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.zhtw = {
-			'enroll': 'Enroll'
+			'enroll': '註冊'
 		};
 	}
 };

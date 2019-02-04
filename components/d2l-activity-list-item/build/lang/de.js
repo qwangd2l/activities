@@ -7,7 +7,7 @@ const LangDeImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.de = {
-			'enroll': 'Enroll'
+			'enroll': 'Anmelden'
 		};
 	}
 };

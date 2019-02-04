@@ -7,7 +7,7 @@ const LangNlImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.nl = {
-			'enroll': 'Enroll'
+			'enroll': 'Inschrijven'
 		};
 	}
 };

@@ -7,7 +7,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.pt = {
-			'enroll': 'Enroll'
+			'enroll': 'Inscrever'
 		};
 	}
 };

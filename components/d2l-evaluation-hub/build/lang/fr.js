@@ -7,11 +7,11 @@ const LangFrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.fr = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': 'Nom de l'activité',
+			'courseName': 'Cours',
+			'displayName': 'Prénom et Nom de famille',
+			'loadMore': 'En voir plus',
+			'submissionDate': 'Date de soumission'
 		};
 	}
 };

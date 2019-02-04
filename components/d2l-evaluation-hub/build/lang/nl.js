@@ -7,11 +7,11 @@ const LangNlImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.nl = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': 'Naam activiteit',
+			'courseName': 'Cursus',
+			'displayName': 'Voornaam, achternaam',
+			'loadMore': 'Meer laden',
+			'submissionDate': 'Datum van indiening'
 		};
 	}
 };

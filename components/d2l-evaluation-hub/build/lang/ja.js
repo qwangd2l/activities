@@ -7,11 +7,11 @@ const LangJaImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ja = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': 'アクティビティ名',
+			'courseName': 'コース',
+			'displayName': '名, 姓',
+			'loadMore': 'さらに読み込む',
+			'submissionDate': '送信日'
 		};
 	}
 };

@@ -7,11 +7,11 @@ const LangZhImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.zh = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': '活动名称',
+			'courseName': '课程',
+			'displayName': '名字，姓氏',
+			'loadMore': '加载更多',
+			'submissionDate': '提交日期'
 		};
 	}
 };
