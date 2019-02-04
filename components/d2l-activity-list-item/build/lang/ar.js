@@ -7,7 +7,7 @@ const LangArImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ar = {
-			'enroll': 'Enroll'
+			'enroll': 'تسجيل'
 		};
 	}
 };

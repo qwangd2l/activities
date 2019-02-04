@@ -7,11 +7,11 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.zhtw = {
-			'activityName': 'Activity Name',
-			'courseName': 'Course',
-			'displayName': 'First Name, Last Name',
-			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'activityName': '活動名稱',
+			'courseName': '課程',
+			'displayName': '名字，姓氏',
+			'loadMore': '載入更多',
+			'submissionDate': '提交日期'
 		};
 	}
 };

@@ -7,7 +7,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ko = {
-			'enroll': 'Enroll'
+			'enroll': '등록'
 		};
 	}
 };

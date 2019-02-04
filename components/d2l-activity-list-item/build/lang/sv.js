@@ -7,7 +7,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.sv = {
-			'enroll': 'Enroll'
+			'enroll': 'Registrera'
 		};
 	}
 };

@@ -7,7 +7,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.tr = {
-			'enroll': 'Enroll'
+			'enroll': 'Kaydol'
 		};
 	}
 };
