@@ -4,8 +4,10 @@ import 'd2l-table/d2l-table.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
+import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
@@ -42,7 +44,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					display: none;
 				}
 			</style>
-			<d2l-table hidden$="[[_initialLoading]]">
+			<d2l-table hidden$="[[_initialLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
@@ -72,7 +74,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			<template is="dom-if" if="[[_pageNextHref]]">
 				<d2l-button class="d2l-evaluation-hub-activities-list-load-more" secondary onclick="[[_loadMore]]" hidden$="[[_loading]]">[[localize('loadMore')]]</d2l-button>
 			</template>
-			<d2l-loading-spinner hidden$="[[!_loading]]" size="100"></d2l-loading-spinner>
+			<div role="alert" aria-live="polite">
+				<d2l-offscreen>[[localize('loading')]]</d2l-offscreen>
+				<d2l-loading-spinner hidden$="[[!_loading]]" size="100"></d2l-loading-spinner>
+			</div>
 		`;
 	}
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
@@ -157,9 +162,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	async _loadMore() {
 		if (this._pageNextHref) {
-			this._followHref(this._pageNextHref).then(function(u) {
+			this._followHref(this._pageNextHref).then(async function(u) {
 				if (u && u.entity) {
-					this._loadData(u.entity);
+					var tbody = this.shadowRoot.querySelector('d2l-tbody');
+					var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
+
+					try {
+						await this._loadData(u.entity);
+					} catch (e) {
+						// Unable to load more activities from entity.
+					} finally {
+						var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
+						newElementToFocus.focus();
+					}
 				}
 			}.bind(this));
 		}
