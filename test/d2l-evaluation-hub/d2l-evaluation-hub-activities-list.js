@@ -3,7 +3,7 @@
 
 	async function loadPromise(url) {
 		var entity = await window.D2L.Siren.EntityStore.fetch(url, '');
-		await list.loadData(entity.entity);
+		await list._loadData(entity.entity);
 	}
 
 	var expectedData = [
