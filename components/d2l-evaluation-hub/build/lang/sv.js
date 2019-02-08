@@ -10,6 +10,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'activityName': 'Aktivitetsnamn',
 			'courseName': 'Kurs',
 			'displayName': 'Förnamn, efternamn',
+			'loading': 'Loading data',
 			'loadMore': 'Ladda mer',
 			'submissionDate': 'Inlämningsdatum'
 		};

@@ -10,6 +10,7 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'activityName': 'Activity Name',
 			'courseName': 'Course',
 			'displayName': 'First Name, Last Name',
+			'loading': 'Loading data',
 			'loadMore': 'Load more',
 			'submissionDate': 'Submission Date'
 		};

@@ -2,6 +2,7 @@
    "activityName" : "Aktivitetsnamn",
    "courseName" : "Kurs",
    "displayName" : "Förnamn, efternamn",
+   "loading": "Loading data",
    "loadMore" : "Ladda mer",
    "submissionDate" : "Inlämningsdatum"
 }
