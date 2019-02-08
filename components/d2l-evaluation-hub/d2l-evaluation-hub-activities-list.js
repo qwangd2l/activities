@@ -2,7 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-colors/d2l-colors.js';
-import 'd2l-offscreen/d2l-offscreen.js';
+import 'd2l-button/d2l-button.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
@@ -25,6 +25,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					width:100%;
 				}
 				d2l-loading-spinner {
+					width: 100%;
+				}
+				.d2l-evaluation-hub-activities-list-load-more {
+					margin-top: 1rem;
+					text-align: right;
 					width: 100%;
 				}
 				[hidden] {
@@ -58,9 +63,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
-			<d2l-offscreen>
-				<button onclick="[[_loadMore]]">[[localize('loadMore')]]</button>
-			</d2l-offscreen>
+			<template is="dom-if" if="[[_pageNextHref]]">
+				<d2l-button class="d2l-evaluation-hub-activities-list-load-more" secondary onclick="[[_loadMore]]" hidden$="[[_loading]]">[[localize('loadMore')]]</d2l-button>
+			</template>
 			<d2l-loading-spinner hidden$="[[!_loading]]" size="100"></d2l-loading-spinner>
 		`;
 	}
@@ -114,15 +119,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			self._initialLoading = false;
 			self._loading = false;
 		});
+		this._loadMore = this._loadMore.bind(this);
 	}
 	constructor() { super(); }
 
 	_fetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
-	}
-
-	_loadMore() {
-		// TODO: once paging is enabled!!!
 	}
 
 	_sort(/*e*/) {
@@ -147,8 +149,30 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}
 	}
 
+	async _loadMore() {
+		if (this._pageNextHref) {
+			this._followHref(this._pageNextHref).then(function(u) {
+				if (u && u.entity) {
+					this._loadData(u.entity);
+				}
+			}.bind(this));
+		}
+		return Promise.resolve();
+	}
+
 	_followLink(entity, rel) {
 		var href = this._getHref(entity, rel);
+		return this._followHref(href);
+	}
+
+	_getHref(entity, rel) {
+		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
+			return entity.getLinkByRel(rel).href;
+		}
+		return '';
+	}
+
+	_followHref(href) {
 		if (href) {
 			return this._fetch(href);
 		}
@@ -180,17 +204,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		self._filterHref = self._getHref(entity, Rels.filters);
 		//self._sortHref = self._getHref(entity, Rels.sort);
-		//self._pageNextHref = self._getHref(entity, Rels.pageNext);
+		self._pageNextHref = self._getHref(entity, 'next');
 
 		const result = await Promise.all(promises);
 		self._data = self._data.concat(result);
-	}
-
-	_getHref(entity, rel) {
-		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
-			return entity.getLinkByRel(rel).href;
-		}
-		return '';
 	}
 
 	_getActivityPromise(entity, item) {
