@@ -3,6 +3,7 @@ import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-offscreen/d2l-offscreen.js';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import 'd2l-link/d2l-link.js';
@@ -23,11 +24,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					height:100%;
 					width:100%;
 				}
+				d2l-loading-spinner {
+					width: 100%;
+				}
 				[hidden] {
 					display: none;
 				}
 			</style>
-			<d2l-table>
+			<d2l-table hidden$="[[_initialLoading]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
@@ -57,6 +61,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			<d2l-offscreen>
 				<button onclick="[[_loadMore]]">[[localize('loadMore')]]</button>
 			</d2l-offscreen>
+			<d2l-loading-spinner hidden$="[[!_loading]]" size="100"></d2l-loading-spinner>
 		`;
 	}
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
@@ -74,6 +79,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_data: {
 				type: Array,
 				value: [ ]
+			},
+			_initialLoading: {
+				type: Boolean,
+				value: true
 			},
 			_loading: {
 				type: Boolean,
@@ -102,6 +111,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		super.ready();
 		var self = this;
 		this.addEventListener('d2l-siren-entity-error', function() {
+			self._initialLoading = false;
 			self._loading = false;
 		});
 	}
@@ -132,6 +142,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		} catch (e) {
 			// Unable to load activities from entity.
 		} finally {
+			this._initialLoading = false;
 			this._loading = false;
 		}
 	}
