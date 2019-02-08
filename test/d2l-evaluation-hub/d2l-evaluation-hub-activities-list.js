@@ -83,8 +83,19 @@
 				assert.equal(!!(expected[i].link), spanHidden);
 			}
 		});
-		test('_loading is set to false after data is loaded', async() => {
+		test('_initialLoading and _loading are set to true before data is loaded, and loading-spinner is present', async() => {
+			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+			assert.equal(loadingSpinner.hidden, false);
+			assert.equal(list._initialLoading, true);
+			assert.equal(list._loading, true);
+		});
+		test('_initialLoading and _loading is set to false after data is loaded and the loading spinner is hidden', async() => {
+			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+
 			await loadPromise('data/unassessedActivities.json');
+
+			assert.equal(loadingSpinner.hidden, true);
+			assert.equal(list._initialLoading, false);
 			assert.equal(list._loading, false);
 		});
 	});
