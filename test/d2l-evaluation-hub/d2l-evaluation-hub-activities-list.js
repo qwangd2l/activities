@@ -155,7 +155,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 						assert.equal(loadMore.style.display, 'none');
 						verifyData(expectedNext);
 						done();
-					}, 100);
+					}, 150);
 				});
 				MockInteractions.tap(loadMore);
 			});
