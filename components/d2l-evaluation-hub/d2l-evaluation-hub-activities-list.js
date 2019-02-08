@@ -24,6 +24,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					height:100%;
 					width:100%;
 				}
+				d2l-th {
+					font-weight: bold;
+				}
+				d2l-td {
+					font-weight: normal;
+				}
 				d2l-loading-spinner {
 					width: 100%;
 				}
