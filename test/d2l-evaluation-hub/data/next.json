@@ -1,10 +1,4 @@
 {
-  "links":[
-    {
-      "rel":["next"],
-      "href":"data/next.json"
-    }
-  ],
 	"entities":[
 		{
 			"class": ["user-assignment-activity","activity"],
@@ -18,7 +12,7 @@
 					"href":"data/org.json"
 				},{
 					"rel":["https://api.brightspace.com/rels/assignment"],
-					"href":"data/assignment.json"
+					"href":"data/nextAssignment.json"
 				},{
 					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
 					"href":"https://www.example.com/",
@@ -50,7 +44,7 @@
 					"href":"data/org.json"
 				},{
 					"rel":["https://api.brightspace.com/rels/quiz"],
-					"href":"data/quiz.json"
+					"href":"data/nextQuiz.json"
 				},{
 					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
 					"href":"https://www.example.com/",
@@ -82,7 +76,7 @@
 					"href":"data/org.json"
 				},{
 					"rel":["https://discussions.api.brightspace.com/rels/topic"],
-					"href":"data/topic.json"
+					"href":"data/nextTopic.json"
 				},{
 					"rel":["https://assessments.api.brightspace.com/rels/assessment-application"],
 					"href":"https://www.example.com/",

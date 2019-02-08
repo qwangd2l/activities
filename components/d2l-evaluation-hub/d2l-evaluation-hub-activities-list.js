@@ -157,7 +157,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				}
 			}.bind(this));
 		}
-		return Promise.resolve();
 	}
 
 	_followLink(entity, rel) {
