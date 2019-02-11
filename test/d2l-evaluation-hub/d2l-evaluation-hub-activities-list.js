@@ -150,13 +150,17 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			loadPromise('data/unassessedActivities.json').then(function() {
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
-				loadMore.addEventListener('click', function() {
-					window.setTimeout(function() {
-						assert.equal(loadMore.style.display, 'none');
+				var verify = function() {
+					if (loadMore.style.display === 'none') {
 						verifyData(expectedNext);
 						done();
-					}, 150);
-				});
+					} else {
+						window.setTimeout(function() {
+							verify();
+						}, 100);
+					}
+				};
+				loadMore.addEventListener('click', verify);
 				MockInteractions.tap(loadMore);
 			});
 		});
