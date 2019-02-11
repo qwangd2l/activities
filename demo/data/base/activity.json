@@ -10,6 +10,9 @@
     },{
       "rel":["https://api.brightspace.com/rels/organization"],
       "href":"../data/base/organization.json"
+    },{
+      "rel":["https://activities.api.brightspace.com/rels/activity-homepage"],
+      "href":"#"
     }
   ],
   "actions":[

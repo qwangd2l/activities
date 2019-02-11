@@ -165,7 +165,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			</style>
 			<div class="d2l-activity-list-item-container">
 				<hr class="d2l-activity-list-item-top-line" />
-				<a class="d2l-focusable" href$="[[_link]]">
+				<a class="d2l-focusable" href$="[[_activityHomepage]]">
 					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="d2l-activity-list-item-link-container">
@@ -259,7 +259,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				type: Boolean,
 				value: false
 			},
-			_link: String,
+			_activityHomepage: String,
 			_accessibilityData: {
 				type: Object,
 				value: function() { return {}; }
@@ -426,7 +426,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
 			this._actionEnroll = sirenEntity.getAction('assign');
 		}
-
+		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
