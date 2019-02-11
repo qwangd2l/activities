@@ -10,7 +10,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'activityName': 'اسم النشاط',
 			'courseName': 'المقرر التعليمي',
 			'displayName': 'الاسم الأول، اسم العائلة',
-			'loading': 'Loading data',
+			'loading': 'Loading',
 			'loadMore': 'تحميل المزيد',
 			'submissionDate': 'تاريخ الإرسال'
 		};

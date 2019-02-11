@@ -10,7 +10,7 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'activityName': 'Naam activiteit',
 			'courseName': 'Cursus',
 			'displayName': 'Voornaam, achternaam',
-			'loading': 'Loading data',
+			'loading': 'Loading',
 			'loadMore': 'Meer laden',
 			'submissionDate': 'Datum van indiening'
 		};
