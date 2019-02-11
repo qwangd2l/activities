@@ -211,6 +211,10 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				},
 				observer: '_onSirenEntityChange'
 			},
+			sendOnTriggerEvent: {
+				type: Boolean,
+				value: false
+			},
 			_imageUrl: String,
 			_title: String,
 			_category: {
@@ -283,9 +287,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		super.attached();
 		afterNextRender(this, () => {
 			const link = this.shadowRoot.querySelector('a');
-			link.addEventListener('blur', this._onLinkBlur);
-			link.addEventListener('focus', this._onLinkFocus);
-			this.addEventListener('iron-resize', this._onIronSize);
+			link.addEventListener('blur', this._onLinkBlur.bind(this));
+			link.addEventListener('focus', this._onLinkFocus.bind(this));
+			link.addEventListener('click', this._onLinkTrigger.bind(this));
+			link.addEventListener('keydown', this._onLinkTrigger.bind(this));
+			this.addEventListener('iron-resize', this._onIronSize.bind(this));
 			this._setResponsiveSizes(this.offsetWidth);
 		});
 	}
@@ -362,6 +368,23 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 	}
 	_onDescriptionChange(description) {
 		this._clampDescription(description);
+	}
+
+	_onLinkTrigger(event) {
+		if (!this.sendOnTriggerEvent ||
+			!this._activityHomepage ||
+			(event.type === 'keydown' && event.keyCode !== 13 && event.keyCode !== 32)) {
+			return;
+		}
+		this.dispatchEvent(new CustomEvent('d2l-activity-trigger', {
+			detail: {
+				path: this._activityHomepage,
+				orgUnitId: this._getOrgUnitId()
+			},
+			bubbles: true,
+			composed: true
+		}));
+		event.preventDefault();
 	}
 	_clampDescription(description) {
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
@@ -474,6 +497,18 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				});
 		}
 		return Promise.reject(response.status + ' ' + response.statusText);
+	}
+
+	_getOrgUnitId() {
+		if (!this._organizationUrl) {
+			return;
+		}
+		var match = /[0-9]+$/.exec(this._organizationUrl);
+
+		if (!match) {
+			return;
+		}
+		return match[0];
 	}
 }
 
