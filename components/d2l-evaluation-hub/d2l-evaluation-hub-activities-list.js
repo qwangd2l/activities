@@ -21,11 +21,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-table d2l-tr d2l-td d2l-link {
-					display:block;
-					height:100%;
-					width:100%;
-				}
 				d2l-th {
 					font-weight: bold;
 				}
@@ -35,8 +30,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				d2l-loading-spinner {
 					width: 100%;
 				}
-				.d2l-evaluation-hub-activities-list-load-more {
-					margin-top: 1rem;
+				.d2l-evaluation-hub-activities-list-load-more-container {
+					padding-top: 1rem;
 					text-align: right;
 					width: 100%;
 				}
@@ -71,13 +66,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
-			<template is="dom-if" if="[[_pageNextHref]]">
-				<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]" hidden$="[[_loading]]">[[localize('loadMore')]]</d2l-button>
-			</template>
 			<div role="alert" aria-live="polite">
 				<d2l-offscreen>[[localize('loading')]]</d2l-offscreen>
-				<d2l-loading-spinner hidden$="[[!_loading]]" size="100"></d2l-loading-spinner>
+				<d2l-loading-spinner hidden$="[[!_loading]]" size="80"></d2l-loading-spinner>
 			</div>
+			<template is="dom-if" if="[[_pageNextHref]]">
+				<div class="d2l-evaluation-hub-activities-list-load-more-container">
+					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]" disabled$="[[_loading]]">[[localize('loadMore')]]</d2l-button>
+				</div>
+			</template>
 		`;
 	}
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
