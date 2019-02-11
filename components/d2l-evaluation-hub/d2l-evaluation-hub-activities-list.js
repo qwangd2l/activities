@@ -157,8 +157,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}
 	}
 
-	async _loadMore() {
-		if (this._pageNextHref) {
+	_loadMore() {
+		if (this._pageNextHref && !this._loading) {
+			this._loading = true;
 			this._followHref(this._pageNextHref).then(async function(u) {
 				if (u && u.entity) {
 					var tbody = this.shadowRoot.querySelector('d2l-tbody');

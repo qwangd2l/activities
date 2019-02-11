@@ -21,18 +21,25 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		return expected;
 	}
 
-	function verifyData(expected) {
+	function verifyData(expected, done) {
 		var data = list.shadowRoot.querySelectorAll('d2l-td');
-		for (var i = 0; i < expected.length; i++) {
-			var link = data[i].querySelector('d2l-link');
-			var span = data[i].querySelector('span');
-			var linkHidden = link.hasAttribute('hidden');
-			var spanHidden = span.hasAttribute('hidden');
+		if (data.length !== expected.length) {
+			window.setTimeout(function() {
+				verifyData(expected, done);
+			}, 30);
+		} else {
+			for (var i = 0; i < expected.length; i++) {
+				var link = data[i].querySelector('d2l-link');
+				var span = data[i].querySelector('span');
+				var linkHidden = link.hasAttribute('hidden');
+				var spanHidden = span.hasAttribute('hidden');
 
-			assert.equal(expected[i].text, link.innerHTML);
-			assert.equal(expected[i].text, span.innerHTML);
-			assert.equal(!(expected[i].link), linkHidden);
-			assert.equal(!!(expected[i].link), spanHidden);
+				assert.equal(expected[i].text, link.innerHTML);
+				assert.equal(expected[i].text, span.innerHTML);
+				assert.equal(!(expected[i].link), linkHidden);
+				assert.equal(!!(expected[i].link), spanHidden);
+			}
+			done();
 		}
 	}
 
@@ -133,8 +140,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var expected = createExpectedData(expectedData);
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				verifyData(expected);
-				done();
+				verifyData(expected, done);
 			});
 		});
 		test('the Load More button appears when there is a next link', (done) => {
@@ -142,6 +148,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
 				assert.equal(loadMore.tagName.toLowerCase(), 'd2l-button');
 				assert.notEqual(loadMore.style.display, 'none');
+				assert.notEqual(loadMore.disabled, 'true');
 				done();
 			});
 		});
@@ -150,14 +157,14 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			loadPromise('data/unassessedActivities.json').then(function() {
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
+				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
 				var verify = function() {
-					if (loadMore.style.display === 'none') {
-						verifyData(expectedNext);
-						done();
+					if (loadMoreContainer.style.display === 'none') {
+						verifyData(expectedNext, done);
 					} else {
 						window.setTimeout(function() {
 							verify();
-						}, 100);
+						}, 30);
 					}
 				};
 				loadMore.addEventListener('click', verify);
