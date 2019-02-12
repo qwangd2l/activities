@@ -181,8 +181,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					} catch (e) {
 						// Unable to load more activities from entity.
 					} finally {
-						var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
-						newElementToFocus.focus();
+						window.requestAnimationFrame(function() {
+							var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
+							newElementToFocus.focus();
+						});
 					}
 				}
 			}.bind(this));
