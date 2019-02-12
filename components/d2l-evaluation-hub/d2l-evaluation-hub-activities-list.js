@@ -1,7 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-table/d2l-table.js';
-import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-offscreen/d2l-offscreen.js';
@@ -120,11 +119,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	ready() {
 		super.ready();
-		var self = this;
 		this.addEventListener('d2l-siren-entity-error', function() {
-			self._initialLoading = false;
-			self._loading = false;
-		});
+			this._initialLoading = false;
+			this._loading = false;
+		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
 	}
 	constructor() { super(); }
@@ -196,7 +194,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	async _parseActivities(entity) {
-		var self = this;
 		var promises = [];
 		entity.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
@@ -204,26 +201,26 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					displayName: '',
 					courseName: '',
 					activityName: '',
-					submissionDate: self._getSubmissionDate(activity),
-					activityLink: self._getHref(activity, Rels.Assessments.assessmentApplication)
+					submissionDate: this._getSubmissionDate(activity),
+					activityLink: this._getHref(activity, Rels.Assessments.assessmentApplication)
 				};
 
-				var getUserName = self._getUserPromise(activity, item);
-				var getCourseName = self._getCoursePromise(activity, item);
-				var getActivityName = self._getActivityPromise(activity, item);
+				var getUserName = this._getUserPromise(activity, item);
+				var getCourseName = this._getCoursePromise(activity, item);
+				var getActivityName = this._getActivityPromise(activity, item);
 
 				Promise.all([getUserName, getCourseName, getActivityName]).then(function() {
 					resolve(item);
 				});
-			}));
-		});
+			}.bind(this)));
+		}.bind(this));
 
-		self._filterHref = self._getHref(entity, Rels.filters);
-		//self._sortHref = self._getHref(entity, Rels.sort);
-		self._pageNextHref = self._getHref(entity, 'next');
+		this._filterHref = this._getHref(entity, Rels.filters);
+		//this._sortHref = this._getHref(entity, Rels.sort);
+		this._pageNextHref = this._getHref(entity, 'next');
 
 		const result = await Promise.all(promises);
-		self._data = self._data.concat(result);
+		this._data = this._data.concat(result);
 	}
 
 	_getActivityPromise(entity, item) {
