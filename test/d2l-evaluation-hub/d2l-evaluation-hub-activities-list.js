@@ -123,9 +123,9 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		});
 		test('headers display correctly', function() {
 			flush(function() {
-				var headers = list.shadowRoot.querySelectorAll('d2l-th');
+				var headers = list.shadowRoot.querySelectorAll('d2l-th d2l-table-col-sort-button');
 				for (var i = 0; i < expectedHeaders.length; i++) {
-					assert.equal(expectedHeaders[i], headers[i].innerHTML);
+					assert.include(headers[i].innerHTML, expectedHeaders[i]);
 				}
 			});
 		});
