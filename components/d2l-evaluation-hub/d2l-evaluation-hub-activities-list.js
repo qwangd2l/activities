@@ -43,7 +43,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
 							<template>
-								<d2l-th on-click="_sort">[[localize(item.localizationKey)]]</d2l-th>
+								<d2l-th><d2l-table-col-sort-button nosort on-click="_sort"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
 							</template>
 						</dom-repeat>
 					</d2l-tr>
@@ -131,9 +131,24 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
-	_sort(/*e*/) {
-		// TODO: once sorting is enabled!!!
-		// var sortKey = e.model.item.sortKey;
+	_sort(e) {
+		if (e.target.nosort) {
+			e.target.removeAttribute('nosort');
+		} else if (e.target.desc) {
+			e.target.removeAttribute('desc');
+		} else {
+			e.target.setAttribute('desc', true);
+		}
+
+		var headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
+		for (var i = 0; i < headers.length; i++) {
+			if (headers[i] !== e.target) {
+				headers[i].removeAttribute('desc');
+				headers[i].setAttribute('nosort', true);
+			}
+		}
+
+		// TODO: get the new sorted data once sorting is enabled!!!
 	}
 
 	async _loadData(entity) {
