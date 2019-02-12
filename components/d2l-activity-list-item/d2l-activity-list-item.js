@@ -430,7 +430,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		});
 	}
 	_onHrefChange(href) {
-		if (!href || (this.entity.hasLinkByRel && this.entity.hasLinkByRel('self') && this.entity.getLinkByRel('self').href !== href)) {
+		if (!href || (this.entity.hasLinkByRel && this.entity.hasLinkByRel('self') && this.entity.getLinkByRel('self').href === href)) {
 			return;
 		}
 
