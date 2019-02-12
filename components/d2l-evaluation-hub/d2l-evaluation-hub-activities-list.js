@@ -132,19 +132,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_sort(e) {
-		if (e.target.nosort) {
-			e.target.removeAttribute('nosort');
-		} else if (e.target.desc) {
-			e.target.removeAttribute('desc');
+		if (e.currentTarget.nosort) {
+			e.currentTarget.removeAttribute('nosort');
+		} else if (e.currentTarget.desc) {
+			e.currentTarget.removeAttribute('desc');
 		} else {
-			e.target.setAttribute('desc', true);
+			e.currentTarget.setAttribute('desc', 'desc');
 		}
 
 		var headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
 		for (var i = 0; i < headers.length; i++) {
-			if (headers[i] !== e.target) {
+			if (headers[i] !== e.currentTarget) {
 				headers[i].removeAttribute('desc');
-				headers[i].setAttribute('nosort', true);
+				headers[i].setAttribute('nosort', 'nosort');
 			}
 		}
 
