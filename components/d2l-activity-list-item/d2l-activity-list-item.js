@@ -30,7 +30,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			<style include="d2l-offscreen-shared-styles">
 				:host {
 					display: block;
-					max-width: 842px;
 				}
 				:host([active]) a.d2l-focusable {
 					border-color: rgba(0, 111, 191, 0.4);
