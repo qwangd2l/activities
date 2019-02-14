@@ -65,11 +65,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
-			<d2l-offscreen role="alert" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
+			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
 			<template is="dom-if" if="[[_pageNextHref]]">
 				<div class="d2l-evaluation-hub-activities-list-load-more-container">
-					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]" disabled$="[[_loading]]">[[localize('loadMore')]]</d2l-button>
+					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
 		`;
