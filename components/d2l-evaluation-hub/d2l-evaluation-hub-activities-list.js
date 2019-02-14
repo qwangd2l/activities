@@ -184,7 +184,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_getActivityPromise(entity, item) {
 		var rel;
-		if (entity.hasClass(Classes.activities.userQuizActivity)) {
+		if (entity.hasClass(Classes.activities.userQuizAttemptActivity)) {
 			rel = Rels.quiz;
 		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
 			rel = Rels.assignment;
