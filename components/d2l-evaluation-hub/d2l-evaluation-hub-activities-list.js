@@ -219,7 +219,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					courseName: '',
 					activityName: '',
 					submissionDate: this._getSubmissionDate(activity),
-					activityLink: this._getHref(activity, Rels.Assessments.assessmentApplication)
+					activityLink: this._getRelativeUriProperty(activity)
 				};
 
 				var getUserName = this._getUserPromise(activity, item);
@@ -278,11 +278,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_getSubmissionDate(entity) {
-		if (entity.hasSubEntityByRel('item')) {
-			var i = entity.getSubEntityByRel('item');
-			if (i.hasSubEntityByRel(Rels.date)) {
-				return i.getSubEntityByRel(Rels.date).properties.date;
+		if (entity.hasSubEntityByClass('completion')) {
+			var i = entity.getSubEntityByClass('completion');
+			if (i.hasSubEntityByClass('date')) {
+				return i.getSubEntityByClass('date').properties.date;
 			}
+		}
+		return '';
+	}
+
+	_getRelativeUriProperty(entity) {
+		if (entity.hasSubEntityByClass('relative-uri')) {
+			var i = entity.getSubEntityByClass('relative-uri');
+			return i.properties.path;
 		}
 		return '';
 	}

@@ -49,21 +49,21 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityName: 'Assignment Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			activityLink: '/the/best/vanity/url/3'
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Quiz Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			submissionDate: '2019-02-22T02:00:00.000Z',
+			activityLink: '/the/best/vanity/url/2'
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Topic Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			submissionDate: '2019-02-20T02:00:00.000Z',
+			activityLink: '/the/best/vanity/url'
 		}
 	];
 
@@ -73,21 +73,21 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityName: 'Another Assignment Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			activityLink: '/the/best/vanity/url/next1'
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Another Quiz Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			activityLink: '/the/best/vanity/url/next2'
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Another Topic Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
-			activityLink: 'https://www.example.com/'
+			submissionDate: '2019-02-20T02:00:00.000Z',
+			activityLink: '/the/best/vanity/url/next3'
 		}
 	];
 	var expectedHeaders = [
