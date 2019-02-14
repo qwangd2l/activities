@@ -10,6 +10,7 @@ const LangEsImpl = (superClass) => class extends superClass {
 			'activityName': 'Nombre de la actividad',
 			'courseName': 'Curso',
 			'displayName': 'Nombre Apellido',
+			'loading': 'Loading',
 			'loadMore': 'Cargar más',
 			'submissionDate': 'Fecha del material enviado'
 		};

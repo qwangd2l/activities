@@ -10,6 +10,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'activityName': 'Etkinlik Adı',
 			'courseName': 'Ders',
 			'displayName': 'Ad, Soyad',
+			'loading': 'Loading',
 			'loadMore': 'Daha fazla yükle',
 			'submissionDate': 'Gönderme Tarihi'
 		};

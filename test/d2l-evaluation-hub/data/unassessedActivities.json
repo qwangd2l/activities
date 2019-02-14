@@ -1,4 +1,10 @@
 {
+  "links":[
+    {
+      "rel":["next"],
+      "href":"data/next.json"
+    }
+  ],
 	"entities":[
 		{
 			"class": ["user-assignment-activity","activity"],

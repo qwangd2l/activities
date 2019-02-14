@@ -10,6 +10,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'activityName': 'アクティビティ名',
 			'courseName': 'コース',
 			'displayName': '名, 姓',
+			'loading': 'Loading',
 			'loadMore': 'さらに読み込む',
 			'submissionDate': '送信日'
 		};
