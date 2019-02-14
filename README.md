@@ -35,6 +35,17 @@ To lint AND run local unit tests:
 ```shell
 npm test
 ```
+## Releases
+
+To generate a new release:
+```shell
+npm version [major|minor|patch] -m "New version: %s"
+git push origin master --tags
+```
+
+This will update the version in the package.json file, commit that, and generate a new tag.
+
+When Travis CI runs on the tagged release, it will be deployed to NPM.
 
 ## Usage
 
