@@ -30,7 +30,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			<style include="d2l-offscreen-shared-styles">
 				:host {
 					display: block;
-					max-width: 842px;
 				}
 				:host([active]) a.d2l-focusable {
 					border-color: rgba(0, 111, 191, 0.4);
@@ -165,7 +164,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			</style>
 			<div class="d2l-activity-list-item-container">
 				<hr class="d2l-activity-list-item-top-line" />
-				<a class="d2l-focusable" href$="[[_link]]">
+				<a class="d2l-focusable" href$="[[_activityHomepage]]">
 					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="d2l-activity-list-item-link-container">
@@ -210,6 +209,10 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					return {};
 				},
 				observer: '_onSirenEntityChange'
+			},
+			sendOnTriggerEvent: {
+				type: Boolean,
+				value: false
 			},
 			_imageUrl: String,
 			_title: String,
@@ -259,7 +262,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				type: Boolean,
 				value: false
 			},
-			_link: String,
+			_activityHomepage: String,
 			_accessibilityData: {
 				type: Object,
 				value: function() { return {}; }
@@ -283,9 +286,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		super.attached();
 		afterNextRender(this, () => {
 			const link = this.shadowRoot.querySelector('a');
-			link.addEventListener('blur', this._onLinkBlur);
-			link.addEventListener('focus', this._onLinkFocus);
-			this.addEventListener('iron-resize', this._onIronSize);
+			link.addEventListener('blur', this._onLinkBlur.bind(this));
+			link.addEventListener('focus', this._onLinkFocus.bind(this));
+			link.addEventListener('click', this._onLinkTrigger.bind(this));
+			link.addEventListener('keydown', this._onLinkTrigger.bind(this));
+			this.addEventListener('iron-resize', this._onIronSize.bind(this));
 			this._setResponsiveSizes(this.offsetWidth);
 		});
 	}
@@ -363,6 +368,23 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 	_onDescriptionChange(description) {
 		this._clampDescription(description);
 	}
+
+	_onLinkTrigger(event) {
+		if (!this.sendOnTriggerEvent ||
+			!this._activityHomepage ||
+			(event.type === 'keydown' && event.keyCode !== 13 && event.keyCode !== 32)) {
+			return;
+		}
+		this.dispatchEvent(new CustomEvent('d2l-activity-trigger', {
+			detail: {
+				path: this._activityHomepage,
+				orgUnitId: this._getOrgUnitId()
+			},
+			bubbles: true,
+			composed: true
+		}));
+		event.preventDefault();
+	}
 	_clampDescription(description) {
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		if (!this._showDescription) {
@@ -407,7 +429,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		});
 	}
 	_onHrefChange(href) {
-		if (!href || (this.entity.hasLinkByRel && this.entity.hasLinkByRel('self') && this.entity.getLinkByRel('self').href !== href)) {
+		if (!href || (this.entity.hasLinkByRel && this.entity.hasLinkByRel('self') && this.entity.getLinkByRel('self').href === href)) {
 			return;
 		}
 
@@ -426,7 +448,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
 			this._actionEnroll = sirenEntity.getAction('assign');
 		}
-
+		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
@@ -474,6 +496,18 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				});
 		}
 		return Promise.reject(response.status + ' ' + response.statusText);
+	}
+
+	_getOrgUnitId() {
+		if (!this._organizationUrl) {
+			return;
+		}
+		var match = /[0-9]+$/.exec(this._organizationUrl);
+
+		if (!match) {
+			return;
+		}
+		return match[0];
 	}
 }
 

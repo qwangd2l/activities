@@ -43,7 +43,7 @@
 				}
 			]
 		},{
-			"class": ["user-quiz-activity","activity"],
+			"class": ["user-quiz-attempt-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
@@ -75,7 +75,7 @@
 				}
 			]
 		},{
-			"class": ["user-quiz-activity","activity"],
+			"class": ["user-quiz-attempt-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{

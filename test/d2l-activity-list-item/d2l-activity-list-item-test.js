@@ -29,6 +29,9 @@ describe('d2l-activity-list-item', () => {
 			}, {
 				rel:['https://api.brightspace.com/rels/organization'],
 				href:'/organization/1'
+			}, {
+				rel:['https://activities.api.brightspace.com/rels/activity-homepage'],
+				href:'#'
 			}],
 			actions:[{
 				href:'/activity/1',
@@ -125,6 +128,10 @@ describe('d2l-activity-list-item', () => {
 
 			it('should set the image entity', () => {
 				expect(component._image).to.equal(imageEntity);
+			});
+
+			it('should set the activity homepage', () => {
+				expect(component._activityHomepage).to.equal('#');
 			});
 
 		});
