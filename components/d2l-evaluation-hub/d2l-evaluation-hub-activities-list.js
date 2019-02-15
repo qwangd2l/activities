@@ -280,8 +280,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	_getSubmissionDate(entity) {
 		if (entity.hasSubEntityByClass('completion')) {
 			var i = entity.getSubEntityByClass('completion');
-			if (i.hasSubEntityByClass('date')) {
-				return i.getSubEntityByClass('date').properties.date;
+			if (i.hasSubEntityByClass(Classes.dates.date)) {
+				return i.getSubEntityByClass(Classes.dates.date).properties.date;
 			}
 		}
 		return '';
