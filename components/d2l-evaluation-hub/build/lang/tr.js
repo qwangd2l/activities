@@ -12,7 +12,8 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'displayName': 'Ad, Soyad',
 			'loading': 'Loading',
 			'loadMore': 'Daha fazla yükle',
-			'submissionDate': 'Gönderme Tarihi'
+			'submissionDate': 'Gönderme Tarihi',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };

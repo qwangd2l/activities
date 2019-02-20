@@ -12,7 +12,8 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'displayName': 'First Name, Last Name',
 			'loading': 'Loading',
 			'loadMore': 'Load more',
-			'submissionDate': 'Submission Date'
+			'submissionDate': 'Submission Date',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };

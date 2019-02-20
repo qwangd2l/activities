@@ -12,7 +12,8 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'displayName': '名, 姓',
 			'loading': 'Loading',
 			'loadMore': 'さらに読み込む',
-			'submissionDate': '送信日'
+			'submissionDate': '送信日',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };

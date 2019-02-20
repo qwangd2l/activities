@@ -12,7 +12,8 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'displayName': 'Förnamn, efternamn',
 			'loading': 'Loading',
 			'loadMore': 'Ladda mer',
-			'submissionDate': 'Inlämningsdatum'
+			'submissionDate': 'Inlämningsdatum',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };

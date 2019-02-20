@@ -12,7 +12,8 @@ const LangEsImpl = (superClass) => class extends superClass {
 			'displayName': 'Nombre Apellido',
 			'loading': 'Loading',
 			'loadMore': 'Cargar más',
-			'submissionDate': 'Fecha del material enviado'
+			'submissionDate': 'Fecha del material enviado',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };

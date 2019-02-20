@@ -15,9 +15,18 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 					display: block;
 				}
 			</style>
-			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]"></d2l-evaluation-hub-activities-list>
+			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]" master-teacher="[[master-teacher]]"></d2l-evaluation-hub-activities-list>
 		`;
 	}
+
+	static get properties() {
+		return {
+			'master-teacher': {
+				type: Boolean
+			}
+		};
+	}
+
 	static get is() { return 'd2l-evaluation-hub'; }
 
 }

@@ -12,7 +12,8 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'displayName': 'Voornaam, achternaam',
 			'loading': 'Loading',
 			'loadMore': 'Meer laden',
-			'submissionDate': 'Datum van indiening'
+			'submissionDate': 'Datum van indiening',
+			'masterTeacher': 'Master Teacher'
 		};
 	}
 };
