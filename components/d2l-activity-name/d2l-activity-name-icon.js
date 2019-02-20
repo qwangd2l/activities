@@ -1,4 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import 'd2l-table/d2l-table.js';
 import 'd2l-link/d2l-link.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
@@ -14,11 +15,8 @@ class D2LActivityNameIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Ent
 	static get template() {
 		return html`
 			<style>
-
 			</style>
-			<div>
-				<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
-			</div>
+			<d2l-icon icon="d2l-tier1:assignments"></d2l-icon>
 		`;
 	}
 	static get is() { return 'd2l-activity-name-icon'; }
