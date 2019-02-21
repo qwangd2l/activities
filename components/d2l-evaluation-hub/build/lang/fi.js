@@ -12,6 +12,7 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'displayName': 'First Name, Last Name',
 			'loading': 'Loading',
 			'loadMore': 'Load more',
+			'masterTeacher': 'Master Teacher',
 			'submissionDate': 'Submission Date'
 		};
 	}

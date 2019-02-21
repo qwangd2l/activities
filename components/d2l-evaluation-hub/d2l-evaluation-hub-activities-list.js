@@ -43,7 +43,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
 							<template>
-								<d2l-th><d2l-table-col-sort-button nosort on-click="_sort"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
+									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+								</template>
 							</template>
 						</dom-repeat>
 					</d2l-tr>
@@ -54,10 +56,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 							<d2l-tr>
 								<dom-repeat items="[[_headers]]" as="h">
 									<template>
-										<d2l-td>
-											<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[_getDataProperty(s, h.key)]]</d2l-link>
-											<span hidden$="[[h.canLink]]">[[_getDataProperty(s, h.key)]]</span>
-										</d2l-td>
+										<template is="dom-if" if="[[_shouldDisplayColumn(h.key)]]">
+											<d2l-td>
+												<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[_getDataProperty(s, h.key)]]</d2l-link>
+												<span hidden$="[[h.canLink]]">[[_getDataProperty(s, h.key)]]</span>
+											</d2l-td>
+										</template>
 									</template>
 								</dom-repeat>
 							</d2l-tr>
@@ -77,13 +81,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
 		return {
+			'masterTeacher': {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
 			_headers: {
 				type: Array,
 				value: [
 					{ key: [ 'displayName' ], sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
 					{ key: [ 'activityName' ], sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
 					{ key: [ 'courseName' ], sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false }
+					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false },
+					{ key: [ 'masterTeacher' ], sortKey: 'masterTeacher', localizationKey: 'masterTeacher', canLink: false }
 				]
 			},
 			_data: {
@@ -306,6 +316,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			result = item[prop];
 		}
 		return result;
+	}
+
+	_shouldDisplayColumn(columnKey) {
+		if (columnKey.includes('masterTeacher')) {
+			return this['masterTeacher'];
+		}
+		return true;
 	}
 }
 

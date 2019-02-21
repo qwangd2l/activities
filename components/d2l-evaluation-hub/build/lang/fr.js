@@ -12,6 +12,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'displayName': 'Prénom et Nom de famille',
 			'loading': 'Loading',
 			'loadMore': 'En voir plus',
+			'masterTeacher': 'Master Teacher',
 			'submissionDate': 'Date de soumission'
 		};
 	}

@@ -93,6 +93,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedHeaders = [
 		'First Name, Last Name', 'Activity Name', 'Course', 'Submission Date'
 	];
+	var expectedHeadersWithMasterTeacher = expectedHeaders.concat('Master Teacher');
 
 	suite('d2l-evaluation-hub-activities-list', function() {
 		setup(function() {
@@ -121,12 +122,30 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
-		test('headers display correctly', function() {
+		test('headers display correctly', function(done) {
 			flush(function() {
 				var headers = list.shadowRoot.querySelectorAll('d2l-th d2l-table-col-sort-button');
+
+				assert.equal(expectedHeaders.length, headers.length);
+
 				for (var i = 0; i < expectedHeaders.length; i++) {
 					assert.include(headers[i].innerHTML, expectedHeaders[i]);
 				}
+				done();
+			});
+		});
+		test('headers include master teacher when toggled on, and is display correctly', function(done) {
+			list.setAttribute('master-teacher', '');
+
+			flush(function() {
+
+				var headers = list.shadowRoot.querySelectorAll('d2l-th d2l-table-col-sort-button');
+				assert.equal(expectedHeadersWithMasterTeacher.length, headers.length);
+
+				for (var i = 0; i < expectedHeadersWithMasterTeacher.length; i++) {
+					assert.include(headers[i].innerHTML, expectedHeadersWithMasterTeacher[i]);
+				}
+				done();
 			});
 		});
 		test('data is imported correctly', (done) => {

@@ -12,6 +12,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'displayName': '名字，姓氏',
 			'loading': 'Loading',
 			'loadMore': '加载更多',
+			'masterTeacher': 'Master Teacher',
 			'submissionDate': '提交日期'
 		};
 	}

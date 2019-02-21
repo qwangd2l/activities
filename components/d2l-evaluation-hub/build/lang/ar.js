@@ -12,6 +12,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'displayName': 'الاسم الأول، اسم العائلة',
 			'loading': 'Loading',
 			'loadMore': 'تحميل المزيد',
+			'masterTeacher': 'Master Teacher',
 			'submissionDate': 'تاريخ الإرسال'
 		};
 	}
