@@ -4,46 +4,68 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-		<title>d2l-activity-name demo</title>
+		<title>d2l-activity-name test</title>
 
-		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-		<!-- For IE11 -->
-		<script src="../../node_modules/lie/dist/lie.polyfill.min.js"></script>
-		<script type="module" src="../../node_modules/whatwg-fetch/fetch.js"></script>
+		<script src="../../../@babel/polyfill/browser.js"></script>
+		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../../wct-browser-legacy/browser.js"></script>
+		<script type="module" src="../../components/d2l-activity-name/d2l-activity-name.js"></script>
+	</head>
+	<body>
+		<test-fixture id="assignment">
+			<template strip-whitespace>
+				<d2l-activity-name href="data/assignmentActivity.json" token="whatever"></d2l-activity-name>
+			</template>
+		</test-fixture>
+		<test-fixture id="quizAttempt">
+			<template strip-whitespace>
+				<d2l-activity-name href="data/quizActivity.json" token="whatever"></d2l-activity-name>
+			</template>
+		</test-fixture>
+		<test-fixture id="topic">
+			<template strip-whitespace>
+				<d2l-activity-name href="data/topicActivity.json" token="whatever"></d2l-activity-name>
+			</template>
+		</test-fixture>
 
 		<script type="module">
-			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
-			import '@polymer/iron-demo-helpers/demo-snippet';
-			import 'd2l-typography/d2l-typography.js';
-			import '../../components/d2l-activity-name/d2l-activity-name.js';
-
-			const $_documentContainer = document.createElement('template');
-			$_documentContainer.innerHTML = `
-				<custom-style>
-					<style is="custom-style" include="demo-pages-shared-styles"></style>
-				</custom-style>
-				<custom-style include="d2l-typography">
-					<style is="custom-style" include="d2l-typography"></style>
-				</custom-style>
-				<style>
-					html {
-						font-size: 20px;
-					}
-				</style>
-			`;
-			document.body.appendChild($_documentContainer.content);
+			let activityName;
+			suite('d2l-activity-name base', function() {
+				setup(function() {
+					activityName = fixture('assignment');
+				});
+				test('instantiating the element works', function() {
+					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
+				});
+				test('activityName is set correctly', function(done) {
+					window.requestAnimationFrame(function() {
+						assert.equal(activityName._activityName, 'Folder 1');
+						done();
+					});
+				});
+				test('activityIcon is set correctly', function(done) {
+					flush(function() {
+						assert.equal(activityName._activityIcon, 'd2l-tier1:assignments');
+						done();
+					});
+				});
+			});
+			suite('d2l-activity-name quiz', function() {
+				setup(function() {
+					activityName = fixture('quizAttempt');
+				});
+				test('test quiz attempt', function() {
+					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
+				});
+			});
+			suite('d2l-activity-name topic', function() {
+				setup(function() {
+					activityName = fixture('topic');
+				});
+				test('test topic', function() {
+					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
+				});
+			});
 		</script>
-	</head>
-	<body class="d2l-typography">
-		<div class="vertical-section-container fixedSize">
-			<h3>Basic d2l-activity-name demo</h3>
-			<demo-snippet>
-				<template strip-whitespace>
-					<d2l-activity-name href="data/assignmentActivity.json" token="whatever"></d2l-activity-name>
-					<d2l-activity-name href="data/quizActivity.json" token="whatever"></d2l-activity-name>
-					<d2l-activity-name href="data/topicActivity.json" token="whatever"></d2l-activity-name>
-				</template>
-			</demo-snippet>
-		</div>
 	</body>
 </html>
