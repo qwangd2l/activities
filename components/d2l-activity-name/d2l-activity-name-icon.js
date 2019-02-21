@@ -15,8 +15,12 @@ class D2LActivityNameIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Ent
 	static get template() {
 		return html`
 			<style>
+				:host {
+					font-weight: normal;
+				}
 			</style>
 			<d2l-icon icon="d2l-tier1:assignments"></d2l-icon>
+			<span>Josh's Assignment</span>
 		`;
 	}
 	static get is() { return 'd2l-activity-name-icon'; }
