@@ -12,8 +12,8 @@ const LangKoImpl = (superClass) => class extends superClass {
 			'displayName': '이름, 성',
 			'loading': 'Loading',
 			'loadMore': '더 많이 로드',
-			'submissionDate': '제출일',
-			'masterTeacher': 'Master Teacher'
+			'masterTeacher': 'Master Teacher',
+			'submissionDate': '제출일'
 		};
 	}
 };
