@@ -81,8 +81,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
 		return {
-			'master-teacher': {
-				type: Boolean
+			'masterTeacher': {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
 			},
 			_headers: {
 				type: Array,
@@ -310,7 +312,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_shouldDisplayColumn(columnKey) {
 		if (columnKey.includes('masterTeacher')) {
-			return this['master-teacher'];
+			return this['masterTeacher'];
 		}
 		return true;
 	}
