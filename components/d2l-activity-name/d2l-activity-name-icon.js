@@ -19,16 +19,20 @@ class D2LActivityNameIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Ent
 					font-weight: normal;
 				}
 			</style>
-			<d2l-icon icon="d2l-tier1:assignments"></d2l-icon>
-			<span>Josh's Assignment</span>
+			<d2l-icon icon="[[_activityIcon]]"></d2l-icon>
+			<span>[[_activityName]]</span>
 		`;
 	}
 	static get is() { return 'd2l-activity-name-icon'; }
 	static get properties() {
 		return {
-			_testJosh: {
+			_activityName: {
 				type: String,
-				value: 'jr17'
+				value: ''
+			},
+			_activityIcon: {
+				type: String,
+				value: ''
 			}
 		};
 	}
@@ -54,11 +58,11 @@ class D2LActivityNameIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Ent
 		this._loading = true;
 
 		try {
-			await this._parseActivities(entity);
+			return this._getActivityPromise(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
+			console.dir(e);
 		} finally {
-			this._initialLoading = false;
 			this._loading = false;
 		}
 	}
@@ -82,47 +86,28 @@ class D2LActivityNameIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Ent
 		return Promise.resolve();
 	}
 
-	async _parseActivities(entity) {
-		var promises = [];
-		entity.entities.forEach(function(activity) {
-			promises.push(new Promise(function(resolve) {
-				var item = {
-					displayName: '',
-					courseName: '',
-					activityName: '',
-					submissionDate: this._getSubmissionDate(activity),
-					activityLink: this._getHref(activity, Rels.Assessments.assessmentApplication)
-				};
-
-				var getActivityName = this._getActivityPromise(activity, item);
-
-				Promise.all([getActivityName]).then(function() {
-					resolve(item);
-				});
-			}.bind(this)));
-		}.bind(this));
-
-		const result = await Promise.all(promises);
-		this._data = this._data.concat(result);
-	}
-
-	_getActivityPromise(entity, item) {
-		var rel;
-		if (entity.hasClass(Classes.activities.userQuizAttemptActivity)) {
+	_getActivityPromise(activityEntity) {
+		let rel;
+		let activityIcon;
+		if (activityEntity.hasClass(Classes.activities.userQuizAttemptActivity)) {
 			rel = Rels.quiz;
-		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
+			activityIcon = 'd2l-tier1:quizzing';
+		} else if (activityEntity.hasClass(Classes.activities.userAssignmentActivity)) {
 			rel = Rels.assignment;
-		} else if (entity.hasClass(Classes.activities.userDiscussionActivity)) {
+			activityIcon = 'd2l-tier1:assignments';
+		} else if (activityEntity.hasClass(Classes.activities.userDiscussionActivity)) {
 			rel = Rels.Discussions.topic;
+			activityIcon = 'd2l-tier1:discussions';
 		} else {
 			return Promise.resolve();
 		}
-		return this._followLink(entity, rel)
+		return this._followLink(activityEntity, rel)
 			.then(function(a) {
 				if (a && a.entity && a.entity.properties) {
-					item.activityName = a.entity.properties.name;
+					this._activityName = a.entity.properties.name;
+					this._activityIcon = activityIcon;
 				}
-			});
+			}.bind(this));
 	}
 }
 
