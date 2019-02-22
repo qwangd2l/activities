@@ -1,0 +1,69 @@
+{
+  "class": [
+      "collection",
+      "filters",
+      "role-markers"
+  ],
+  "entities": [
+      {
+          "class": [
+              "filter",
+              "off"
+          ],
+          "rel": [
+              "item",
+              "https://api.brightspace.com/rels/filter"
+          ],
+          "title": "Primary Facilitator",
+          "actions": [
+              {
+                  "href": "components/d2l-activities/demo/d2l-evaluation-hub/data/activities/activitiesList/activities/enrollments/filters/roleMarkerFilter.json",
+                  "name": "add-filter",
+                  "method": "GET",
+                  "fields": [
+                      {
+                          "type": "hidden",
+                          "name": "existingState",
+                          "value": "eyJkN2E5ZTM5Ny1lMDFiLTRjZjctODIxZS1mYWU3M2Q2MjgzMDUiOlsicHJpbWFyeUluc3RydWN0b3IiXX0"
+                      }
+                  ]
+              }
+          ]
+      }
+  ],
+  "actions": [
+      {
+          "href": "components/d2l-activities/demo/d2l-evaluation-hub/data/activities/activitiesList/activities/enrollments/filters/roleMarkerFilter.json",
+          "name": "search",
+          "fields": [
+              {
+                  "type": "search",
+                  "name": "search"
+              },
+              {
+                  "class": [
+                      "base64",
+                      "json"
+                  ],
+                  "type": "hidden",
+                  "name": "existingState"
+              }
+          ]
+      },
+      {
+          "href": "components/d2l-activities/demo/d2l-evaluation-hub/data/activities/activitiesList/activities/enrollments/filters/filters.json",
+          "name": "apply",
+          "fields": [
+              {
+                  "class": [
+                      "base64",
+                      "json"
+                  ],
+                  "type": "hidden",
+                  "name": "existingState"
+              }
+          ]
+      }
+  ],
+  "title": "Role Markers"
+}

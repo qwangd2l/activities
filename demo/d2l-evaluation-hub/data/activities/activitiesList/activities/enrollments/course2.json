@@ -1,0 +1,34 @@
+{
+  "class": [
+    "enrollments",
+    "collection"
+  ],
+  "entities": [
+    {
+      "class": [
+        "enrollment"
+      ],
+      "rel": [
+        "https://api.brightspace.com/rels/user-enrollment"
+      ],
+      "href": "data/activities/activitiesList/activities/enrollments/users/user2.json"
+    },
+    {
+      "class": [
+        "enrollment"
+      ],
+      "rel": [
+        "https://api.brightspace.com/rels/user-enrollment"
+      ],
+      "href": "data/activities/activitiesList/activities/enrollments/weird.json"
+    }
+  ],
+  "links": [
+    {
+      "rel": [
+        "https://api.brightspace.com/rels/filters"
+      ],
+      "href": "data/activities/activitiesList/activities/enrollments/filters/filters2.json"
+    }
+  ]
+}
