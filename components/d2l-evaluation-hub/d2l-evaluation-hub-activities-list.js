@@ -235,7 +235,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				var getUserName = this._getUserPromise(activity, item);
 				var getCourseName = this._getCoursePromise(activity, item);
 				var getActivityName = this._getActivityPromise(activity, item);
-				var getMasterTeacherName = this._getMasterTeacherPromise(activity, item);
+				var getMasterTeacherName =
+					this._shouldDisplayColumn('masterTeacher')
+					? this._getMasterTeacherPromise(activity, item)
+					: Promise.resolve();
 
 				Promise.all([getUserName, getCourseName, getActivityName, getMasterTeacherName]).then(function() {
 					resolve(item);
@@ -395,7 +398,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_shouldDisplayColumn(columnKey) {
 		if (columnKey.includes('masterTeacher')) {
-			return this['masterTeacher'];
+			return this.masterTeacher;
 		}
 		return true;
 	}
