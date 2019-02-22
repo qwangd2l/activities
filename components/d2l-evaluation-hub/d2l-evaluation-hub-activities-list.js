@@ -237,8 +237,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				var getActivityName = this._getActivityPromise(activity, item);
 				var getMasterTeacherName =
 					this._shouldDisplayColumn('masterTeacher')
-					? this._getMasterTeacherPromise(activity, item)
-					: Promise.resolve();
+						? this._getMasterTeacherPromise(activity, item)
+						: Promise.resolve();
 
 				Promise.all([getUserName, getCourseName, getActivityName, getMasterTeacherName]).then(function() {
 					resolve(item);

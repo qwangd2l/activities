@@ -17,7 +17,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			expected.push({ text: item.courseName, link: '' });
 			expected.push({ text: item.submissionDate, link: '' });
 
-			if(includeMasterTeacher) {
+			if (includeMasterTeacher) {
 				expected.push({ text: item.masterTeacher, link: '' });
 			}
 		});
@@ -79,7 +79,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		}
 	];
 
-	var expectedDataWithMasterTeacher = expectedData.map( function(x) {
+	var expectedDataWithMasterTeacher = expectedData.map(function(x) {
 		var updatedExpectedData = {};
 
 		Object.keys(x).forEach(function(key) {
