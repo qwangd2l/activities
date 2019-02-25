@@ -7,6 +7,7 @@
 		<title>d2l-evaluation-hub demo</title>
 
 		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
 		<!-- For IE11 -->
 		<script src="../../node_modules/lie/dist/lie.polyfill.min.js"></script>
 		<script type="module" src="../../node_modules/whatwg-fetch/fetch.js"></script>
@@ -16,6 +17,18 @@
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
 			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub.js';
+			import intercept from './interceptor';
+			import mappingsParser from './demo-data-parser'
+			import data from './table'
+
+			const mappings = mappingsParser(data);
+
+			const oldFetch = window.d2lfetch.fetch.bind(window.d2lfetch);
+			window.d2lfetch.fetch = function(input, options) {
+				return intercept(input, options, mappings).catch( () => {
+					return oldFetch(input, options);
+				});
+			}
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
@@ -33,13 +46,16 @@
 			`;
 			document.body.appendChild($_documentContainer.content);
 		</script>
+
+
+
 	</head>
 	<body class="d2l-typography">
 		<div class="vertical-section-container fixedSize">
 			<h3>Basic d2l-evaluation-hub demo</h3>
 			<demo-snippet>
 				<template strip-whitespace>
-					<d2l-evaluation-hub href="data/activities/activitiesList/unassessedActivities.json" token="whatever"></d2l-evaluation-hub>
+					<d2l-evaluation-hub href="pages/0" token="whatever"></d2l-evaluation-hub>
 				</template>
 			</demo-snippet>
 		</div>
