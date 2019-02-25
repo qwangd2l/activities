@@ -15,7 +15,7 @@ import {Rels, Classes} from 'd2l-hypermedia-constants';
  * @polymer
  */
 
-class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehaviorImpl], EvaluationHubLocalize(PolymerElement)) {
+class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], EvaluationHubLocalize(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
