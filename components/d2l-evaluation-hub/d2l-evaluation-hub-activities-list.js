@@ -136,7 +136,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	constructor() { super(); }
 
-	__fetch(url) {
+	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
@@ -214,7 +214,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_followHref(href) {
 		if (href) {
-			return this.__fetch(href);
+			return this._myEntityStoreFetch(href);
 		}
 		return Promise.resolve();
 	}
