@@ -1,0 +1,10 @@
+{
+  "links": [
+    {
+      "rel": [
+        "https://api.brightspace.com/rels/user"
+      ],
+      "href": "data/master.json"
+    }
+  ]
+}

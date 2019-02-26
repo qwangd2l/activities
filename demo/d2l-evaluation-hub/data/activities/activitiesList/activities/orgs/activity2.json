@@ -1,5 +1,13 @@
 {
-	"properties":{
-		"name":"Course"
-	}
+	"properties": {
+		"name": "Course"
+	},
+	"links": [
+		{
+			"rel": [
+				"https://api.brightspace.com/rels/enrollments"
+			],
+			"href": "data/activities/activitiesList/activities/enrollments/course.json"
+		}
+	]
 }
