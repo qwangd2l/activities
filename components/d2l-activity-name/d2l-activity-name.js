@@ -1,6 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'd2l-table/d2l-table.js';
-import 'd2l-link/d2l-link.js';
+import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
@@ -47,7 +46,7 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 	}
 	constructor() { super(); }
 
-	_fetch(url) {
+	__fetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
@@ -82,7 +81,7 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 
 	_followHref(href) {
 		if (href) {
-			return this._fetch(href);
+			return this.__fetch(href);
 		}
 		return Promise.resolve();
 	}
