@@ -61,7 +61,6 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 			return this._getActivityPromise(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
-			//console.dir(e);
 		} finally {
 			this._loading = false;
 		}
@@ -103,9 +102,6 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 		}
 		return this._followLink(activityEntity, rel)
 			.then(function(a) {
-
-				console.dir(JSON.stringify(a));
-
 				if (a && a.entity && a.entity.properties) {
 					this._activityName = a.entity.properties.name;
 					this._activityIcon = activityIcon;

@@ -37,33 +37,37 @@
 				test('instantiating the element works', function() {
 					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
 				});
-				test('activityName is set correctly', function(done) {
-					window.requestAnimationFrame(function() {
+				test('activityName is set correctly', function() {
+					window.setTimeout(function() {
 						assert.equal(activityName._activityName, 'Folder 1');
-						done();
-					});
+					}, 30);
 				});
-				test('activityIcon is set correctly', function(done) {
-					flush(function() {
+				test('activityIcon is set correctly', function() {
+					window.setTimeout(function() {
 						assert.equal(activityName._activityIcon, 'd2l-tier1:assignments');
-						done();
-					});
+					}, 30);
 				});
 			});
-			suite('d2l-activity-name quiz', function() {
+			suite('d2l-activity-name quiz attempt', function() {
 				setup(function() {
 					activityName = fixture('quizAttempt');
 				});
-				test('test quiz attempt', function() {
-					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
+				test('activityName and activityIcon are set correctly for quiz attempt activity', function() {
+					window.setTimeout(function() {
+						assert.equal(activityName._activityName, 'Quiz 1');
+						assert.equal(activityName._activityIcon, 'd2l-tier1:quizzing');
+					}, 30);
 				});
 			});
-			suite('d2l-activity-name topic', function() {
+			suite('d2l-activity-name discussion topic', function() {
 				setup(function() {
 					activityName = fixture('topic');
 				});
-				test('test topic', function() {
-					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
+				test('activityName and activityIcon are set correctly for discussion topic activity', function() {
+					window.setTimeout(function() {
+						assert.equal(activityName._activityName, 'Topic 1');
+						assert.equal(activityName._activityIcon, 'd2l-tier1:discussions');
+					}, 30);
 				});
 			});
 		</script>
