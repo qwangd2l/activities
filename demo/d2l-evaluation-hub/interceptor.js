@@ -1,3 +1,5 @@
+/*eslint no-console: "off"*/
+
 function startMockServer(mappings, debug) {
 	const oldFetch = window.d2lfetch.fetch.bind(window.d2lfetch);
 
