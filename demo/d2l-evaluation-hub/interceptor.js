@@ -3,7 +3,7 @@ function intercept(input, options, mappings) {
 		return Promise.resolve({
 			ok: true,
 			json: function() {
-				return Promise.resolve(mappings[input])
+				return Promise.resolve(mappings[input]);
 			}
 		});
 	}
