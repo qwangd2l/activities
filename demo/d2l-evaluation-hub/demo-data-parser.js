@@ -1,3 +1,5 @@
+import chunk from 'lodash-es/chunk';
+
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
 }
@@ -226,17 +228,6 @@ function getMappings(data) {
 	});
 
 	return mappings;
-}
-
-function chunk(array, count) {
-	if (count === null || count < 1) return [];
-	const result = [];
-	let i = 0;
-	const length = array.length;
-	while (i < length) {
-		result.push(Array.prototype.slice.call(array, i, i += count));
-	}
-	return result;
 }
 
 export default getMappings;
