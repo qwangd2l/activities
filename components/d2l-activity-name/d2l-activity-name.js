@@ -52,7 +52,7 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 		}
 
 		try {
-			return this._getActivityPromise(entity);
+			await this._getActivityPromise(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
 		}
@@ -72,7 +72,7 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 		return Promise.resolve();
 	}
 
-	_getActivityPromise(activityEntity) {
+	async _getActivityPromise(activityEntity) {
 		let rel;
 		let activityIcon;
 		if (activityEntity.hasClass(Classes.activities.userQuizAttemptActivity)) {
