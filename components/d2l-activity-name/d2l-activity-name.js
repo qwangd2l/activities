@@ -41,12 +41,8 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 			'_loadData(entity, href)'
 		];
 	}
-	ready() {
-		super.ready();
-	}
-	constructor() { super(); }
 
-	__fetch(url) {
+	_activityNameFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
@@ -55,32 +51,23 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 			return Promise.resolve();
 		}
 
-		this._loading = true;
-
 		try {
 			return this._getActivityPromise(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
-		} finally {
-			this._loading = false;
 		}
 	}
 
 	_followLink(entity, rel) {
-		var href = this._getHref(entity, rel);
-		return this._followHref(href);
-	}
-
-	_getHref(entity, rel) {
+		let href;
 		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
-			return entity.getLinkByRel(rel).href;
+			href = entity.getLinkByRel(rel).href;
+		} else {
+			href = '';
 		}
-		return '';
-	}
 
-	_followHref(href) {
 		if (href) {
-			return this.__fetch(href);
+			return this._activityNameFetch(href);
 		}
 		return Promise.resolve();
 	}
