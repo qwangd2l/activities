@@ -257,7 +257,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 							</div>
 						</div>
 
-						<div hidden$="[[!_showDescription]]">
+						<div id="d2l-activity-list-item-description" hidden$="[[!_showDescription]]">
 							<div hidden$="[[!_textPlaceholder]]">
 								<template is="dom-repeat" items="[[_descriptionPlaceholderLines]]">
 									<div class="d2l-activity-list-item-description-placeholder-container">
@@ -515,6 +515,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		event.preventDefault();
 	}
 	_clampDescription(description) {
+		if (!description) return;
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		if (!this._showDescription) {
 			p.textContent = '';

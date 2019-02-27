@@ -166,7 +166,7 @@ describe('d2l-activity-list-item', () => {
 			component = fixture('d2l-activity-list-item-responsive-384-fixture');
 			afterNextRender(component, () => {
 				expect(component._showDescription).to.be.false;
-				var description = component.$$('.d2l-activity-list-item-description');
+				var description = component.$$('#d2l-activity-list-item-description');
 				expect(description.hasAttribute('hidden')).to.be.true;
 				done();
 			});
@@ -176,7 +176,7 @@ describe('d2l-activity-list-item', () => {
 			component = fixture('d2l-activity-list-item-responsive-385-fixture');
 			afterNextRender(component, () => {
 				expect(component._showDescription).to.be.true;
-				var description = component.$$('.d2l-activity-list-item-description');
+				var description = component.$$('#d2l-activity-list-item-description');
 				expect(description.hasAttribute('hidden')).to.be.false;
 				done();
 			});
