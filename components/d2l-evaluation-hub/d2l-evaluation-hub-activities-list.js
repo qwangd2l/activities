@@ -88,11 +88,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: [ 'displayName' ], sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
-					{ key: [ 'activityName' ], sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
-					{ key: [ 'courseName' ], sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
-					{ key: [ 'submissionDate' ], sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false },
-					{ key: [ 'masterTeacher' ], sortKey: 'masterTeacher', localizationKey: 'masterTeacher', canLink: false }
+					{ key: 'displayName', sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
+					{ key: 'activityName', sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
+					{ key: 'courseName', sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
+					{ key: 'submissionDate', sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false },
+					{ key: 'masterTeacher', sortKey: 'masterTeacher', localizationKey: 'masterTeacher', canLink: false }
 				]
 			},
 			_data: {
@@ -397,7 +397,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_shouldDisplayColumn(columnKey) {
-		if (columnKey.includes('masterTeacher')) {
+		if (columnKey === 'masterTeacher') {
 			return this.masterTeacher;
 		}
 		return true;
