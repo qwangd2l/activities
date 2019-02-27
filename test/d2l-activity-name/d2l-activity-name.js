@@ -15,7 +15,7 @@
 		});
 		test('attributes are set correctly', function() {
 			assert.equal(activityName.href, 'data/assignmentActivity.json');
-			assert.equal(activityName.token, 'fakeAssignmentToken');
+			assert.equal(activityName.token, 'faketoken');
 		});
 		test('activityName is set correctly', (done) => {
 			loadPromise('data/assignmentActivity.json').then(function() {
