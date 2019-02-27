@@ -37,7 +37,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					display: none;
 				}
 			</style>
-			<d2l-table hidden$="[[_initialLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headers]]">
@@ -99,7 +99,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: Array,
 				value: [ ]
 			},
-			_initialLoading: {
+			_fullListLoading: {
 				type: Boolean,
 				value: true
 			},
@@ -129,7 +129,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	ready() {
 		super.ready();
 		this.addEventListener('d2l-siren-entity-error', function() {
-			this._initialLoading = false;
+			this._fullListLoading = false;
 			this._loading = false;
 		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
@@ -166,13 +166,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}
 
 		this._loading = true;
+		this._fullListLoading = true;
 
 		try {
-			await this._parseActivities(entity);
+			var result = await this._parseActivities(entity);
+			this._data = result;
 		} catch (e) {
 			// Unable to load activities from entity.
 		} finally {
-			this._initialLoading = false;
+			this._fullListLoading = false;
 			this._loading = false;
 		}
 	}
@@ -186,10 +188,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
 
 					try {
-						await this._loadData(u.entity);
+						var result = await this._parseActivities(u.entity);
+						this._data = this._data.concat(result);
 					} catch (e) {
 						// Unable to load more activities from entity.
 					} finally {
+						this._loading = false;
 						window.requestAnimationFrame(function() {
 							var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
 							newElementToFocus.focus();
@@ -251,7 +255,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this._pageNextHref = this._getHref(entity, 'next');
 
 		const result = await Promise.all(promises);
-		this._data = this._data.concat(result);
+		return result;
 	}
 
 	_getMasterTeacherPromise(entity, item) {

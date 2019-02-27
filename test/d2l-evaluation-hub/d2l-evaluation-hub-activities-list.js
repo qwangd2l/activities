@@ -132,18 +132,18 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			assert.equal(list.href, 'blah');
 			assert.equal(list.token, 't');
 		});
-		test('_initialLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
+		test('_fullListLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
 			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
 			assert.equal(loadingSpinner.hidden, false);
-			assert.equal(list._initialLoading, true);
+			assert.equal(list._fullListLoading, true);
 			assert.equal(list._loading, true);
 		});
-		test('_initialLoading and _loading is set to false after data is loaded and the loading spinner is hidden', (done) => {
+		test('_fullListLoading and _loading is set to false after data is loaded and the loading spinner is hidden', (done) => {
 			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
 
 			loadPromise('data/unassessedActivities.json').then(function() {
 				assert.equal(loadingSpinner.hidden, true);
-				assert.equal(list._initialLoading, false);
+				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 				done();
 			});
