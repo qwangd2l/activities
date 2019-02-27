@@ -50,7 +50,8 @@
 			<h3>Basic d2l-activity-list-item demo</h3>
 			<demo-snippet>
 				<template>
-					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
+					<d2l-activity-list-item image-shimmer text-placeholder></d2l-activity-list-item>
+					<d2l-activity-list-item href="../data/base/activity.json" id="shimmer-placeholder-test" image-shimmer text-placeholder></d2l-activity-list-item>
 					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
 					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
 					<d2l-activity-list-item href="../data/base/activity.json"></d2l-activity-list-item>
@@ -70,6 +71,11 @@
 							item._category = 'Financial Planning';
 						});
 
+						setTimeout(() => {
+							const shimmerPlaceholderTest = document.querySelector('#shimmer-placeholder-test');
+							shimmerPlaceholderTest.removeAttribute('image-shimmer');
+							shimmerPlaceholderTest.removeAttribute('text-placeholder');
+						}, 2000);
 					</script>
 				</template>
 			</demo-snippet>
