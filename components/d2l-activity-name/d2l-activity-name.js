@@ -38,7 +38,7 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 	}
 	static get observers() {
 		return [
-			'_loadData(entity, href)'
+			'_loadData(entity)'
 		];
 	}
 
