@@ -11,8 +11,8 @@
 		<script src="../../../wct-browser-legacy/browser.js"></script>
 
 		<!-- For IE11 -->
-		<script src="../../node_modules/lie/dist/lie.polyfill.min.js"></script>
-		<script type="module" src="../../node_modules/whatwg-fetch/fetch.js"></script>
+		<script src="../../../lie/dist/lie.polyfill.min.js"></script>
+		<script type="module" src="../../../whatwg-fetch/fetch.js"></script>
 
 		<script type="module" src="../../components/d2l-activity-name/d2l-activity-name.js"></script>
 	</head>
@@ -24,61 +24,15 @@
 		</test-fixture>
 		<test-fixture id="quizAttempt">
 			<template strip-whitespace>
-				<d2l-activity-name href="data/quizActivity.json" token="fakeQuizToken"></d2l-activity-name>
+				<d2l-activity-name href="" token="fakeQuizToken"></d2l-activity-name>
 			</template>
 		</test-fixture>
 		<test-fixture id="topic">
 			<template strip-whitespace>
-				<d2l-activity-name href="data/topicActivity.json" token="fakeTopicToken"></d2l-activity-name>
+				<d2l-activity-name href="" token="fakeTopicToken"></d2l-activity-name>
 			</template>
 		</test-fixture>
 
-		<script type="module">
-			let activityName;
-			suite('d2l-activity-name base', function() {
-				setup(function() {
-					activityName = fixture('assignment');
-				});
-				test('instantiating the element works', function() {
-					assert.equal(activityName.tagName.toLowerCase(), 'd2l-activity-name');
-				});
-				test('attributes are set correctly', function() {
-					assert.equal(activityName.href, 'data/assignmentActivity.json');
-					assert.equal(activityName.token, 'fakeAssignmentToken');
-				});
-				test('activityName is set correctly', function() {
-					window.setTimeout(function() {
-						assert.equal(activityName._activityName, 'Folder 1');
-					}, 30);
-				});
-				test('activityIcon is set correctly', function() {
-					window.setTimeout(function() {
-						assert.equal(activityName._activityIcon, 'd2l-tier1:assignments');
-					}, 30);
-				});
-			});
-			suite('d2l-activity-name quiz attempt', function() {
-				setup(function() {
-					activityName = fixture('quizAttempt');
-				});
-				test('activityName and activityIcon are set correctly for quiz attempt activity', function() {
-					window.setTimeout(function() {
-						assert.equal(activityName._activityName, 'Quiz 1');
-						assert.equal(activityName._activityIcon, 'd2l-tier1:quizzing');
-					}, 30);
-				});
-			});
-			suite('d2l-activity-name discussion topic', function() {
-				setup(function() {
-					activityName = fixture('topic');
-				});
-				test('activityName and activityIcon are set correctly for discussion topic activity', function() {
-					window.setTimeout(function() {
-						assert.equal(activityName._activityName, 'Topic 1');
-						assert.equal(activityName._activityIcon, 'd2l-tier1:discussions');
-					}, 30);
-				});
-			});
-		</script>
+		<script type="module" src="./d2l-activity-name.js"></script>
 	</body>
 </html>
