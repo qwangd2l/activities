@@ -137,8 +137,11 @@ describe('d2l-activity-list-item', () => {
 				expect(component._activityHomepage).to.equal('#');
 			});
 
-			it('should send text loaded event', () => {
-				expect(textLoadedSuccessfulSpy.calledOnce).to.be.true;
+			it(testCase.name + 'should send text loaded event', done => {
+				window.document.addEventListener('d2l-activity-text-loaded', () => {
+					done();
+				});
+				testCase.beforeEachFn();
 			});
 
 		});
@@ -149,7 +152,6 @@ describe('d2l-activity-list-item', () => {
 			});
 			testCase.beforeEachFn();
 		});
-
 	});
 
 	describe('Accessibility', () => {
