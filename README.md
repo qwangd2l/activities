@@ -47,6 +47,8 @@ This will update the version in the package.json file, commit that, and generate
 
 When Travis CI runs on the tagged release, it will be deployed to NPM.
 
+Once the tag is generated, navigate to the [Releases](https://github.com/BrightspaceHypermediaComponents/activities/releases) tab and draft a new release that matches the tag. Here you can provide more detailed information on what has changed in the release.
+
 ## Usage
 
 The evaluation hub should be pulled directly from `my-unassessed-activities`:
