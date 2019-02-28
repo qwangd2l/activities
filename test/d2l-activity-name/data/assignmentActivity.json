@@ -1,0 +1,10 @@
+{
+	"class": ["user-assignment-activity","activity"],
+	"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+	"links":[
+    {
+			"rel":["https://api.brightspace.com/rels/assignment"],
+			"href":"data/assignment1.json"
+		}
+	]
+}

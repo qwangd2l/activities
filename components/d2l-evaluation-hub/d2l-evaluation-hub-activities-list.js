@@ -123,7 +123,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	static get observers() {
 		return [
-			'_loadData(entity, href)'
+			'_loadData(entity)'
 		];
 	}
 	ready() {
