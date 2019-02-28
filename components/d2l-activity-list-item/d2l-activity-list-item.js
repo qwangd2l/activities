@@ -585,10 +585,12 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
 
-		this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
-			bubbles: true,
-			composed: true
-		}));
+		afterNextRender(this, () => {
+			this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
+				bubbles: true,
+				composed: true
+			}));
+		});
 
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
