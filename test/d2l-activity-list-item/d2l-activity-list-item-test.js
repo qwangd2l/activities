@@ -73,8 +73,8 @@ describe('d2l-activity-list-item', () => {
 				href: '/organization/1/image/1'
 			}, {
 				rel: ['alternate'],
-				href: '',
-				class: ['tile']
+				class: ['narrow', 'high-density', 'min'],
+				href: 'https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/tile-low-density-max-size.jpg',
 			}]
 		});
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
@@ -108,12 +108,9 @@ describe('d2l-activity-list-item', () => {
 		}
 	].forEach((testCase) => {
 		describe(testCase.name, () => {
-			let imageLoadedSuccessfulSpy;
 			let textLoadedSuccessfulSpy;
 
 			beforeEach(done => {
-				imageLoadedSuccessfulSpy = sinon.spy();
-				window.document.addEventListener('d2l-activity-image-loaded', imageLoadedSuccessfulSpy);
 				textLoadedSuccessfulSpy = sinon.spy();
 				window.document.addEventListener('d2l-activity-text-loaded', textLoadedSuccessfulSpy);
 				testCase.beforeEachFn();
@@ -144,16 +141,18 @@ describe('d2l-activity-list-item', () => {
 				expect(textLoadedSuccessfulSpy.calledOnce).to.be.true;
 			});
 
-			it('should send image loaded event', () => {
-				expect(imageLoadedSuccessfulSpy.calledOnce).to.be.true;
-			});
+		});
 
+		it(testCase.name + 'should send image loaded event', done => {
+			window.document.addEventListener('d2l-activity-image-loaded', () => {
+				done();
+			});
+			testCase.beforeEachFn();
 		});
 
 	});
 
 	describe('Accessibility', () => {
-
 		beforeEach(done => {
 			component = fixture('d2l-activity-list-item-href-fixture');
 			afterNextRender(component, done);

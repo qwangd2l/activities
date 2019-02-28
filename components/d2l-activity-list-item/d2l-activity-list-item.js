@@ -224,16 +224,13 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				</a>
 				<div class="d2l-activity-list-item-link-container">
 					<div class="d2l-activity-list-item-image">
-						<template is="dom-if" if="[[imageShimmer]]">
-							<div class="d2l-activity-list-item-image-shimmer"></div>
-						</template>
-						<template is="dom-if" if="[[!imageShimmer]]">
-							<d2l-course-image
-								image="[[_image]]"
-								sizes="[[_tileSizes]]"
-								type="narrow">
-							</d2l-course-image>
-						</template>
+						<div class="d2l-activity-list-item-image-shimmer" hidden$="[[!imageShimmer]]"></div>
+						<d2l-course-image
+							hidden$="[[imageShimmer]]"
+							image="[[_image]]"
+							sizes="[[_tileSizes]]"
+							type="narrow">
+						</d2l-course-image>
 					</div>
 
 					<div class="d2l-activity-list-item-content">
@@ -413,6 +410,9 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			link.addEventListener('keydown', this._onLinkTrigger.bind(this));
 			this.addEventListener('iron-resize', this._onIronSize.bind(this));
 			this._setResponsiveSizes(this.offsetWidth);
+
+			const image = this.shadowRoot.querySelector('d2l-course-image');
+			image.addEventListener('course-image-loaded', this._activityImageLoaded.bind(this));
 		});
 	}
 	_onD2lOrganizationAccessible(e) {
@@ -439,6 +439,9 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		link.removeEventListener('blur', this._onLinkBlur);
 		link.removeEventListener('focus', this._onLinkFocus);
 		this.removeEventListener('iron-resize', this._onIronSize);
+
+		const image = this.shadowRoot.querySelector('d2l-course-image');
+		image.removeEventListener('course-image-loaded', this._activityImageLoaded);
 	}
 
 	_reset() {
@@ -604,19 +607,20 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				this._fetchEntity(imageEntity.href)
 					.then(function(hydratedImageEntity) {
 						this._image = hydratedImageEntity;
-					}.bind(this))
-					.finally(() => {
-						this.dispatchEvent(new CustomEvent('d2l-activity-image-loaded', {
-							bubbles: true,
-							composed: true
-						}));
-					});
+					}.bind(this));
 			} else {
 				this._image = imageEntity;
 			}
 		}
 
 		return Promise.resolve();
+	}
+
+	_activityImageLoaded() {
+		this.dispatchEvent(new CustomEvent('d2l-activity-image-loaded', {
+			bubbles: true,
+			composed: true
+		}));
 	}
 
 	_fetchEntity(url) {
