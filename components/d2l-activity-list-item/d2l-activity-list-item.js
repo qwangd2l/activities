@@ -573,6 +573,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		) {
 			return;
 		}
+
 		this._description = sirenEntity.properties && sirenEntity.properties.description;
 
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
@@ -580,6 +581,12 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}
 		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
+
+		this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
+			bubbles: true,
+			composed: true
+		}));
+
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
 				.then(this._handleOrganizationResponse.bind(this));
@@ -597,7 +604,13 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				this._fetchEntity(imageEntity.href)
 					.then(function(hydratedImageEntity) {
 						this._image = hydratedImageEntity;
-					}.bind(this));
+					}.bind(this))
+					.finally(() => {
+						this.dispatchEvent(new CustomEvent('d2l-activity-image-loaded', {
+							bubbles: true,
+							composed: true
+						}));
+					});
 			} else {
 				this._image = imageEntity;
 			}

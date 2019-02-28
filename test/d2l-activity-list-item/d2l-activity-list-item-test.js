@@ -108,8 +108,14 @@ describe('d2l-activity-list-item', () => {
 		}
 	].forEach((testCase) => {
 		describe(testCase.name, () => {
+			let imageLoadedSuccessfulSpy;
+			let textLoadedSuccessfulSpy;
 
 			beforeEach(done => {
+				imageLoadedSuccessfulSpy = sinon.spy();
+				window.document.addEventListener('d2l-activity-image-loaded', imageLoadedSuccessfulSpy);
+				textLoadedSuccessfulSpy = sinon.spy();
+				window.document.addEventListener('d2l-activity-text-loaded', textLoadedSuccessfulSpy);
 				testCase.beforeEachFn();
 				afterNextRender(component, done);
 			});
@@ -132,6 +138,14 @@ describe('d2l-activity-list-item', () => {
 
 			it('should set the activity homepage', () => {
 				expect(component._activityHomepage).to.equal('#');
+			});
+
+			it('should send text loaded event', () => {
+				expect(textLoadedSuccessfulSpy.calledOnce).to.be.true;
+			});
+
+			it('should send image loaded event', () => {
+				expect(imageLoadedSuccessfulSpy.calledOnce).to.be.true;
 			});
 
 		});
