@@ -1,6 +1,0 @@
-{
-	"rel":["https://assignments.api.brightspace.com/rels/assignment"],
-	"properties":{
-		"name":"Totally Awesome Assignment!"
-	}
-}
