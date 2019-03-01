@@ -30,31 +30,30 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	}
 
 	function verifyData(expected, done) {
-		let data = list.shadowRoot.querySelectorAll('d2l-td');
+		const data = list.shadowRoot.querySelectorAll('d2l-td');
 
-		if (data.length !== expected.length) {
-			window.setTimeout(function() {
-				verifyData(expected, done);
-			}, 30);
-		} else {
-			for (let i = 0; i < expected.length; i++) {
+		console.dir(expected);
 
-				let link = data[i].querySelector('d2l-link');
-				if (link) {
-					assert.equal(expected[i].text, link.innerHTML);
-					assert.equal(expected[i].href, link.href);
-				}
-				let span = data[i].querySelector('span');
-				if (span) {
-					assert.equal(expected[i].text, span.innerHTML);
-				}
-				let activityName = data[i].querySelector('d2l-activity-name');
-				if (activityName) {
-					assert.equal(expected[i].href, activityName.href);
-				}
+		for (let i = 0; i < expected.length; i++) {
+			const link = data[i].querySelector('d2l-link');
+			const span = data[i].querySelector('span');
+			const activityName = data[i].querySelector('d2l-activity-name');
+
+			if (link) {
+				assert.equal(expected[i].text, link.innerHTML);
+				assert.equal(expected[i].href, link.href);
+			} else if (span) {
+				console.dir('span: ' + i);
+				console.dir(span);
+				console.dir('expected: ' + expected[i].text);
+				console.dir('actual: ' + span.innerHTML);
+
+				assert.equal(expected[i].text, span.innerHTML);
+			} else if (activityName) {
+				assert.equal(expected[i].href, activityName.href);
 			}
-			done();
 		}
+		done();
 	}
 
 	var expectedData = [
