@@ -360,7 +360,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_getActivityNameHref(entity) {
 		if (entity.hasLinkByRel(Rels.Activities.userActivityUsage)) {
-			let link = entity.getLinkByRel(Rels.Activities.userActivityUsage);
+			const link = entity.getLinkByRel(Rels.Activities.userActivityUsage);
 			return link.href;
 		}
 		return '';

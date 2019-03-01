@@ -10,6 +10,10 @@
 			"class": ["user-assignment-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
+        {
+          "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+          "href":"data/assignmentActivity.json"
+        },
 				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/user.json"
@@ -66,6 +70,10 @@
 			"class": ["user-quiz-attempt-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
+        {
+          "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+          "href":"data/quizAttemptActivity.json"
+        },
 				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/user.json"
@@ -122,6 +130,10 @@
 			"class": ["user-discussion-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
+        {
+          "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+          "href":"data/topicActivity.json"
+        },
 				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/user.json"
