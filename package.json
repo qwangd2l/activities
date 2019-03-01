@@ -51,6 +51,7 @@
 		"@polymer/polymer": "^3.0.0",
 		"d2l-button": "BrightspaceUI/button#semver:^5",
 		"d2l-colors": "BrightspaceUI/colors#semver:^4",
+		"d2l-common": "BrightspaceHypermediaComponents/common#cbusman/d2l-hm-filter",
 		"d2l-course-image": "Brightspace/course-image#semver:^3",
 		"d2l-fetch": "Brightspace/d2l-fetch.git#semver:^2",
 		"d2l-hypermedia-constants": "Brightspace/d2l-hypermedia-constants#semver:^6",

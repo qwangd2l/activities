@@ -1,6 +1,8 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
+import {Rels} from 'd2l-hypermedia-constants';
+import 'd2l-common/components/d2l-hm-filter/d2l-hm-filter.js';
 import './d2l-evaluation-hub-activities-list.js';
 
 /**
@@ -14,22 +16,69 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				:host {
 					display: block;
 				}
+				.d2l-evaluation-hub-top-bar {
+					padding: 1rem 0;
+					text-align: right;
+				}
 			</style>
+			<div class="d2l-evaluation-hub-top-bar">
+				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" filter-classes="[[_filterClasses]]"></d2l-hm-filter>
+			</div>
 			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-evaluation-hub-activities-list>
 		`;
 	}
 
 	static get properties() {
 		return {
-			'masterTeacher': {
+			masterTeacher: {
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
-			}
+			},
+			_filterHref: {
+				type: String,
+				computed: '_getFilterHref(entity)'
+			},
+			_filterClasses: {
+				type: Array,
+				computed: '_getFilterClasses(masterTeacher)'
+			},
 		};
 	}
 
 	static get is() { return 'd2l-evaluation-hub'; }
+
+	attached()  {
+		this.addEventListener('d2l-hm-filter-filters-updated', this._filterChanged);
+	}
+
+	detached() {
+		this.removeEventListener('d2l-hm-filter-filters-updated', this._filterChanged);
+	}
+
+	_getFilterHref(entity) {
+		return this._getHref(entity, Rels.filters);
+	}
+
+	_getHref(entity, rel) {
+		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
+			return entity.getLinkByRel(rel).href;
+		}
+		return '';
+	}
+
+	_getFilterClasses(masterTeacher) {
+		var filters = [ 'activity-type', 'enrollments' ];
+		if (masterTeacher) {
+			filters = filters.concat('master-teacher');
+		}
+		return filters;
+	}
+
+	_filterChanged(e) {
+		var list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		list.entity = e.detail.filteredActivities;
+	}
 
 }
 

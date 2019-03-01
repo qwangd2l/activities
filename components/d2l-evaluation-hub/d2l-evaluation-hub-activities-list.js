@@ -80,7 +80,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
 		return {
-			'masterTeacher': {
+			masterTeacher: {
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
