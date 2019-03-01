@@ -2,8 +2,8 @@
    "activityName" : "Etkinlik Adı",
    "courseName" : "Ders",
    "displayName" : "Ad, Soyad",
-   "loading": "Loading",
    "loadMore" : "Daha fazla yükle",
-   "masterTeacher": "Master Teacher",
+   "loading" : "Yükleniyor",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "Gönderme Tarihi"
 }
