@@ -55,26 +55,18 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
 							<d2l-tr>
-								<template is="dom-if" if="[[s.displayName]]">
-									<d2l-td>
-										<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
-									</d2l-td>
-								</template>
-								<template is="dom-if" if="[[s.activityName]]">
-									<d2l-td>
-										<d2l-activity-name href="[[s.activityLink]]"></d2l-activity-name>
-									</d2l-td>
-								</template>
-								<template is="dom-if" if="[[[s.courseName]]">
-									<d2l-td>
-										<span>[[_getDataProperty(s, 'courseName')]]</span>
-									</d2l-td>
-								</template>
-								<template is="dom-if" if="[[s.submissionDate]]">
-									<d2l-td>
-										<span>[[_getDataProperty(s, 'submissionDate')]]</span>
-									</d2l-td>
-								</template>
+								<d2l-td>
+									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
+								</d2l-td>
+								<d2l-td>
+									<d2l-activity-name href="[[_getDataProperty(s, 'activityName')]]" token="[[token]]"></d2l-activity-name>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'courseName')]]</span>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'submissionDate')]]</span>
+								</d2l-td>
 								<template is="dom-if" if="[[[s.masterTeacher && _shouldDisplayColumn('masterTeacher')]]">
 									<d2l-td>
 										<span>[[_getDataProperty(s, 'masterTeacher')]]</span>
@@ -188,8 +180,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		try {
 			var result = await this._parseActivities(entity);
 			this._data = result;
-
-			console.dir(JSON.stringify(this._data));
 		} catch (e) {
 			// Unable to load activities from entity.
 		} finally {
@@ -249,7 +239,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				var item = {
 					displayName: '',
 					courseName: '',
-					activityName: '',
+					activityName: this._getActivityNameHref(activity),
 					submissionDate: this._getSubmissionDate(activity),
 					activityLink: this._getRelativeUriProperty(activity),
 					masterTeacher: ''
@@ -257,13 +247,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 				var getUserName = this._getUserPromise(activity, item);
 				var getCourseName = this._getCoursePromise(activity, item);
-				var getActivityName = this._getActivityPromise(activity, item);
 				var getMasterTeacherName =
 					this._shouldDisplayColumn('masterTeacher')
 						? this._getMasterTeacherPromise(activity, item)
 						: Promise.resolve();
 
-				Promise.all([getUserName, getCourseName, getActivityName, getMasterTeacherName]).then(function() {
+				Promise.all([getUserName, getCourseName, getMasterTeacherName]).then(function() {
 					resolve(item);
 				});
 			}.bind(this)));
@@ -351,25 +340,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}.bind(this));
 	}
 
-	_getActivityPromise(entity, item) {
-		var rel;
-		if (entity.hasClass(Classes.activities.userQuizAttemptActivity)) {
-			rel = Rels.quiz;
-		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
-			rel = Rels.assignment;
-		} else if (entity.hasClass(Classes.activities.userDiscussionActivity)) {
-			rel = Rels.Discussions.topic;
-		} else {
-			return Promise.resolve();
-		}
-		return this._followLink(entity, rel)
-			.then(function(a) {
-				if (a && a.entity && a.entity.properties) {
-					item.activityName = a.entity.properties.name;
-				}
-			});
-	}
-
 	_getCoursePromise(entity, item) {
 		return this._followLink(entity, Rels.organization)
 			.then(function(o) {
@@ -386,6 +356,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
 				}
 			});
+	}
+
+	_getActivityNameHref(entity) {
+		if (entity.hasLinkByRel(Rels.Activities.userActivityUsage)) {
+			let link = entity.getLinkByRel(Rels.Activities.userActivityUsage);
+			return link.href;
+		}
+		return '';
 	}
 
 	_getSubmissionDate(entity) {
