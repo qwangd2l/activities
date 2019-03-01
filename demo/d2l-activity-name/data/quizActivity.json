@@ -1,0 +1,10 @@
+{
+	"class": ["user-quiz-attempt-activity","activity"],
+	"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+	"links":[
+    {
+			"rel":["https://api.brightspace.com/rels/quiz"],
+			"href":"data/quizAttempt1.json"
+		}
+	]
+}

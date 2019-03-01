@@ -34,10 +34,11 @@
 		"lie": "^3.3.0",
 		"lodash-es": "^4.17.11",
 		"polymer-cli": "^1.9.2",
+		"url-polyfill": "^1.1.3",
 		"wct-browser-legacy": "^1.0.1",
 		"whatwg-fetch": "^3.0.0"
 	},
-	"version": "1.3.7",
+	"version": "1.9.2",
 	"resolutions": {
 		"inherits": "2.0.3",
 		"samsam": "1.1.3",

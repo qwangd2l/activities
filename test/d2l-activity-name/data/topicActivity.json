@@ -1,0 +1,10 @@
+{
+	"class": ["user-discussion-activity","activity"],
+	"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+	"links":[
+    {
+			"rel":["https://discussions.api.brightspace.com/rels/topic"],
+			"href":"data/topic1.json"
+		}
+	]
+}

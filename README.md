@@ -45,6 +45,8 @@ git push origin master --tags
 
 This will update the version in the package.json file, commit that, and generate a new tag.
 
+Once the tag is generated, navigate to the [Releases](https://github.com/BrightspaceHypermediaComponents/activities/releases) tab and draft a new release that matches the tag. Here you can provide more detailed information on what has changed in the release.
+
 When Travis CI runs on the tagged release, it will be deployed to NPM.
 
 ## Usage

@@ -18,10 +18,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.8, //rem
 					lineHeight: 1.2, //rem
 					fontWeight: 700,
-					margin: '0.4rem 0 0 0'
+					marginTop: '0.4', // rem
+					marginRight: '0',
+					marginBottom: '0', // rem
+					marginLeft: '0'
 				},
 				padding: '0.9rem 0',
-				showDescription: false
+				showDescription: false,
+				placeholder: {
+					category: {
+						width: '45%'
+					},
+					title: {
+						width: '90%'
+					},
+					footer: {
+						count: 1,
+						width: '55%'
+					}
+				}
 			},
 			{
 				minWidth: 339,
@@ -34,10 +49,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.8, //rem
 					lineHeight: 1.2, //rem
 					fontWeight: 700,
-					margin: '0.4rem 0 0 0'
+					marginTop: '0.4', // rem
+					marginRight: '0',
+					marginBottom: '0', // rem
+					marginLeft: '0'
 				},
 				padding: '0.9rem 0',
-				showDescription: false
+				showDescription: false,
+				placeholder: {
+					category: {
+						width: '45%'
+					},
+					title: {
+						width: '90%'
+					},
+					footer: {
+						count: 2,
+						width: '45%'
+					}
+				}
 			},
 			{
 				minWidth: 385,
@@ -50,10 +80,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.8, //rem
 					lineHeight: 1.2, //rem
 					fontWeight: 700,
-					margin: '0.4rem 0 0.3rem 0'
+					marginTop: '0.4', // rem
+					marginRight: '0',
+					marginBottom: '0.3', // rem
+					marginLeft: '0'
 				},
 				padding: '0.9rem 0',
-				showDescription: true
+				showDescription: true,
+				placeholder: {
+					category: {
+						width: '30%'
+					},
+					title: {
+						width: '50%'
+					},
+					footer: {
+						count: 2,
+						width: '30%'
+					}
+				}
 			},
 			{
 				minWidth: 580,
@@ -66,10 +111,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.95, //rem
 					lineHeight: 1.5, //rem
 					fontWeight: 400,
-					margin: '0.2rem 0'
+					marginTop: '0.2', // rem
+					marginRight: '0',
+					marginBottom: '0.2', // rem
+					marginLeft: '0'
 				},
 				padding: '1.2rem 0',
-				showDescription: true
+				showDescription: true,
+				placeholder: {
+					category: {
+						width: '25%'
+					},
+					title: {
+						width: '50%'
+					},
+					footer: {
+						count: 2,
+						width: '25%'
+					}
+				}
 			},
 			{
 				minWidth: 636,
@@ -82,10 +142,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.95, //rem
 					lineHeight: 1.5, //rem
 					fontWeight: 400,
-					margin: '0.2rem 0'
+					marginTop: '0.2', // rem
+					marginRight: '0',
+					marginBottom: '0.2', // rem
+					marginLeft: '0'
 				},
 				padding: '1.2rem 0',
-				showDescription: true
+				showDescription: true,
+				placeholder: {
+					category: {
+						width: '25%'
+					},
+					title: {
+						width: '50%'
+					},
+					footer: {
+						count: 2,
+						width: '25%'
+					}
+				}
 			},
 			{
 				minWidth: 842,
@@ -98,10 +173,25 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 					fontSize: 0.95, //rem
 					lineHeight: 1.5, //rem
 					fontWeight: 400,
-					margin: '0.2rem 0'
+					marginTop: '0.2', // rem
+					marginRight: '0',
+					marginBottom: '0.2', // rem
+					marginLeft: '0'
 				},
 				padding: '1.2rem 0',
-				showDescription: true
+				showDescription: true,
+				placeholder: {
+					category: {
+						width: '25%'
+					},
+					title: {
+						width: '50%'
+					},
+					footer: {
+						count: 2,
+						width: '25%'
+					}
+				}
 			}
 		];
 	}
