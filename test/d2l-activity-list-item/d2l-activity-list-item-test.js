@@ -137,13 +137,13 @@ describe('d2l-activity-list-item', () => {
 				expect(component._activityHomepage).to.equal('#');
 			});
 
-			it(testCase.name + 'should send text loaded event', done => {
-				window.document.addEventListener('d2l-activity-text-loaded', () => {
-					done();
-				});
-				testCase.beforeEachFn();
-			});
+		});
 
+		it(testCase.name + 'should send text loaded event', done => {
+			window.document.addEventListener('d2l-activity-text-loaded', () => {
+				done();
+			});
+			testCase.beforeEachFn();
 		});
 
 		it(testCase.name + 'should send image loaded event', done => {
