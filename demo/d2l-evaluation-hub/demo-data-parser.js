@@ -376,6 +376,13 @@ function getHrefForMasterTeacher(id) {
 	return `masterTeacher/${id}`;
 }
 
+/*
+* `parseX` functions operate on data directly from the table
+* `formatX` functions return siren representations of X
+* `getHrefForX` functions generate a url for X
+*
+* `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
+*/
 function getMappings(data) {
 	const users = parseUsers(data);
 	const activityNames = parseActivityNames(data);
