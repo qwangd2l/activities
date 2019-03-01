@@ -54,16 +54,185 @@ function parseCourses(data) {
 	return uniqueCourseNames;
 }
 
-function formatCourse(name) {
+function formatCourse(name, enrollmentHref) {
 	return {
 		'properties':{
 			'name': name
-		}
+		},
+		'links': [
+			{
+				'rel': [
+					'https://api.brightspace.com/rels/enrollments'
+				],
+				'href':enrollmentHref
+			}
+		]
 	};
 }
 
 function getHrefForCourseId(id) {
 	return `courses/${id}`;
+}
+
+function formatEnrollments(enrollments, filterHref) {
+	return {
+		'class': [
+			'enrollments',
+			'collection'
+		],
+		'entities': enrollments,
+		'links': [
+			{
+				'rel': [
+					'https://api.brightspace.com/rels/filters'
+				],
+				'href': filterHref
+			}
+		]
+	};
+}
+
+function getHrefForEnrollments(id) {
+	return `enrollments/${id}`;
+}
+
+function formatEnrollment(userEnrollmentLink) {
+	return {
+		'class': [
+			'enrollment'
+		],
+		'rel': [
+			'https://api.brightspace.com/rels/user-enrollment'
+		],
+		'href': userEnrollmentLink
+	};
+}
+
+function getHrefForUserEnrollment(id) {
+	return `user-enrollments/${id}`;
+}
+
+function formatUserEnrollment(userLink) {
+	return {
+		'links': [
+			{
+				'rel': [
+					'https://api.brightspace.com/rels/user'
+				],
+				'href': userLink
+			}
+		]
+	};
+}
+
+function getHrefForEnrollmentFilters(id) {
+	return `enrollments/${id}/filters`;
+}
+
+function formatFilters(filters, applyHref) {
+	return {
+		'class': [
+			'collection-filters'
+		],
+		'entities': filters,
+		'actions': [
+			{
+				'href': applyHref,
+				'name': 'apply',
+				'fields': [
+					{
+						'class': [
+							'base64',
+							'json'
+						],
+						'type': 'hidden',
+						'name': 'filter',
+						'value': 'filterstate'
+					}
+				]
+			}
+		]
+	};
+}
+
+function getHrefForFilter(enrollmentId, id) {
+	return `enrollments/${enrollmentId}/filters/${id}`;
+}
+
+function formatFilter(title, filterOptions, klass, searchHref, applyHref, selfHref) {
+	return {
+		'class': [
+			'collection',
+			'filters',
+			klass
+		],
+		'rel': ['https://api.brightspace.com/rels/filters'],
+		'entities': filterOptions,
+		'href': selfHref,
+		'actions': [
+			{
+				'href': searchHref,
+				'name': 'search',
+				'fields': [
+					{
+						'type': 'search',
+						'name': 'search'
+					},
+					{
+						'class': [
+							'base64',
+							'json'
+						],
+						'type': 'hidden',
+						'name': 'existingState'
+					}
+				]
+			},
+			{
+				'href': applyHref,
+				'name': 'apply',
+				'fields': [
+					{
+						'class': [
+							'base64',
+							'json'
+						],
+						'type': 'hidden',
+						'name': 'existingState'
+					}
+				]
+			}
+		],
+		'title': title
+	};
+}
+
+function formatFilterOption(title, active, toggleHref) {
+	return {
+		'class': [
+			'filter',
+			active ? 'on' : 'off'
+		],
+		'rel': [
+			'item',
+			'https://api.brightspace.com/rels/filter'
+		],
+		'title': title,
+		'actions': [
+			{
+				'href': toggleHref,
+				'name': active ? 'remove-filter' : 'add-filter',
+				'method': 'GET',
+				'fields': [
+					{
+						'type': 'hidden',
+						'name': 'existingState',
+						'value': 'filterstate'
+					}
+				]
+			}
+		]
+	};
 }
 
 const classMapping = {
@@ -203,6 +372,10 @@ function getHrefForNextPage(currentId, pages) {
 	}
 }
 
+function getHrefForMasterTeacher(id) {
+	return `masterTeacher/${id}`;
+}
+
 function getMappings(data) {
 	const users = parseUsers(data);
 	const activityNames = parseActivityNames(data);
@@ -213,11 +386,32 @@ function getMappings(data) {
 	users.forEach((user, i) => {
 		mappings[getHrefForUserId(i)] = formatUser(user);
 	});
+	const teachersByCourse = {};
+	data.forEach(row => {
+		teachersByCourse[row.courseName] = formatName(row.masterTeacher.firstName, row.masterTeacher.lastName);
+	});
 	activityNames.forEach((activityName, i) => {
 		mappings[getHrefForActivityNameId(i)] = formatActivityName(activityName);
 	});
 	courses.forEach((course, i) => {
-		mappings[getHrefForCourseId(i)] = formatCourse(course);
+		const filters = [
+			{ title: 'Role Markers', klass: 'role-markers', options: ['Primary Facilitator'] }
+		];
+		const formattedFilters = filters
+			.map((filter, filterId) => {
+				filter.options = filter.options.map(name => formatFilterOption(name, false, getHrefForFilter(i, filterId)));
+				return filter;
+			})
+			.map((filter, filterId) => {
+				const formattedFilter = formatFilter(filter.title, filter.options, filter.klass, getHrefForFilter(i, filterId), getHrefForEnrollmentFilters(i), getHrefForFilter(i, filterId));
+				mappings[getHrefForFilter(i, filterId)] = formattedFilter;
+				return formattedFilter;
+			});
+		mappings[getHrefForEnrollmentFilters(i)] = formatFilters(formattedFilters, getHrefForEnrollments(i));
+		mappings[getHrefForMasterTeacher(i)] = formatUser(teachersByCourse[course]);
+		mappings[getHrefForEnrollments(i)] = formatEnrollments([ formatEnrollment(getHrefForUserEnrollment(i)) ], getHrefForEnrollmentFilters(i));
+		mappings[getHrefForUserEnrollment(i)] = formatUserEnrollment(getHrefForMasterTeacher(i));
+		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
 	const pagedActivities = chunk(activities.map(a => formatActivity(a)), 3);

@@ -10,13 +10,12 @@ import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
-
 /**
  * @customElement
  * @polymer
  */
 
-class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], EvaluationHubLocalize(PolymerElement)) {
+class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], EvaluationHubLocalize(PolymerElement)) {
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
@@ -137,7 +136,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	constructor() { super(); }
 
-	_fetch(url) {
+	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
@@ -215,7 +214,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_followHref(href) {
 		if (href) {
-			return this._fetch(href);
+			return this._myEntityStoreFetch(href);
 		}
 		return Promise.resolve();
 	}
@@ -229,14 +228,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					courseName: '',
 					activityName: '',
 					submissionDate: this._getSubmissionDate(activity),
-					activityLink: this._getRelativeUriProperty(activity)
+					activityLink: this._getRelativeUriProperty(activity),
+					masterTeacher: ''
 				};
 
 				var getUserName = this._getUserPromise(activity, item);
 				var getCourseName = this._getCoursePromise(activity, item);
 				var getActivityName = this._getActivityPromise(activity, item);
+				var getMasterTeacherName =
+					this._shouldDisplayColumn('masterTeacher')
+						? this._getMasterTeacherPromise(activity, item)
+						: Promise.resolve();
 
-				Promise.all([getUserName, getCourseName, getActivityName]).then(function() {
+				Promise.all([getUserName, getCourseName, getActivityName, getMasterTeacherName]).then(function() {
 					resolve(item);
 				});
 			}.bind(this)));
@@ -248,6 +252,80 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		const result = await Promise.all(promises);
 		this._data = this._data.concat(result);
+	}
+
+	_getMasterTeacherPromise(entity, item) {
+		return this._followLink(entity, Rels.organization)
+			.then(function(org) {
+				if (org && org.entity) {
+					return this._followLink(org.entity, Rels.enrollments);
+				}
+			}.bind(this))
+			.then(function(enrollment) {
+				if (enrollment && enrollment.entity) {
+					return this._followLink(enrollment.entity, Rels.filters);
+				}
+			}.bind(this))
+			.then(function(filters) {
+				if (filters && filters.entity && filters.entity.hasSubEntityByClass('role-markers')) {
+					var roleMarkerFilter = filters.entity.getSubEntityByClass('role-markers');
+					if (roleMarkerFilter.href) {
+						return this._followHref(roleMarkerFilter.href);
+					}
+				}
+			}.bind(this))
+			.then(function(filterOptions) {
+				if (filterOptions && filterOptions.entity) {
+					var action = filterOptions.entity.getActionByName('search');
+					if (action) {
+						var fields = [
+							{
+								name: 'search',
+								value: 'Primary Facilitator'
+							}
+						];
+
+						return this.performSirenAction(action, fields);
+					}
+				}
+			}.bind(this))
+			.then(function(filterOptions) {
+				if (filterOptions) {
+					var masterTeacherOption = filterOptions.getSubEntityByRel('https://api.brightspace.com/rels/filter');
+					var action = masterTeacherOption.getActionByName('add-filter');
+					return this.performSirenAction(action);
+				}
+			}.bind(this))
+			.then(function(filterOptions) {
+				if (filterOptions) {
+					var action = filterOptions.getActionByName('apply');
+					return this.performSirenAction(action);
+				}
+			}.bind(this))
+			.then(function(filters) {
+				if (filters) {
+					var action = filters.getActionByName('apply');
+					return this.performSirenAction(action);
+				}
+			}.bind(this))
+			.then(function(enrollment) {
+				if (enrollment && enrollment.hasSubEntityByRel(Rels.userEnrollment)) {
+					var userEnrollment = enrollment.getSubEntityByRel(Rels.userEnrollment);
+					if (userEnrollment.href) {
+						return this._followHref(userEnrollment.href);
+					}
+				}
+			}.bind(this))
+			.then(function(userEnrollment) {
+				if (userEnrollment && userEnrollment.entity) {
+					return this._followLink(userEnrollment.entity, Rels.user);
+				}
+			}.bind(this))
+			.then(function(user) {
+				if (user && user.entity && user.entity.hasSubEntityByRel(Rels.displayName)) {
+					item.masterTeacher = user.entity.getSubEntityByRel(Rels.displayName).properties.name;
+				}
+			}.bind(this));
 	}
 
 	_getActivityPromise(entity, item) {
@@ -320,7 +398,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_shouldDisplayColumn(columnKey) {
 		if (columnKey.includes('masterTeacher')) {
-			return this['masterTeacher'];
+			return this.masterTeacher;
 		}
 		return true;
 	}

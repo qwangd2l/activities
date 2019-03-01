@@ -1,5 +1,13 @@
 {
 	"properties":{
 		"name":"Org Name"
-	}
+	},
+	"links": [
+		{
+			"rel": [
+				"https://api.brightspace.com/rels/enrollments"
+			],
+			"href":"data/course.json"
+		}
+	]
 }
