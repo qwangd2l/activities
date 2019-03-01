@@ -17,6 +17,12 @@
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
 			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub.js';
+			import startMockServer from './interceptor';
+			import mappingsParser from './demo-data-parser';
+			import data from './table';
+
+			const mappings = mappingsParser(data);
+			startMockServer(mappings, true);
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
@@ -40,7 +46,7 @@
 			<h3>Basic d2l-evaluation-hub demo</h3>
 			<demo-snippet>
 				<template strip-whitespace>
-					<d2l-evaluation-hub master-teacher href="data/activities/activitiesList/unassessedActivities.json" token="whatever"></d2l-evaluation-hub>
+					<d2l-evaluation-hub master-teacher href="pages/0" token="whatever"></d2l-evaluation-hub>
 				</template>
 			</demo-snippet>
 		</div>
