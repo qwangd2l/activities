@@ -22,7 +22,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				}
 			</style>
 			<div class="d2l-evaluation-hub-top-bar">
-				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" filter-classes="[[_filterClasses]]"></d2l-hm-filter>
+				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterClasses]]"></d2l-hm-filter>
 			</div>
 			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-evaluation-hub-activities-list>
 		`;
@@ -68,7 +68,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	}
 
 	_getFilterClasses(masterTeacher) {
-		var filters = [ 'activity-type', 'enrollments' ];
+		var filters = [ 'activity-name', 'enrollments' ];
 		if (masterTeacher) {
 			filters = filters.concat('master-teacher');
 		}
