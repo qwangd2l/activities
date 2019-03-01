@@ -217,7 +217,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					margin-right: 0.5rem;
 				}
 			</style>
-			<div class="d2l-activity-list-item-container">
+			<div class="d2l-activity-list-item-container" style="visibility:hidden;">
 				<hr class="d2l-activity-list-item-top-line" />
 				<a class="d2l-focusable" href$="[[_activityHomepage]]">
 					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
@@ -420,6 +420,13 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
 
 		this.notifyPath('_accessibilityData');
+
+		afterNextRender(this, () => {
+			this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
+				bubbles: true,
+				composed: true
+			}));
+		});
 	}
 
 	_accessibilityDataToString(accessibility) {
@@ -494,6 +501,12 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 
 			if (this.textPlaceholder) {
 				this._setTextPlaceholderStyles(currentConfig);
+			}
+			const listItemContainer = this.shadowRoot.querySelector('.d2l-activity-list-item-container');
+			if (listItemContainer.style.visibility === 'hidden') {
+				afterNextRender(this, () => {
+					listItemContainer.style.visibility = 'visible';
+				});
 			}
 		});
 	}
@@ -584,13 +597,6 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}
 		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
-
-		afterNextRender(this, () => {
-			this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
-				bubbles: true,
-				composed: true
-			}));
-		});
 
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
