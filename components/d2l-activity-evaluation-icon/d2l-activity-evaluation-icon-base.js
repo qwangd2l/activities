@@ -12,11 +12,12 @@ class ActivityEvaluationIconBase extends PolymerElement {
 	static get template() {
 		return html`
 			<style>
-				:host(:not([draft])) {
+				:host {
 					display: none;
 				}
-				:host {
-					display: inline-block;
+
+				:host([draft]) {
+						display: inline-block;
 				}
 			</style>
 			<template is="dom-if" if="[[draft]]">
@@ -31,7 +32,8 @@ class ActivityEvaluationIconBase extends PolymerElement {
 		return {
 			draft: {
 				type: Boolean,
-				value: false
+				value: false,
+				reflectToAttribute: true
 			}
 		};
 	}
