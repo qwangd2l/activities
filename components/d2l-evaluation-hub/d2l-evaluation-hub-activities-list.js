@@ -43,7 +43,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<dom-repeat items="[[_headers]]">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
-									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.sortKey]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
 								</template>
 							</template>
 						</dom-repeat>
@@ -88,11 +88,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
-					{ key: 'activityName', sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
-					{ key: 'courseName', sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
-					{ key: 'submissionDate', sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false },
-					{ key: 'masterTeacher', sortKey: 'masterTeacher', localizationKey: 'masterTeacher', canLink: false }
+					{ key: 'displayName', sortKey: 'displayName', sortClass: 'displayName', canSort: false, localizationKey: 'displayName', canLink: true },
+					{ key: 'activityName', sortKey: 'activityName', sortClass: 'activityName', canSort: false, localizationKey: 'activityName', canLink: false },
+					{ key: 'courseName', sortKey: 'courseName', sortClass: 'courseName', canSort: false, localizationKey: 'courseName', canLink: false },
+					{ key: 'submissionDate', sortKey: 'submissionDate', sortClass: 'submissionDate', canSort: false, localizationKey: 'submissionDate', canLink: false },
+					{ key: 'masterTeacher', sortKey: 'masterTeacher', sortClass: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher', canLink: false }
 				]
 			},
 			_data: {
@@ -111,13 +111,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: String,
 				value: ''
 			},
-			_sortHref: {
-				type: String,
-				value: ''
-			},
 			_pageNextHref: {
 				type: String,
 				value: ''
+			},
+			_currentEntity: {
+				type: Object,
+				value: {}
 			}
 		};
 	}
@@ -140,24 +140,102 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
+	_loadSorts(entity) {
+		return this._followLink(entity, Rels.sorts)
+			.then(sortsEntity => {
+				if (!sortsEntity || !sortsEntity.entity) {
+					return Promise.reject('Could not load sorts endpoint');
+				}
+
+				this._headers.forEach(header => {
+					const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+					if (sort) {
+						console.log('found', header.sortClass);
+						header.canSort = true;
+					}
+				});
+				return Promise.resolve();
+			});
+	}
+
 	_sort(e) {
+		console.log(e.currentTarget.id);
+		const header = this._headers.find(h => h.sortKey === e.currentTarget.id);
+
+		if (!header) {
+			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
+		}
+		if (!header.canSort) {
+			return Promise.reject(`No matching sort for ${e.currentTarget.id}`);
+		}
+
+		let ascending = true;
+
 		if (e.currentTarget.nosort) {
 			e.currentTarget.removeAttribute('nosort');
 		} else if (e.currentTarget.desc) {
 			e.currentTarget.removeAttribute('desc');
 		} else {
+			ascending = false;
 			e.currentTarget.setAttribute('desc', 'desc');
 		}
 
-		var headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
-		for (var i = 0; i < headers.length; i++) {
-			if (headers[i] !== e.currentTarget) {
-				headers[i].removeAttribute('desc');
-				headers[i].setAttribute('nosort', 'nosort');
+		const headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
+		headers.forEach(h => {
+			if (h !== e.currentTarget) {
+				h.removeAttribute('desc');
+				h.setAttribute('nosort', 'nosort');
 			}
-		}
+		});
 
-		// TODO: get the new sorted data once sorting is enabled!!!
+		const performSirenAction = this.performSirenAction;
+
+		return this._getHref(this._currentEntity, Rels.filters)
+			.then(sortsEntity => {
+				if (!sortsEntity || !sortsEntity.entity) {
+					return Promise.reject('Could not load sorts endpoint');
+				}
+
+				const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+				if (!sort) {
+					return Promise.reject(`Could not find sort class ${header.sortClass}`)
+				}
+
+				const actionName = ascending ? 'sort-ascending' : 'sort-descending';
+				const action = sort.getActionByName(actionName);
+				if (!action) {
+					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
+				}
+
+				return performSirenAction(action, []);
+			})
+			.then(sortsEntity => {
+				// will this work?
+				if (!sortsEntity || !sortsEntity.entity) {
+					return Promise.reject('Could not load sorts endpoint after sort is applied');
+				}
+				const action = sortsEntity.entity.getActionByName('apply');
+				if (!action) {
+					return Promise.reject(`Could not find apply action in ${sortsEntity}`);
+				}
+				return action;
+			})
+			.then(collectionAction => {
+				this._loading = true;
+				const collection = performSirenAction(action, []);
+
+				try {
+					return this._parseActivities(collection)
+						.then(result => {
+							this._data = result;
+						}).bind(this);
+				} catch (e) {
+					// Unable to load more activities from entity.
+					return Promise.reject(e);
+				} finally {
+					this._loading = false;
+				}
+			}).bind(this);
 	}
 
 	async _loadData(entity) {
@@ -171,8 +249,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		try {
 			var result = await this._parseActivities(entity);
 			this._data = result;
+			return this._loadSorts(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
+			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
 			this._loading = false;
@@ -251,8 +331,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}.bind(this));
 
 		this._filterHref = this._getHref(entity, Rels.filters);
-		//this._sortHref = this._getHref(entity, Rels.sort);
 		this._pageNextHref = this._getHref(entity, 'next');
+		this._currentEntity = entity;
 
 		const result = await Promise.all(promises);
 		return result;
