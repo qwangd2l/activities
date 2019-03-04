@@ -71,7 +71,6 @@ export default
 		'activityType': 'quiz',
 		'activityName': "Months that start with 'Feb'",
 		'courseName': 'Arts 101 - Underwater Basket Weaving',
-		'submissionDate': '2019-01-16T02:00:00.000Z',
 		'localized-formatted-date': '1/16/2019 5:16 AM',
 		'masterTeacher': {
 			'firstName': 'Tina',
@@ -84,7 +83,6 @@ export default
 		'activityType': 'quiz',
 		'activityName': "Months that start with 'Feb'",
 		'courseName': 'Arts 101 - Underwater Basket Weaving',
-		'submissionDate': '2019-01-15T02:00:00.000Z',
 		'localized-formatted-date': '1/15/2019 10:12 AM',
 		'masterTeacher': {
 			'firstName': 'Tina',
