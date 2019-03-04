@@ -55,7 +55,7 @@ class ActivityEvaluationIconBase extends ActivityEvaluationIconBaseLocalize(Poly
 	attached() {
 		this._measureLocation = this._measureLocation.bind(this);
 		window.addEventListener('resize', this._measureLocation);
-		this._measureSize();
+		this._measureLocation();
 	}
 
 	detached() {
