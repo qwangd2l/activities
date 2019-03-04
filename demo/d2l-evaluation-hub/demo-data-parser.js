@@ -4,9 +4,17 @@ function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
 }
 
+function distinct_ie11_safe(array) {
+	const map = {};
+	array.forEach(ele => {
+		map[ele] = ele;
+	});
+	return Object.keys(map);
+}
+
 function parseUsers(data) {
 	const names = data.map(row => formatName(row.firstName, row.lastName));
-	const uniqueNames = [... new Set(names)];
+	const uniqueNames = distinct_ie11_safe(names);
 
 	return uniqueNames;
 }
@@ -30,7 +38,7 @@ function getHrefForUserId(id) {
 
 function parseActivityNames(data) {
 	const activityNames = data.map(row => row.activityName);
-	const uniqueActivityNames = [... new Set(activityNames)];
+	const uniqueActivityNames = distinct_ie11_safe(activityNames);
 
 	return uniqueActivityNames;
 }
@@ -49,7 +57,7 @@ function getHrefForActivityNameId(id) {
 
 function parseCourses(data) {
 	const courseNames = data.map(row => row.courseName);
-	const uniqueCourseNames = [... new Set(courseNames)];
+	const uniqueCourseNames = distinct_ie11_safe(courseNames);
 
 	return uniqueCourseNames;
 }
