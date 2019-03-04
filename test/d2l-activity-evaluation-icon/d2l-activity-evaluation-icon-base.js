@@ -22,12 +22,18 @@
 			});
 		});
 
-		test('activity evaluation with draft attribute displayed draft icon', function(done) {
+		test('activity evaluation with draft attribute displayed draft icon with tooltip', function(done) {
 			flush(function() {
 
-				var draftIcon = draftEvaluation.shadowRoot.querySelector('#d2l-draft-icon');
+				var draftIconId = 'd2l-draft-icon';
+				var draftIcon = draftEvaluation.shadowRoot.querySelector('#' + draftIconId);
 				var draftIconName = draftIcon.getAttribute('icon');
 				assert.equal('d2l-tier1:draft', draftIconName);
+
+				var draftIconToolTip = draftEvaluation.shadowRoot.querySelector('#draft-icon-tooltip');
+				assert.equal(draftIconId, draftIconToolTip.getAttribute('for'));
+				assert.equal('bottom', draftIconToolTip.getAttribute('position'));
+				assert.equal('15', draftIconToolTip.getAttribute('offset'));
 
 				done();
 			});
