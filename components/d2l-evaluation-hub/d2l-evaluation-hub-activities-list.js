@@ -190,7 +190,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		const performSirenAction = this.performSirenAction;
 
-		return this._getHref(this._currentEntity, Rels.filters)
+		return this._getHref(this._currentEntity, Rels.sorts)
 			.then(sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject('Could not load sorts endpoint');
