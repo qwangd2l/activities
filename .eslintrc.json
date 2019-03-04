@@ -6,5 +6,8 @@
   "parser": "babel-eslint",
   "parserOptions": {
       "sourceType": "module"
+  },
+  "globals": {
+    "fastdom": false
   }
 }
