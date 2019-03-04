@@ -50,6 +50,19 @@
                 },
                 {
                     "class": [
+                        "date",
+                        "localized-formatted-date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2019-03-13T15:16:10.793Z",
+                        "text": "3/9/2019 10:16 AM"
+                      }
+                },
+                {
+                    "class": [
                         "completion",
                         "complete"
                     ],
@@ -123,6 +136,19 @@
                 },
                 {
                     "class": [
+                        "date",
+                        "localized-formatted-date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2019-03-13T15:16:10.793Z",
+                        "text": "3/9/2019 10:16 AM"
+                      }
+                },
+                {
+                    "class": [
                         "completion",
                         "complete"
                     ],
@@ -193,6 +219,19 @@
                     "properties": {
                         "path": "/the/best/vanity/url/next3"
                     }
+                },
+                {
+                    "class": [
+                        "date",
+                        "localized-formatted-date"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/date"
+                    ],
+                    "properties": {
+                        "date": "2019-03-13T15:16:10.793Z",
+                        "text": "3/9/2019 10:16 AM"
+                      }
                 },
                 {
                     "class": [
