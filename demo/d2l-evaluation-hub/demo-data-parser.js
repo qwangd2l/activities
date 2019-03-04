@@ -263,7 +263,7 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			'localized-formatted-date': row['localized-formatted-date']
+			localizedFormattedDate: row.localizedFormattedDate
 		};
 	});
 
@@ -321,7 +321,7 @@ function formatActivity(activity) {
 				],
 				'properties': {
 					'date': '2019-03-13T15:16:10.793Z',
-					'text': activity['localized-formatted-date']
+					'text': activity.localizedFormattedDate
 				}
 			}
 		]
