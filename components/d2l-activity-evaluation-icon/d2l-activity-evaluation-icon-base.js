@@ -13,11 +13,12 @@ class ActivityEvaluationIconBase extends ActivityEvaluationIconBaseLocalize(Poly
 	static get template() {
 		return html`
 			<style>
-				:host(:not([draft])) {
+				:host {
 					display: none;
 				}
-				:host {
-					display: inline-block;
+
+				:host([draft]) {
+						display: inline-block;
 				}
 			</style>
 			<template is="dom-if" if="[[draft]]">
@@ -32,7 +33,8 @@ class ActivityEvaluationIconBase extends ActivityEvaluationIconBaseLocalize(Poly
 		return {
 			draft: {
 				type: Boolean,
-				value: false
+				value: false,
+				reflectToAttribute: true
 			}
 		};
 	}
