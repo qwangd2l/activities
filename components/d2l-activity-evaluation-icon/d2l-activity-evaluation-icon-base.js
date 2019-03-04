@@ -1,4 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { ActivityEvaluationIconBaseLocalize } from './ActivityEvaluationIconBaseLocalize.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
@@ -8,7 +9,7 @@ import 'd2l-icons/tier1-icons.js';
  * @polymer
  */
 
-class ActivityEvaluationIconBase extends PolymerElement {
+class ActivityEvaluationIconBase extends ActivityEvaluationIconBaseLocalize(PolymerElement) {
 	static get template() {
 		return html`
 			<style>
