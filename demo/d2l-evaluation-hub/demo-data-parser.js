@@ -55,6 +55,10 @@ function getHrefForActivityNameId(id) {
 	return `activities/${id}`;
 }
 
+function getHrefForActivityId(id) {
+	return `activity/${id}`;
+}
+
 function parseCourses(data) {
 	const courseNames = data.map(row => row.courseName);
 	const uniqueCourseNames = distinct_ie11_safe(courseNames);
@@ -270,7 +274,7 @@ function parseActivities(data, users, activityNames, courses) {
 	return parsedActivities;
 }
 
-function formatActivity(activity) {
+function formatActivity(activity, selfHref) {
 	return {
 		'class': [
 			activity.klass,
@@ -280,6 +284,12 @@ function formatActivity(activity) {
 			'https://activities.api.brightspace.com/rels/user-activity-usage'
 		],
 		'links': [
+			{
+				'rel': [
+					'https://activities.api.brightspace.com/rels/user-activity-usage'
+				],
+				'href': selfHref
+			},
 			{
 				'rel': [
 					'https://api.brightspace.com/rels/user'
@@ -419,7 +429,23 @@ function getMappings(data) {
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
-	const pagedActivities = chunk(activities.map(a => formatActivity(a)), 3);
+	const pagedActivities = [];
+	let currentPage = 0;
+	let activitiesOnPage = [];
+	let numActivitiesOnPage = 0;
+	activities.forEach((activity, i) => {
+		if(numActivitiesOnPage == 3) {
+			pagedActivities[currentPage] = activitiesOnPage;
+			numActivitiesOnPage = 0;
+			currentPage++;
+		}
+		const formattedActivity = formatActivity(activity, getHrefForActivityId(i));
+
+		activitiesOnPage[i] = formattedActivity;
+		mappings[getHrefForActivityId(i)] = formattedActivity;
+		numActivitiesOnPage++;
+	});
+
 	const pages = pagedActivities.length;
 
 	pagedActivities.forEach((page, i) => {

@@ -218,8 +218,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		test('clicking Load More adds the proper data, and the button is hidden when there is no more next link', (done) => {
 			var expectedNext = createExpectedData(expectedData.concat(expectedNextData));
 
-			// fix dis
-
 			loadPromise('data/unassessedActivities.json').then(function() {
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
 				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
