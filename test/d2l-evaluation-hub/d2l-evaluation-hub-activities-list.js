@@ -43,13 +43,12 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				assert.equal(expected[i].text, link.innerHTML);
 				assert.equal(expected[i].href, link.href);
 			} else if (span) {
-				console.dir('span: ' + i);
-				console.dir(span);
-				console.dir('expected: ' + expected[i].text);
-				console.dir('actual: ' + span.innerHTML);
-
 				assert.equal(expected[i].text, span.innerHTML);
 			} else if (activityName) {
+				console.dir('activityName: ' + i);
+				console.dir(activityName);
+				console.dir('expected: ' + expected[i].href);
+				console.dir('actual: ' + activityName.href);
 				assert.equal(expected[i].href, activityName.href);
 			}
 		}
@@ -98,7 +97,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Assignment Name',
+			activityName: 'data/nextAssignmentActivity.json',
 			submissionDate: '2018-02-03T17:00:00.000Z',
 			activityLink: '/the/best/vanity/url/next1',
 			masterTeacher: 'Master Teacher'
@@ -106,7 +105,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Quiz Name',
+			activityName: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '2018-02-03T17:00:00.000Z',
 			activityLink: '/the/best/vanity/url/next2',
 			masterTeacher: 'Master Teacher'
@@ -114,7 +113,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Topic Name',
+			activityName: 'data/nextTopicActivity.json',
 			submissionDate: '2019-02-20T02:00:00.000Z',
 			activityLink: '/the/best/vanity/url/next3',
 			masterTeacher: 'Master Teacher'
@@ -198,8 +197,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		});
 		test('data displays correctly', (done) => {
 			var expected = createExpectedData(expectedData);
-
-			// fix dis
 
 			loadPromise('data/unassessedActivities.json').then(function() {
 				verifyData(expected, done);

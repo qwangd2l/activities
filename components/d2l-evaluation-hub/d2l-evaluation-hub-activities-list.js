@@ -67,7 +67,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 								<d2l-td>
 									<span>[[_getDataProperty(s, 'submissionDate')]]</span>
 								</d2l-td>
-								<template is="dom-if" if="[[s.masterTeacher && _shouldDisplayColumn('masterTeacher')]]">
+								<template is="dom-if" if="[[_shouldDisplayColumn('masterTeacher')]]">
 									<d2l-td>
 										<span>[[_getDataProperty(s, 'masterTeacher')]]</span>
 									</d2l-td>
