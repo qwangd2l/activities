@@ -263,7 +263,7 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			submissionDate: row.submissionDate
+			localizedFormattedDate: row.localizedFormattedDate
 		};
 	});
 
@@ -313,26 +313,16 @@ function formatActivity(activity) {
 			},
 			{
 				'class': [
-					'completion',
-					'complete'
+					'date',
+					'localized-formatted-date'
 				],
 				'rel': [
-					'item'
+					'https://api.brightspace.com/rels/date'
 				],
-				'entities': [
-					{
-						'class': [
-							'date',
-							'completion-date'
-						],
-						'rel': [
-							'https://api.brightspace.com/rels/date'
-						],
-						'properties': {
-							'date': activity.submissionDate
-						}
-					}
-				]
+				'properties': {
+					'date': '2019-03-13T15:16:10.793Z',
+					'text': activity.localizedFormattedDate
+				}
 			}
 		]
 	};
