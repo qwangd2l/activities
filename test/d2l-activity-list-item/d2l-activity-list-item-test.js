@@ -73,8 +73,8 @@ describe('d2l-activity-list-item', () => {
 				href: '/organization/1/image/1'
 			}, {
 				rel: ['alternate'],
-				href: '',
-				class: ['tile']
+				class: ['narrow', 'high-density', 'min'],
+				href: 'https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/tile-low-density-max-size.jpg',
 			}]
 		});
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
@@ -108,8 +108,11 @@ describe('d2l-activity-list-item', () => {
 		}
 	].forEach((testCase) => {
 		describe(testCase.name, () => {
+			let textLoadedSuccessfulSpy;
 
 			beforeEach(done => {
+				textLoadedSuccessfulSpy = sinon.spy();
+				window.document.addEventListener('d2l-activity-text-loaded', textLoadedSuccessfulSpy);
 				testCase.beforeEachFn();
 				afterNextRender(component, done);
 			});
@@ -136,10 +139,22 @@ describe('d2l-activity-list-item', () => {
 
 		});
 
+		it(testCase.name + 'should send text loaded event', done => {
+			window.document.addEventListener('d2l-activity-text-loaded', () => {
+				done();
+			});
+			testCase.beforeEachFn();
+		});
+
+		it(testCase.name + 'should send image loaded event', done => {
+			window.document.addEventListener('d2l-activity-image-loaded', () => {
+				done();
+			});
+			testCase.beforeEachFn();
+		});
 	});
 
 	describe('Accessibility', () => {
-
 		beforeEach(done => {
 			component = fixture('d2l-activity-list-item-href-fixture');
 			afterNextRender(component, done);
@@ -166,7 +181,7 @@ describe('d2l-activity-list-item', () => {
 			component = fixture('d2l-activity-list-item-responsive-384-fixture');
 			afterNextRender(component, () => {
 				expect(component._showDescription).to.be.false;
-				var description = component.$$('.d2l-activity-list-item-description');
+				var description = component.$$('#d2l-activity-list-item-description');
 				expect(description.hasAttribute('hidden')).to.be.true;
 				done();
 			});
@@ -176,7 +191,7 @@ describe('d2l-activity-list-item', () => {
 			component = fixture('d2l-activity-list-item-responsive-385-fixture');
 			afterNextRender(component, () => {
 				expect(component._showDescription).to.be.true;
-				var description = component.$$('.d2l-activity-list-item-description');
+				var description = component.$$('#d2l-activity-list-item-description');
 				expect(description.hasAttribute('hidden')).to.be.false;
 				done();
 			});

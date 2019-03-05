@@ -1,0 +1,43 @@
+(function() {
+	suite('d2l-activity-evaluation-icon-base as draft', function() {
+		let draftEvaluation;
+		let invalidEvaluation;
+
+		setup(function() {
+			invalidEvaluation = fixture('invalid');
+			draftEvaluation = fixture('draft');
+		});
+
+		test('instantiating the element works', function() {
+			assert.equal(draftEvaluation.tagName.toLowerCase(), 'd2l-activity-evaluation-icon-base');
+		});
+
+		test('activity evaluation without any attribute does not display an icon', function(done) {
+			flush(function() {
+
+				var icon = invalidEvaluation.shadowRoot.querySelector('d2l-icon');
+				assert.equal(null, icon);
+
+				done();
+			});
+		});
+
+		test('activity evaluation with draft attribute displayed draft icon with tooltip', function(done) {
+			flush(function() {
+
+				var draftIconId = 'd2l-draft-icon';
+				var draftIcon = draftEvaluation.shadowRoot.querySelector('#' + draftIconId);
+				var draftIconName = draftIcon.getAttribute('icon');
+				assert.equal('d2l-tier1:draft', draftIconName);
+
+				var draftIconToolTip = draftEvaluation.shadowRoot.querySelector('#draft-icon-tooltip');
+				assert.equal(draftIconId, draftIconToolTip.getAttribute('for'));
+				assert.equal('bottom', draftIconToolTip.getAttribute('position'));
+				assert.equal('15', draftIconToolTip.getAttribute('offset'));
+
+				done();
+			});
+		});
+
+	});
+})();

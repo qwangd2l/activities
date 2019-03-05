@@ -23,7 +23,7 @@ import 'd2l-colors/d2l-colors.js';
  * @customElement
  * @polymer
  */
-class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FetchSirenEntityBehavior, D2L.PolymerBehaviors.FocusableBehavior], ActivityListItemResponsiveConstants(MutableData(PolymerElement))) {
+class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.PolymerBehaviors.FocusableBehavior], ActivityListItemResponsiveConstants(MutableData(PolymerElement))) {
 	static get template() {
 		return html`
 			<style include="d2l-typography-shared-styles"></style>
@@ -67,6 +67,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					flex-grow: 1;
 					flex-shrink: 1;
 					flex-basis: 0;
+					width: 100%;
 				}
 				.d2l-activity-list-item-link-text {
 					display: inline-block;
@@ -91,8 +92,8 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 				.d2l-activity-list-item-image {
 					flex-shrink: 0;
 					margin-right: 1.2rem;
-					width: 273px;
-					height: 161px;
+					width: 216px;
+					height: 120px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -161,33 +162,129 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					height: 0.9rem;
 					white-space: nowrap;
 				}
+
+				@keyframes loadingShimmer {
+					0% { transform: translate3d(-100%, 0, 0); }
+					100% { transform: translate3d(100%, 0, 0); }
+				}
+				.d2l-activity-list-item-image-shimmer {
+					background-color: var(--d2l-color-regolith);
+					overflow: hidden;
+					position: relative;
+					height: 100%;
+					width: 100%;
+				}
+				.d2l-activity-list-item-image-shimmer::after {
+					animation: loadingShimmer 1.5s ease-in-out infinite;
+					background: linear-gradient(90deg, rgba(249, 250, 251, 0.1), rgba(114, 119, 122, 0.1), rgba(249, 250, 251, 0.1));
+					background-color: var(--d2l-color-regolith);
+					content: '';
+					height: 100%;
+					left: 0;
+					position: absolute;
+					top: 0;
+					width: 100%;
+				}
+				.d2l-activity-list-item-text-placeholder {
+					background-color: var(--d2l-color-sylvite);
+					border-radius: 4px;
+				}
+				.d2l-activity-list-item-category-placeholder {
+					display: block;
+					height: 0.5rem;
+					margin: 0.2rem 0;
+				}
+				.d2l-activity-list-item-title-placeholder {
+					display: block;
+				}
+				.d2l-activity-list-item-description-placeholder-container {
+					padding: 0.325rem 0;
+				}
+				.d2l-activity-list-item-description-placeholder {
+					display: block;
+					height: 0.55rem;
+					width: 95%;
+				}
+				.d2l-activity-list-item-footer-placeholder-container {
+					display: flex;
+					flex-direction: row;
+				}
+				.d2l-activity-list-item-footer-placeholder {
+					display: block;
+					height: 0.5rem;
+					margin-bottom: 0.25rem;
+					margin-top: 0.7rem;
+					margin-right: 0.5rem;
+				}
 			</style>
-			<div class="d2l-activity-list-item-container">
+			<div class="d2l-activity-list-item-container" style="visibility:hidden;">
 				<hr class="d2l-activity-list-item-top-line" />
 				<a class="d2l-focusable" href$="[[_activityHomepage]]">
 					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="d2l-activity-list-item-link-container">
 					<div class="d2l-activity-list-item-image">
+						<div class="d2l-activity-list-item-image-shimmer" hidden$="[[!imageShimmer]]"></div>
 						<d2l-course-image
+							hidden$="[[imageShimmer]]"
 							image="[[_image]]"
 							sizes="[[_tileSizes]]"
 							type="narrow">
 						</d2l-course-image>
 					</div>
+
 					<div class="d2l-activity-list-item-content">
-						<div class="d2l-activity-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
-						<h2 class="d2l-activity-list-item-title">
-							<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
-						</h2>
-						<div class="d2l-activity-list-item-description" hidden$="[[!_showDescription]]"><p>[[_description]]</p></div>
-						<div class="d2l-activity-list-item-footer" hidden$="[[!_tags]]">
-							<template is="dom-repeat" items="[[_tags]]">
-								<span>
-									<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
-									[[item]]
-								</span>
-							</template>
+						<div>
+							<div hidden$="[[!_textPlaceholder]]">
+								<div class="d2l-activity-list-item-text-placeholder d2l-activity-list-item-category-placeholder"></div>
+							</div>
+							<div hidden$="[[_textPlaceholder]]">
+								<div class="d2l-activity-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
+							</div>
+						</div>
+
+						<div>
+							<div hidden$="[[!_textPlaceholder]]">
+								<div class="d2l-activity-list-item-text-placeholder d2l-activity-list-item-title-placeholder"></div>
+							</div>
+							<div hidden$="[[_textPlaceholder]]">
+								<h2 class="d2l-activity-list-item-title">
+									<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
+								</h2>
+							</div>
+						</div>
+
+						<div id="d2l-activity-list-item-description" hidden$="[[!_showDescription]]">
+							<div hidden$="[[!_textPlaceholder]]">
+								<template is="dom-repeat" items="[[_descriptionPlaceholderLines]]">
+									<div class="d2l-activity-list-item-description-placeholder-container">
+										<div class="d2l-activity-list-item-text-placeholder d2l-activity-list-item-description-placeholder"></div>
+									</div>
+								</template>
+							</div>
+							<div hidden$="[[_textPlaceholder]]">
+								<div class="d2l-activity-list-item-description"><p>[[_description]]</p></div>
+							</div>
+						</div>
+
+						<div>
+							<div hidden$="[[!_textPlaceholder]]">
+								<div class="d2l-activity-list-item-footer-placeholder-container">
+									<template is="dom-repeat" items="[[_footerPlaceholderItems]]">
+										<div class="d2l-activity-list-item-text-placeholder d2l-activity-list-item-footer-placeholder"></div>
+									</template>
+								</div>
+							</div>
+							<div hidden$="[[_textPlaceholder]]">
+								<div class="d2l-activity-list-item-footer" hidden$="[[!_tags]]">
+									<template is="dom-repeat" items="[[_tags]]">
+										<span>
+											<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
+											[[item]]
+										</span>
+									</template>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -266,6 +363,27 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			_accessibilityData: {
 				type: Object,
 				value: function() { return {}; }
+			},
+			imageShimmer: {
+				type: Boolean,
+				value: false
+			},
+			textPlaceholder: {
+				type: Boolean,
+				value: false,
+				observer: '_onTextPlaceholderChange'
+			},
+			_textPlaceholder: {
+				type: Boolean,
+				value: false
+			},
+			_descriptionPlaceholderLines: {
+				type: Array,
+				value: [{}, {}]
+			},
+			_footerPlaceholderItems: {
+				type: Array,
+				value: [{}, {}]
 			}
 		};
 	}
@@ -292,6 +410,9 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			link.addEventListener('keydown', this._onLinkTrigger.bind(this));
 			this.addEventListener('iron-resize', this._onIronSize.bind(this));
 			this._setResponsiveSizes(this.offsetWidth);
+
+			const image = this.shadowRoot.querySelector('d2l-course-image');
+			image.addEventListener('course-image-loaded', this._activityImageLoaded.bind(this));
 		});
 	}
 	_onD2lOrganizationAccessible(e) {
@@ -299,6 +420,13 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		this._accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
 
 		this.notifyPath('_accessibilityData');
+
+		afterNextRender(this, () => {
+			this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
+				bubbles: true,
+				composed: true
+			}));
+		});
 	}
 
 	_accessibilityDataToString(accessibility) {
@@ -318,6 +446,9 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		link.removeEventListener('blur', this._onLinkBlur);
 		link.removeEventListener('focus', this._onLinkFocus);
 		this.removeEventListener('iron-resize', this._onIronSize);
+
+		const image = this.shadowRoot.querySelector('d2l-course-image');
+		image.removeEventListener('course-image-loaded', this._activityImageLoaded);
 	}
 
 	_reset() {
@@ -363,6 +494,20 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			title.style.lineHeight = currentConfig.title.lineHeight + 'rem';
 			title.style.maxHeight = 2 * currentConfig.title.lineHeight + 'rem';
 			title.style.margin = currentConfig.title.margin;
+			title.style.marginTop = currentConfig.title.marginTop + 'rem';
+			title.style.marginRight = currentConfig.title.marginRight + 'rem';
+			title.style.marginBottom = currentConfig.title.marginBottom + 'rem';
+			title.style.marginLeft = currentConfig.title.marginLeft + 'rem';
+
+			if (this.textPlaceholder) {
+				this._setTextPlaceholderStyles(currentConfig);
+			}
+			const listItemContainer = this.shadowRoot.querySelector('.d2l-activity-list-item-container');
+			if (listItemContainer.style.visibility === 'hidden') {
+				afterNextRender(this, () => {
+					listItemContainer.style.visibility = 'visible';
+				});
+			}
 		});
 	}
 	_onDescriptionChange(description) {
@@ -386,6 +531,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		event.preventDefault();
 	}
 	_clampDescription(description) {
+		if (!description) return;
 		const p = this.shadowRoot.querySelector('.d2l-activity-list-item-description p');
 		if (!this._showDescription) {
 			p.textContent = '';
@@ -443,6 +589,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		) {
 			return;
 		}
+
 		this._description = sirenEntity.properties && sirenEntity.properties.description;
 
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
@@ -450,6 +597,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}
 		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
+
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
 				.then(this._handleOrganizationResponse.bind(this));
@@ -474,6 +622,13 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		}
 
 		return Promise.resolve();
+	}
+
+	_activityImageLoaded() {
+		this.dispatchEvent(new CustomEvent('d2l-activity-image-loaded', {
+			bubbles: true,
+			composed: true
+		}));
 	}
 
 	_fetchEntity(url) {
@@ -508,6 +663,65 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			return;
 		}
 		return match[0];
+	}
+	_onTextPlaceholderChange(textPlaceholder) {
+		// If placeholders were disabled, we want everything resized before showing it to avoid flickering
+		if (!textPlaceholder) {
+			this._setResponsiveSizes(this.offsetWidth);
+			afterNextRender(this, () => {
+				this._textPlaceholder = false;
+			});
+		} else {
+			// If the placeholders were enabled, we want them to get styled
+			const currentConfig = this._getResponsiveConfig(this.offsetWidth);
+			window.fastdom.mutate(() => {
+				this._setTextPlaceholderStyles(currentConfig);
+				this._textPlaceholder = true;
+			});
+		}
+	}
+	_setTextPlaceholderStyles(currentConfig) {
+		const remInPixelConstant = parseFloat(getComputedStyle(document.documentElement).fontSize);
+		const categoryPlaceholder = this.shadowRoot.querySelector('.d2l-activity-list-item-category-placeholder');
+		const titlePlaceholder = this.shadowRoot.querySelector('.d2l-activity-list-item-title-placeholder');
+		const newFooterCount = currentConfig.placeholder.footer.count;
+
+		if (categoryPlaceholder) {
+			categoryPlaceholder.style.width = currentConfig.placeholder.category.width;
+		}
+
+		if (titlePlaceholder && remInPixelConstant) {
+			titlePlaceholder.style.width =  currentConfig.placeholder.title.width;
+			// Get the fontSize and convert into pixels
+			// Multiply by 0.7 and round to get cap size
+			const titleCapSize = Math.round((currentConfig.title.fontSize * remInPixelConstant) * 0.7);
+			titlePlaceholder.style.height = titleCapSize + 'px';
+			const titleCapSizeInRem = titleCapSize / remInPixelConstant;
+
+			// Split the difference between line height and cap size between the two vertical margins:
+			const verticalMargin =  (currentConfig.title.lineHeight - titleCapSizeInRem) / 2;
+			titlePlaceholder.style['margin-top'] = +currentConfig.title.marginTop + +verticalMargin + 'rem';
+			titlePlaceholder.style['margin-bottom'] = +currentConfig.title.marginBottom + +verticalMargin + 'rem';
+		}
+
+		if (this._footerPlaceholderItems.length !== newFooterCount) {
+			this._footerPlaceholderItems = Array(currentConfig.placeholder.footer.count);
+			beforeNextRender(this, () => {
+				const footerPlaceholders = this.shadowRoot.querySelectorAll('.d2l-activity-list-item-footer-placeholder');
+				if (footerPlaceholders && footerPlaceholders.length) {
+					footerPlaceholders.forEach((footer) => {
+						footer.style.width = currentConfig.placeholder.footer.width;
+					});
+				}
+			});
+		} else {
+			const footerPlaceholders = this.shadowRoot.querySelectorAll('.d2l-activity-list-item-footer-placeholder');
+			if (footerPlaceholders && footerPlaceholders.length) {
+				footerPlaceholders.forEach((footer) => {
+					footer.style.width = currentConfig.placeholder.footer.width;
+				});
+			}
+		}
 	}
 }
 

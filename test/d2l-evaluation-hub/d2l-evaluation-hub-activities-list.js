@@ -54,7 +54,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/assignmentActivity.json',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/3',
 			masterTeacher: ''
 		},
@@ -62,7 +62,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/quizAttemptActivity.json',
-			submissionDate: '2019-02-22T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/2',
 			masterTeacher: ''
 		},
@@ -70,7 +70,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/topicActivity.json',
-			submissionDate: '2019-02-20T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url',
 			masterTeacher: ''
 		}
@@ -92,7 +92,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/nextAssignmentActivity.json',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next1',
 			masterTeacher: 'Master Teacher'
 		},
@@ -100,7 +100,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/nextQuizAttemptActivity.json',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next2',
 			masterTeacher: 'Master Teacher'
 		},
@@ -108,7 +108,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'data/nextTopicActivity.json',
-			submissionDate: '2019-02-20T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next3',
 			masterTeacher: 'Master Teacher'
 		}
