@@ -6,7 +6,7 @@ export default
 		'activityType': 'assignment',
 		'activityName': 'What is Love?',
 		'courseName': 'Music 304 - A Study of Haddaway',
-		'submissionDate': '2019-02-20T02:00:00.000Z',
+		'localizedFormattedDate': '3/9/2019 10:16 AM',
 		'masterTeacher': {
 			'firstName': 'Brett',
 			'lastName': 'Hertzberger'
@@ -18,7 +18,7 @@ export default
 		'activityType': 'assignment',
 		'activityName': 'The Bestest Number',
 		'courseName': 'Math 102 - Numbers',
-		'submissionDate': '2019-02-19T02:00:00.000Z',
+		'localizedFormattedDate': '3/9/2019 10:16 AM',
 		'masterTeacher': {
 			'firstName': 'Chris',
 			'lastName': 'Alexander'
@@ -30,7 +30,7 @@ export default
 		'activityType': 'assignment',
 		'activityName': 'The Bestest Number',
 		'courseName': 'Math 102 - Numbers',
-		'submissionDate': '2019-02-20T02:00:00.000Z',
+		'localizedFormattedDate': '3/9/2019 10:16 AM',
 		'masterTeacher': {
 			'firstName': 'Chris',
 			'lastName': 'Alexander'
@@ -42,7 +42,7 @@ export default
 		'activityType': 'assignment',
 		'activityName': 'The Bestest Number',
 		'courseName': 'Math 102 - Numbers',
-		'submissionDate': '2019-02-18T02:00:00.000Z',
+		'localizedFormattedDate': '18/2/2019 10:16 AM',
 		'masterTeacher': {
 			'firstName': 'Chris',
 			'lastName': 'Alexander'
@@ -54,7 +54,7 @@ export default
 		'activityType': 'discussion',
 		'activityName': 'Was Shakespeare secretly illiterate?',
 		'courseName': 'Literature 303 - Real Talks',
-		'submissionDate': '2019-01-01T02:00:00.000Z',
+		'localizedFormattedDate': '1/1/2019 10:52 AM',
 		'masterTeacher': {
 			'firstName': 'Surekha',
 			'lastName': 'Rao'
@@ -66,7 +66,7 @@ export default
 		'activityType': 'quiz',
 		'activityName': "Months that start with 'Feb'",
 		'courseName': 'Arts 101 - Underwater Basket Weaving',
-		'submissionDate': '2019-01-16T02:00:00.000Z',
+		'localizedFormattedDate': '1/16/2019 5:16 AM',
 		'masterTeacher': {
 			'firstName': 'Tina',
 			'lastName': 'Fletcher'
@@ -78,7 +78,7 @@ export default
 		'activityType': 'quiz',
 		'activityName': "Months that start with 'Feb'",
 		'courseName': 'Arts 101 - Underwater Basket Weaving',
-		'submissionDate': '2019-01-15T02:00:00.000Z',
+		'localizedFormattedDate': '1/15/2019 10:12 AM',
 		'masterTeacher': {
 			'firstName': 'Tina',
 			'lastName': 'Fletcher'
