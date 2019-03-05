@@ -97,11 +97,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortKey: 'displayName', localizationKey: 'displayName' },
-					{ key: 'activityName', sortKey: 'activityName', localizationKey: 'activityName'},
-					{ key: 'courseName', sortKey: 'courseName', localizationKey: 'courseName' },
-					{ key: 'submissionDate', sortKey: 'submissionDate', localizationKey: 'submissionDate' },
-					{ key: 'masterTeacher', sortKey: 'masterTeacher', localizationKey: 'masterTeacher' }
+					{ key: 'displayName', localizationKey: 'displayName' },
+					{ key: 'activityName', localizationKey: 'activityName'},
+					{ key: 'courseName', localizationKey: 'courseName' },
+					{ key: 'submissionDate', localizationKey: 'submissionDate' },
+					{ key: 'masterTeacher', localizationKey: 'masterTeacher' }
 				]
 			},
 			_data: {

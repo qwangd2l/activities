@@ -265,7 +265,8 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			localizedFormattedDate: row.localizedFormattedDate
+			localizedFormattedDate: row.localizedFormattedDate,
+			isDraft: row.isDraft
 		};
 	});
 
@@ -273,7 +274,7 @@ function parseActivities(data, users, activityNames, courses) {
 }
 
 function formatActivity(activity, selfHref) {
-	return {
+	var formattedActivity = {
 		'class': [
 			activity.klass,
 			'activity'
@@ -334,6 +335,24 @@ function formatActivity(activity, selfHref) {
 			}
 		]
 	};
+
+	if (activity.isDraft) {
+		var draftEntity = {
+			'class': [
+				'evaluation'
+			],
+			'rel': [
+				'https://api.brightspace.com/rels/evaluation'
+			],
+			'properties': {
+				'state': 'Draft'
+			}
+		};
+
+		formattedActivity.entities.push(draftEntity);
+	}
+
+	return formattedActivity;
 }
 
 function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
