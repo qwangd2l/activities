@@ -114,10 +114,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_pageNextHref: {
 				type: String,
 				value: ''
-			},
-			_currentEntity: {
-				type: Object,
-				value: {}
 			}
 		};
 	}
@@ -188,7 +184,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}
 		});
 
-		return this._followLink(this._currentEntity, Rels.sorts)
+		return this._followLink(this.entity, Rels.sorts)
 			.then((sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject('Could not load sorts endpoint');
@@ -320,7 +316,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		this._filterHref = this._getHref(entity, Rels.filters);
 		this._pageNextHref = this._getHref(entity, 'next');
-		this._currentEntity = entity;
 
 		const result = await Promise.all(promises);
 		return result;
