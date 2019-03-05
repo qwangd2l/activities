@@ -340,7 +340,7 @@ function getMappings(table) {
 	const sortsHref = 'sorts/';
 
 	pagedActivities.forEach((_, i) => {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages))
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
 	});
 
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);

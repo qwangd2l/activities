@@ -32,9 +32,9 @@ function startMockServer(mappings, debug) {
 
 	const oldEntityFetch = window.D2L.Siren.EntityStore.fetch.bind(window.D2L.Siren.EntityStore);
 
-	window.D2L.Siren.EntityStore.fetch = function(entityId, token, bypassCache) {
+	window.D2L.Siren.EntityStore.fetch = function(entityId, token) {
 		return oldEntityFetch(entityId, token, true);
-	}
+	};
 }
 
 function intercept(input, path, mappings, debug) {

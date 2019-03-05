@@ -1,9 +1,9 @@
-import { parseSortFromUrl, encodeSortState, decodeSortState, addSort } from './sort-handler';
+import { parseSortFromUrl, encodeSortState, decodeSortState } from './sort-handler';
 import chunk from 'lodash-es/chunk';
 
 function applySorts(activities, sorts, sortState) {
 	sortState.forEach(appliedSort => {
-		const sortDefn = sorts.find(s => s.id == appliedSort.id);
+		const sortDefn = sorts.find(s => s.id === appliedSort.id);
 
 		let sortFn = sortDefn.fn;
 
@@ -35,9 +35,8 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 		const pagedActivities = chunk(sortedActivities.map(a => formatActivity(a)), 3);
 
 		return formatPage(pagedActivities[pageNumber], filtersHref, sortsHref, addSortToHref(nextPageHref, sortState));
-	}
+	};
 }
-
 
 function formatActivity(activity) {
 	return {

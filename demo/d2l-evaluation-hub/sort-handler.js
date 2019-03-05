@@ -23,7 +23,7 @@ function decodeSortState(serialized) {
 }
 
 function addSort(sort, sortState) {
-	const cleanSortState = sortState.filter(s => s.id != sort.id);
+	const cleanSortState = sortState.filter(s => s.id !== sort.id);
 	cleanSortState.unshift(sort);
 	return cleanSortState;
 }
@@ -61,7 +61,7 @@ function formatSorts(sortEntities, collectionHref, sortState) {
 				]
 			}
 		]
-	}
+	};
 }
 
 function formatSort(klass, sortsHref, ascState, descState) {
@@ -92,7 +92,7 @@ function formatSort(klass, sortsHref, ascState, descState) {
 				]
 			}
 		]
-	}
+	};
 }
 
 export { createSortEndpoint, parseSortFromUrl, encodeSortState, decodeSortState, addSort };

@@ -196,7 +196,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 				const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
 				if (!sort) {
-					return Promise.reject(`Could not find sort class ${header.sortClass}`)
+					return Promise.reject(`Could not find sort class ${header.sortClass}`);
 				}
 
 				const actionName = ascending ? 'sort-ascending' : 'sort-descending';
