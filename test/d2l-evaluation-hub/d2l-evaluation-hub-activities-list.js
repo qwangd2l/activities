@@ -42,9 +42,10 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	function verifyData(expectedActivities, done) {
 		var data = list.shadowRoot.querySelectorAll('d2l-td');
 
-		var expectedActivityData = expectedActivities.flatMap(function(expectedActivity) {
-			return expectedActivity.data;
-		});
+		var expectedActivityData = [].concat.apply(
+			[], expectedActivities.map(function(expectedActivity) {
+				return expectedActivity.data;
+			}));
 
 		for (var i = 0; i < expectedActivityData.length; i++) {
 			const link = data[i].querySelector('d2l-link');
