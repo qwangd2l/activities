@@ -339,9 +339,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_determineIfActivityIsDraft(activity) {
-		if(activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
+		if (activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
 			var evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
-			if(evaluation.properties && evaluation.properties.state === 'Draft') {
+			if (evaluation.properties && evaluation.properties.state === 'Draft') {
 				return true;
 			}
 		}
