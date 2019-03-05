@@ -150,7 +150,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				this._headers.forEach(header => {
 					const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
 					if (sort) {
-						console.log('found', header.sortClass);
 						header.canSort = true;
 					}
 				});
@@ -159,7 +158,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_sort(e) {
-		console.log(e.currentTarget.id);
 		const header = this._headers.find(h => h.sortKey === e.currentTarget.id);
 
 		if (!header) {
@@ -190,7 +188,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		return this._followLink(this._currentEntity, Rels.sorts)
 			.then((sortsEntity => {
-				console.log('1', sortsEntity);
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject('Could not load sorts endpoint');
 				}
@@ -206,11 +203,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
 				}
 
-				return this.performSirenAction(action, []);
+				return this.performSirenAction(action);
 			}).bind(this))
 			.then((sortsEntity => {
-				console.log('2', sortsEntity);
-				// will this work?
 				if (!sortsEntity) {
 					return Promise.reject('Could not load sorts endpoint after sort is applied');
 				}
@@ -221,25 +216,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				console.log('3', collectionAction);
-				this._loading = true;
-				const collection = this.performSirenAction(collectionAction, []);
+				const collection = this.performSirenAction(collectionAction);
 				return collection;
 			}).bind(this))
 			.then((collection => {
-				console.log('4', collection);
-
-				try {
-					return this._parseActivities(collection)
-						.then((result => {
-							this._data = result;
-						}).bind(this));
-				} catch (e) {
-					// Unable to load more activities from entity.
-					return Promise.reject(e);
-				} finally {
-					this._loading = false;
-				}
+				this.entity = collection;
 			}).bind(this));
 	}
 

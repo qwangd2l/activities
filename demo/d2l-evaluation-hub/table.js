@@ -1,25 +1,60 @@
+function compare(x, y) {
+	if (x < y) {
+		return -1;
+	}
+	if (x > y) {
+		return 1;
+	}
+	return 0;
+}
+
 export default
 {
 	sorts: [
 		{
 			'class': 'courseName',
-			'id': 'bycourse'
+			'id': 'bycourse',
+			'fn': (x, y) => {
+				const xname = x.rowData.courseName;
+				const yname = y.rowData.courseName;
+				return compare(xname, yname);
+			}
 		},
 		{
 			'class': 'displayName',
-			'id': 'byuser'
+			'id': 'byuser',
+			'fn': (x, y) => {
+				const xname = x.rowData.firstName + ' ' + x.rowData.lastName;
+				const yname = y.rowData.firstName + ' ' + y.rowData.lastName;
+				return compare(xname, yname);
+			}
 		},
 		{
 			'class': 'activityName',
-			'id': 'byactivity'
+			'id': 'byactivity',
+			'fn': (x, y) => {
+				const xname = x.rowData.activityName;
+				const yname = y.rowData.activityName;
+				return compare(xname, yname);
+			}
 		},
 		{
 			'class': 'submissionDate',
-			'id': 'bydate'
+			'id': 'bydate',
+			'fn': (x, y) => {
+				const xname = x.rowData.submissionDate;
+				const yname = y.rowData.submissionDate;
+				return compare(xname, yname);
+			}
 		},
 		{
 			'class': 'masterTeacher',
-			'id': 'byteacher'
+			'id': 'byteacher',
+			'fn': (x, y) => {
+				const xname = x.rowData.masterTeacher.firstName + ' ' + x.rowData.masterTeacher.lastName;
+				const yname = y.rowData.masterTeacher.firstName + ' ' + y.rowData.masterTeacher.lastName;
+				return compare(xname, yname);
+			}
 		}
 	],
 	data: [

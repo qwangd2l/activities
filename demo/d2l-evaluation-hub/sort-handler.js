@@ -1,4 +1,4 @@
-function parseUrl(input) {
+function parseSortFromUrl(input) {
 	const parsed = new window.URL(input, 'https://doesntmatter.org/');
 
 	return parsed.searchParams.get('sort');
@@ -30,12 +30,13 @@ function addSort(sort, sortState) {
 
 function createSortEndpoint(sorts, collectionHref, sortsHref) {
 	return (url) => {
-		const serializedSortState = parseUrl(url);
+		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
 
 		const entities = sorts.map(sort => {
 			const ascSortState = encodeSortState(addSort({ id: sort.id, direction: 'a' }, sortState));
 			const descSortState = encodeSortState(addSort({ id: sort.id, direction: 'd' }, sortState));
+
 			return formatSort(sort.class, sortsHref, ascSortState, descSortState);
 		});
 
@@ -52,6 +53,7 @@ function formatSorts(sortEntities, collectionHref, sortState) {
 				href: collectionHref,
 				fields: [
 					{
+						class: ['base64', 'json'],
 						type: 'hidden',
 						name: 'sort',
 						value: sortState
@@ -93,4 +95,4 @@ function formatSort(klass, sortsHref, ascState, descState) {
 	}
 }
 
-export { createSortEndpoint };
+export { createSortEndpoint, parseSortFromUrl, encodeSortState, decodeSortState, addSort };

@@ -1,5 +1,6 @@
-import chunk from 'lodash-es/chunk';
 import { createSortEndpoint } from './sort-handler';
+import { createPageEndpoint } from './page-handler';
+import chunk from 'lodash-es/chunk';
 
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
@@ -264,111 +265,12 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			submissionDate: row.submissionDate
+			submissionDate: row.submissionDate,
+			rowData: row
 		};
 	});
 
 	return parsedActivities;
-}
-
-function formatActivity(activity) {
-	return {
-		'class': [
-			activity.klass,
-			'activity'
-		],
-		'rel': [
-			'https://activities.api.brightspace.com/rels/user-activity-usage'
-		],
-		'links': [
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/user'
-				],
-				'href': activity.userHref
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/organization'
-				],
-				'href': activity.courseHref
-			},
-			{
-				'rel': [
-					activity.activityRel
-				],
-				'href': activity.activityHref
-			}
-		],
-		'entities': [
-			{
-				'class': [
-					'relative-uri'
-				],
-				'rel': [
-					'item',
-				],
-				'properties': {
-					'path': '/this/is/not/used'
-				}
-			},
-			{
-				'class': [
-					'completion',
-					'complete'
-				],
-				'rel': [
-					'item'
-				],
-				'entities': [
-					{
-						'class': [
-							'date',
-							'completion-date'
-						],
-						'rel': [
-							'https://api.brightspace.com/rels/date'
-						],
-						'properties': {
-							'date': activity.submissionDate
-						}
-					}
-				]
-			}
-		]
-	};
-}
-
-function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
-	const entity = {
-		'links': [
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/filters'
-				],
-				'href': filterLocation
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/sorts'
-				],
-				'href': sortsLocation
-			},
-
-		],
-		'entities': entities
-	};
-
-	if (nextLocation) {
-		entity.links.push({
-			'rel': [
-				'next'
-			],
-			'href': nextLocation
-		});
-	}
-
-	return entity;
 }
 
 function getHrefForPageId(id) {
@@ -432,13 +334,13 @@ function getMappings(table) {
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
-	const pagedActivities = chunk(activities.map(a => formatActivity(a)), 3);
+	const pagedActivities = chunk(activities, 3);
 	const pages = pagedActivities.length;
 
 	const sortsHref = 'sorts/';
 
-	pagedActivities.forEach((page, i) => {
-		mappings[getHrefForPageId(i)] = formatPage(page, 'filters/', sortsHref, getHrefForNextPage(i, pages));
+	pagedActivities.forEach((_, i) => {
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages))
 	});
 
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
