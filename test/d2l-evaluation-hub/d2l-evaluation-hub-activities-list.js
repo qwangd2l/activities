@@ -32,8 +32,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	function verifyData(expected, done) {
 		const data = list.shadowRoot.querySelectorAll('d2l-td');
 
-		console.dir(expected);
-
 		for (let i = 0; i < expected.length; i++) {
 			const link = data[i].querySelector('d2l-link');
 			const span = data[i].querySelector('span');
@@ -45,10 +43,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			} else if (span) {
 				assert.equal(expected[i].text, span.innerHTML);
 			} else if (activityName) {
-				console.dir('activityName: ' + i);
-				console.dir(activityName);
-				console.dir('expected: ' + expected[i].href);
-				console.dir('actual: ' + activityName.href);
 				assert.equal(expected[i].href, activityName.href);
 			}
 		}
