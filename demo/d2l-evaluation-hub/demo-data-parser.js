@@ -432,7 +432,7 @@ function getMappings(data) {
 	let numActivitiesOnPage = 0;
 	let currentPage = 0;
 	activities.forEach((activity, i) => {
-		if(numActivitiesOnPage == 3) {
+		if (numActivitiesOnPage === 3) {
 			pagedActivities[currentPage] = activitiesOnPage;
 			activitiesOnPage = [];
 			numActivitiesOnPage = 0;
