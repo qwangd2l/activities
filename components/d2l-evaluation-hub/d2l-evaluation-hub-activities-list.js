@@ -188,10 +188,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}
 		});
 
-		const performSirenAction = this.performSirenAction;
-
-		return this._getHref(this._currentEntity, Rels.sorts)
-			.then(sortsEntity => {
+		return this._followLink(this._currentEntity, Rels.sorts)
+			.then((sortsEntity => {
+				console.log('1', sortsEntity);
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject('Could not load sorts endpoint');
 				}
@@ -207,35 +206,41 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
 				}
 
-				return performSirenAction(action, []);
-			})
-			.then(sortsEntity => {
+				return this.performSirenAction(action, []);
+			}).bind(this))
+			.then((sortsEntity => {
+				console.log('2', sortsEntity);
 				// will this work?
-				if (!sortsEntity || !sortsEntity.entity) {
+				if (!sortsEntity) {
 					return Promise.reject('Could not load sorts endpoint after sort is applied');
 				}
-				const action = sortsEntity.entity.getActionByName('apply');
+				const action = sortsEntity.getActionByName('apply');
 				if (!action) {
 					return Promise.reject(`Could not find apply action in ${sortsEntity}`);
 				}
 				return action;
-			})
-			.then(collectionAction => {
+			}).bind(this))
+			.then((collectionAction => {
+				console.log('3', collectionAction);
 				this._loading = true;
-				const collection = performSirenAction(action, []);
+				const collection = this.performSirenAction(collectionAction, []);
+				return collection;
+			}).bind(this))
+			.then((collection => {
+				console.log('4', collection);
 
 				try {
 					return this._parseActivities(collection)
-						.then(result => {
+						.then((result => {
 							this._data = result;
-						}).bind(this);
+						}).bind(this));
 				} catch (e) {
 					// Unable to load more activities from entity.
 					return Promise.reject(e);
 				} finally {
 					this._loading = false;
 				}
-			}).bind(this);
+			}).bind(this));
 	}
 
 	async _loadData(entity) {

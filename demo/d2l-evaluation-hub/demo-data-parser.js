@@ -1,4 +1,5 @@
 import chunk from 'lodash-es/chunk';
+import { createSortEndpoint } from './sort-handler';
 
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
@@ -391,7 +392,9 @@ function getHrefForMasterTeacher(id) {
 *
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
-function getMappings(data) {
+function getMappings(table) {
+	const data = table.data;
+
 	const users = parseUsers(data);
 	const activityNames = parseActivityNames(data);
 	const courses = parseCourses(data);
@@ -432,9 +435,13 @@ function getMappings(data) {
 	const pagedActivities = chunk(activities.map(a => formatActivity(a)), 3);
 	const pages = pagedActivities.length;
 
+	const sortsHref = 'sorts/';
+
 	pagedActivities.forEach((page, i) => {
-		mappings[getHrefForPageId(i)] = formatPage(page, 'filters/', 'sorts/', getHrefForNextPage(i, pages));
+		mappings[getHrefForPageId(i)] = formatPage(page, 'filters/', sortsHref, getHrefForNextPage(i, pages));
 	});
+
+	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
 
 	return mappings;
 }
