@@ -1,5 +1,3 @@
-import chunk from 'lodash-es/chunk';
-
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
 }
@@ -430,12 +428,13 @@ function getMappings(data) {
 	});
 
 	const pagedActivities = [];
-	let currentPage = 0;
 	let activitiesOnPage = [];
 	let numActivitiesOnPage = 0;
+	let currentPage = 0;
 	activities.forEach((activity, i) => {
 		if(numActivitiesOnPage == 3) {
 			pagedActivities[currentPage] = activitiesOnPage;
+			activitiesOnPage = [];
 			numActivitiesOnPage = 0;
 			currentPage++;
 		}
