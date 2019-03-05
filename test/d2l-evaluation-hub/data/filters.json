@@ -46,6 +46,19 @@
       "class": [
         "collection",
         "filters",
+        "completion-date"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Date",
+      "href": "data/dateFilter.json"
+    },
+    {
+      "class": [
+        "collection",
+        "filters",
         "primary-facilitator"
       ],
       "rel": [

@@ -68,7 +68,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	}
 
 	_getFilterClasses(masterTeacher) {
-		var filters = [ 'activity-name', 'enrollments' ];
+		var filters = [ 'activity-name', 'enrollments', 'completion-date' ];
 		if (masterTeacher) {
 			filters = filters.concat('primary-facilitator');
 		}
