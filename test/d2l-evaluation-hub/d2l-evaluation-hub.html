@@ -50,7 +50,7 @@
 				var filterTabs = filterTabsContainer.shadowRoot.querySelectorAll('d2l-tab');
 
 				if (filterTabs.length > 0) {
-					callback(filterTabs, filterTabsContainer);
+					callback(filterTabs);
 				} else {
 					setTimeout(function() {
 						waitForFilter(callback);
@@ -58,12 +58,12 @@
 				}
 			}
 
-			var clickFilter = function() {
+			var clickFilter = function(filterOptionName) {
 				var firstFilterTab = filterDropdown.shadowRoot.querySelectorAll('d2l-filter-dropdown-page')[0];
 				var filterOptions = firstFilterTab.shadowRoot.querySelectorAll('d2l-menu-item-checkbox');
 
 				for (var i = 0; i < filterOptions.length; i++) {
-					if (filterOptions[i].text === 'Assignment Name') {
+					if (filterOptions[i].text === filterOptionName) {
 						MockInteractions.click(filterOptions[i]);
 					}
 				}
@@ -103,40 +103,48 @@
 					waitForFilter(verifyFilter);
 				});
 				test('applying and removing filters causes the count to update and events to fire', function(done) {
-					var add = true;
+					var add = 1;
 
-					quickEval.addEventListener('d2l-hm-filter-filters-updated', function(e) {
+					quickEval.addEventListener('d2l-hm-filter-filters-updated', function(e, callback) {
 						var dropdownButton = filterDropdown.shadowRoot.querySelector('d2l-dropdown-button-subtle').shadowRoot.querySelector('d2l-button-subtle');
 						assert.deepEqual(e.detail.filteredActivities, list.entity);
-						if (add) {
-							assert.equal(dropdownButton.text, "Filter: 1 Filter");
-							add = false;
-							clickFilter();
+						if (add === 1) {
+							assert.equal(dropdownButton.text, 'Filter: 1 Filter');
+							assert.equal(e.detail.totalSelectedFilters, 1);
+							clickFilter('Assignment Name');
 						} else {
-							assert.equal(dropdownButton.text, "Filter");
+							assert.equal(dropdownButton.text, 'Filter');
+							assert.equal(e.detail.totalSelectedFilters, 0);
 							done();
 						}
+						add--;
 					});
 
-					waitForFilter(clickFilter);
+					waitForFilter(function(){ clickFilter('Assignment Name') });
 				});
 				test('clearing filters causes event to fire', function(done) {
-					var add = true;
+					var add = 2;
 
 					quickEval.addEventListener('d2l-hm-filter-filters-updated', function(e) {
 						var dropdownButton = filterDropdown.shadowRoot.querySelector('d2l-dropdown-button-subtle').shadowRoot.querySelector('d2l-button-subtle');
 						assert.deepEqual(e.detail.filteredActivities, list.entity);
-						if (add) {
-							assert.equal(dropdownButton.text, "Filter: 1 Filter");
-							add = false;
+						if (add === 2) {
+							assert.equal(dropdownButton.text, 'Filter: 1 Filter');
+							assert.equal(e.detail.totalSelectedFilters, 1);
+							clickFilter('Quiz Name');
+						} else if (add === 1) {
+							assert.equal(dropdownButton.text, 'Filter: 2 Filters');
+							assert.equal(e.detail.totalSelectedFilters, 2);
 							clearFilter();
 						} else {
-							assert.equal(dropdownButton.text, "Filter");
+							assert.equal(dropdownButton.text, 'Filter');
+							assert.equal(e.detail.totalSelectedFilters, 0);
 							done();
 						}
+						add--;
 					});
 
-					waitForFilter(clickFilter);
+					waitForFilter(function(){ clickFilter('Assignment Name') });
 				});
 			});
 

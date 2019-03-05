@@ -39,7 +39,21 @@
               "item",
               "https://api.brightspace.com/rels/filter"
           ],
-          "title": "Quiz Name"
+          "title": "Quiz Name",
+          "actions": [
+              {
+                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
+                  "name": "add-filter",
+                  "method": "GET",
+                  "fields": [
+                      {
+                          "type": "hidden",
+                          "name": "existingState",
+                          "value": "i1jZmIzLTRiNmItYWU3NC"
+                      }
+                  ]
+              }
+          ]
       },
       {
           "class": [

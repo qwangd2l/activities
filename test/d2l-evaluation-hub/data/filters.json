@@ -86,6 +86,21 @@
       ]
     },
     {
+      "href": "components/d2l-activities/test/d2l-evaluation-hub/data/assignment.json",
+      "name": "apply",
+      "fields": [
+        {
+          "class": [
+            "base64",
+            "json"
+          ],
+          "type": "hidden",
+          "name": "filter",
+          "value": "i1jZmIzLTRiNmItYWU3NC"
+        }
+      ]
+    },
+    {
       "href":"components/d2l-activities/test/d2l-evaluation-hub/data/filters.json",
       "name":"clear",
       "fields":[
