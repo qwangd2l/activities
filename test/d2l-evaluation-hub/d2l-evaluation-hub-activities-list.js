@@ -40,13 +40,10 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			for (var i = 0; i < expected.length; i++) {
 				var link = data[i].querySelector('d2l-link');
 				var span = data[i].querySelector('span');
-				var linkHidden = link.hasAttribute('hidden');
-				var spanHidden = span.hasAttribute('hidden');
 
-				assert.equal(expected[i].text, link.innerHTML);
-				assert.equal(expected[i].text, span.innerHTML);
-				assert.equal(!(expected[i].link), linkHidden);
-				assert.equal(!!(expected[i].link), spanHidden);
+				var item = link !== null ? link : span;
+
+				assert.equal(expected[i].text, item.innerHTML);
 			}
 			done();
 		}
