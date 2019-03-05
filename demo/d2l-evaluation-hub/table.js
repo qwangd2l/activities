@@ -12,7 +12,7 @@ export default
 {
 	sorts: [
 		{
-			'class': 'courseName',
+			'class': 'course-name',
 			'id': 'bycourse',
 			'fn': (x, y) => {
 				const xname = x.rowData.courseName;
@@ -21,16 +21,16 @@ export default
 			}
 		},
 		{
-			'class': 'displayName',
+			'class': 'first-name',
 			'id': 'byuser',
 			'fn': (x, y) => {
-				const xname = x.rowData.firstName + ' ' + x.rowData.lastName;
-				const yname = y.rowData.firstName + ' ' + y.rowData.lastName;
+				const xname = x.rowData.firstName;
+				const yname = y.rowData.firstName;
 				return compare(xname, yname);
 			}
 		},
 		{
-			'class': 'activityName',
+			'class': 'activity-name',
 			'id': 'byactivity',
 			'fn': (x, y) => {
 				const xname = x.rowData.activityName;
@@ -39,20 +39,11 @@ export default
 			}
 		},
 		{
-			'class': 'submissionDate',
+			'class': 'completion-date',
 			'id': 'bydate',
 			'fn': (x, y) => {
 				const xname = x.rowData.submissionDate;
 				const yname = y.rowData.submissionDate;
-				return compare(xname, yname);
-			}
-		},
-		{
-			'class': 'masterTeacher',
-			'id': 'byteacher',
-			'fn': (x, y) => {
-				const xname = x.rowData.masterTeacher.firstName + ' ' + x.rowData.masterTeacher.lastName;
-				const yname = y.rowData.masterTeacher.firstName + ' ' + y.rowData.masterTeacher.lastName;
 				return compare(xname, yname);
 			}
 		}

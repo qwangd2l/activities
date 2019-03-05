@@ -43,7 +43,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<dom-repeat items="[[_headers]]">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
-									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.sortKey]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.key]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
 								</template>
 							</template>
 						</dom-repeat>
@@ -88,11 +88,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortKey: 'displayName', sortClass: 'displayName', canSort: false, localizationKey: 'displayName', canLink: true },
-					{ key: 'activityName', sortKey: 'activityName', sortClass: 'activityName', canSort: false, localizationKey: 'activityName', canLink: false },
-					{ key: 'courseName', sortKey: 'courseName', sortClass: 'courseName', canSort: false, localizationKey: 'courseName', canLink: false },
-					{ key: 'submissionDate', sortKey: 'submissionDate', sortClass: 'submissionDate', canSort: false, localizationKey: 'submissionDate', canLink: false },
-					{ key: 'masterTeacher', sortKey: 'masterTeacher', sortClass: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher', canLink: false }
+					{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName', canLink: true },
+					{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName', canLink: false },
+					{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName', canLink: false },
+					{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate', canLink: false },
+					{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher', canLink: false }
 				]
 			},
 			_data: {
@@ -148,9 +148,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				}
 
 				this._headers.forEach(header => {
-					const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
-					if (sort) {
-						header.canSort = true;
+					if (header.sortClass) {
+						const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+						if (sort) {
+							header.canSort = true;
+						}
 					}
 				});
 				return Promise.resolve();
@@ -158,7 +160,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_sort(e) {
-		const header = this._headers.find(h => h.sortKey === e.currentTarget.id);
+		const header = this._headers.find(h => h.key === e.currentTarget.id);
 
 		if (!header) {
 			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
