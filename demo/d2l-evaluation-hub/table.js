@@ -34,7 +34,8 @@ export default
 		'masterTeacher': {
 			'firstName': 'Chris',
 			'lastName': 'Alexander'
-		}
+		},
+		'isDraft': true
 	},
 	{
 		'firstName': 'Carol',
