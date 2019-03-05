@@ -10,6 +10,7 @@ import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
+
 /**
  * @customElement
  * @polymer
@@ -53,16 +54,23 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
 							<d2l-tr>
-								<dom-repeat items="[[_headers]]" as="h">
-									<template>
-										<template is="dom-if" if="[[_shouldDisplayColumn(h.key)]]">
-											<d2l-td>
-												<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[_getDataProperty(s, h.key)]]</d2l-link>
-												<span hidden$="[[h.canLink]]">[[_getDataProperty(s, h.key)]]</span>
-											</d2l-td>
-										</template>
-									</template>
-								</dom-repeat>
+								<d2l-td>
+									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'activityName')]]</span>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'courseName')]]</span>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'submissionDate')]]</span>
+								</d2l-td>
+								<template is="dom-if" if="[[_shouldDisplayColumn('masterTeacher')]]">
+									<d2l-td>
+										<span>[[_getDataProperty(s, 'masterTeacher')]]</span>
+									</d2l-td>
+								</template>
 							</d2l-tr>
 						</template>
 					</dom-repeat>
@@ -88,11 +96,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortKey: 'displayName', localizationKey: 'displayName', canLink: true },
-					{ key: 'activityName', sortKey: 'activityName', localizationKey: 'activityName', canLink: false },
-					{ key: 'courseName', sortKey: 'courseName', localizationKey: 'courseName', canLink: false },
-					{ key: 'submissionDate', sortKey: 'submissionDate', localizationKey: 'submissionDate', canLink: false },
-					{ key: 'masterTeacher', sortKey: 'masterTeacher', localizationKey: 'masterTeacher', canLink: false }
+					{ key: 'displayName', localizationKey: 'displayName' },
+					{ key: 'activityName', localizationKey: 'activityName'},
+					{ key: 'courseName', localizationKey: 'courseName' },
+					{ key: 'submissionDate', localizationKey: 'submissionDate' },
+					{ key: 'masterTeacher', localizationKey: 'masterTeacher' }
 				]
 			},
 			_data: {
