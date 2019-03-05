@@ -70,7 +70,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	_getFilterClasses(masterTeacher) {
 		var filters = [ 'activity-name', 'enrollments' ];
 		if (masterTeacher) {
-			filters = filters.concat('master-teacher');
+			filters = filters.concat('primary-facilitator');
 		}
 		return filters;
 	}

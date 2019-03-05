@@ -54,7 +54,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 	var expectedData = [
 		{
-			displayName: 'User Name',
+			displayName: 'Special User Name',
 			courseName: 'Org Name',
 			activityName: 'Assignment Name',
 			submissionDate: '2018-02-03T17:00:00.000Z',

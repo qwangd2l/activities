@@ -2,7 +2,7 @@
   "class": [
       "collection",
       "filters",
-      "role-markers"
+      "activity-name"
   ],
   "entities": [
       {
@@ -14,26 +14,48 @@
               "item",
               "https://api.brightspace.com/rels/filter"
           ],
-          "title": "Primary Facilitator",
+          "title": "Assignment Name",
           "actions": [
               {
-                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/roleMarkerFilter.json",
+                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
                   "name": "add-filter",
                   "method": "GET",
                   "fields": [
                       {
                           "type": "hidden",
                           "name": "existingState",
-                          "value": "eyJkN2E5ZTM5Ny1lMDFiLTRjZjctODIxZS1mYWU3M2Q2MjgzMDUiOlsicHJpbWFyeUluc3RydWN0b3IiXX0"
+                          "value": "eyJjODA2YmJjNi1jZmIzLTRiNmItYWU3NC1kNWU0ZTMxOTE4M2QiOlsiRmlyc3QgVG9waWMiXX0"
                       }
                   ]
               }
           ]
+      },
+      {
+          "class": [
+              "filter",
+              "off"
+          ],
+          "rel": [
+              "item",
+              "https://api.brightspace.com/rels/filter"
+          ],
+          "title": "Quiz Name"
+      },
+      {
+          "class": [
+              "filter",
+              "off"
+          ],
+          "rel": [
+              "item",
+              "https://api.brightspace.com/rels/filter"
+          ],
+          "title": "Topic Name"
       }
   ],
   "actions": [
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/roleMarkerFilter.json",
+          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
           "name": "search",
           "fields": [
               {
@@ -51,7 +73,7 @@
           ]
       },
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/enrollmentFilters.json",
+          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/filters.json",
           "name": "apply",
           "fields": [
               {
@@ -65,5 +87,5 @@
           ]
       }
   ],
-  "title": "Role Markers"
+  "title": "Activity Name"
 }
