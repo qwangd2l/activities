@@ -13,10 +13,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'loading': 'Loading',
 			'loadMore': 'Load more',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': 'Submission Date',
-			'caughtUp': 'You\'re all caught up!',
-			'noSubmissions': 'There are no submissions that need your attention.',
-			'checkBackOften': 'Check back often for new submissions.'
+			'submissionDate': 'Submission Date'
 		};
 	}
 };
