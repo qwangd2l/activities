@@ -81,12 +81,7 @@ function formatActivity(activity) {
 }
 
 function formatActivities(activities) {
-	const formattedActivities = [];
-
-	activities.forEach((activity, i) => {
-		const formattedActivity = formatActivity(activity);
-		formattedActivities[i] = formattedActivity;
-	});
+	const formattedActivities = activities.map(activity => formatActivity(activity));
 	return formattedActivities;
 }
 
