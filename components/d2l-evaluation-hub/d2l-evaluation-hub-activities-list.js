@@ -11,6 +11,7 @@ import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
+import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 
 /**
  * @customElement
@@ -59,6 +60,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 							<d2l-tr>
 								<d2l-td>
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
+									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td>
 									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
@@ -303,13 +305,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		var promises = [];
 		entity.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
+
 				var item = {
 					displayName: '',
 					courseName: '',
 					activityNameHref: this._getActivityNameHref(activity),
 					submissionDate: this._getSubmissionDate(activity),
 					activityLink: this._getRelativeUriProperty(activity),
-					masterTeacher: ''
+					masterTeacher: '',
+					isDraft: this._determineIfActivityIsDraft(activity)
 				};
 
 				var getUserName = this._getUserPromise(activity, item);
@@ -330,6 +334,17 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		const result = await Promise.all(promises);
 		return result;
+	}
+
+	_determineIfActivityIsDraft(activity) {
+		if (activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
+			var evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
+			if (evaluation.properties && evaluation.properties.state === 'Draft') {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	_getMasterTeacherPromise(entity, item) {

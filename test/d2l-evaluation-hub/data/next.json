@@ -66,6 +66,17 @@
                         "date": "2019-03-13T15:16:10.793Z",
                         "text": "3/9/2019 10:16 AM"
                       }
+                },
+                {
+                    "class": [
+                        "evaluation"
+                    ],
+                    "rel": [
+                        "https://api.brightspace.com/rels/evaluation"
+                    ],
+                    "properties": {
+                        "state": "Draft"
+                    }
                 }
             ]
         },
