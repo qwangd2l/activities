@@ -1,5 +1,7 @@
 import { createSortEndpoint } from './sort-handler';
 import { createPageEndpoint } from './page-handler';
+import { formatActivities, mapActivities } from './activity-handler';
+import chunk from 'lodash-es/chunk';
 
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
@@ -54,10 +56,6 @@ function formatActivityName(name) {
 
 function getHrefForActivityNameId(id) {
 	return `activities/${id}`;
-}
-
-function getHrefForActivityId(id) {
-	return `activity/${id}`;
 }
 
 function parseCourses(data) {
@@ -277,88 +275,6 @@ function parseActivities(data, users, activityNames, courses) {
 	return parsedActivities;
 }
 
-function formatActivity(activity, selfHref) {
-	var formattedActivity = {
-		'class': [
-			activity.klass,
-			'activity'
-		],
-		'rel': [
-			'https://activities.api.brightspace.com/rels/user-activity-usage'
-		],
-		'links': [
-			{
-				'rel': [
-					'https://activities.api.brightspace.com/rels/user-activity-usage'
-				],
-				'href': selfHref
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/user'
-				],
-				'href': activity.userHref
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/organization'
-				],
-				'href': activity.courseHref
-			},
-			{
-				'rel': [
-					activity.activityRel
-				],
-				'href': activity.activityHref
-			}
-		],
-		'entities': [
-			{
-				'class': [
-					'relative-uri'
-				],
-				'rel': [
-					'item',
-				],
-				'properties': {
-					'path': '/this/is/not/used'
-				}
-			},
-			{
-				'class': [
-					'date',
-					'localized-formatted-date'
-				],
-				'rel': [
-					'https://api.brightspace.com/rels/date'
-				],
-				'properties': {
-					'date': '2019-03-13T15:16:10.793Z',
-					'text': activity.localizedFormattedDate
-				}
-			}
-		]
-	};
-
-	if (activity.isDraft) {
-		var draftEntity = {
-			'class': [
-				'evaluation'
-			],
-			'rel': [
-				'https://api.brightspace.com/rels/evaluation'
-			],
-			'properties': {
-				'state': 'Draft'
-			}
-		};
-
-		formattedActivity.entities.push(draftEntity);
-	}
-
-	return formattedActivity;
-}
-
 function getHrefForPageId(id) {
 	return `pages/${id}`;
 }
@@ -388,7 +304,7 @@ function getMappings(table) {
 	const courses = parseCourses(data);
 	const activities = parseActivities(data, users, activityNames, courses);
 
-	const mappings = {};
+	let mappings = {};
 	users.forEach((user, i) => {
 		mappings[getHrefForUserId(i)] = formatUser(user);
 	});
@@ -420,31 +336,17 @@ function getMappings(table) {
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
-	const pagedActivities = [];
-	let activitiesOnPage = [];
-	let numActivitiesOnPage = 0;
-	let currentPage = 0;
-	activities.forEach((activity, i) => {
-		if (numActivitiesOnPage === 3) {
-			pagedActivities[currentPage] = activitiesOnPage;
-			activitiesOnPage = [];
-			numActivitiesOnPage = 0;
-			currentPage++;
-		}
-		const formattedActivity = formatActivity(activity, getHrefForActivityId(i));
+	const formattedActivities = formatActivities(activities);
+	mappings = mapActivities(mappings, formattedActivities);
 
-		activitiesOnPage[i] = formattedActivity;
-		mappings[getHrefForActivityId(i)] = formattedActivity;
-		numActivitiesOnPage++;
-	});
-
+	const pagedActivities = chunk(formattedActivities, 3);
 	const pages = pagedActivities.length;
 
 	const sortsHref = 'sorts/';
 
-	pagedActivities.forEach((_, i) => {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
-	});
+	for (let i = 0; i < pages; i++) {
+		mappings[getHrefForPageId(i)] = createPageEndpoint(formattedActivities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
+	}
 
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
 
