@@ -10,10 +10,13 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'activityName': 'Nom de l\'activité',
 			'courseName': 'Cours',
 			'displayName': 'Prénom et Nom de famille',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': 'En voir plus',
+			'loading': 'Chargement',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': 'Date de soumission'
+			'submissionDate': 'Date de soumission',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

@@ -10,10 +10,13 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'activityName': '活動名稱',
 			'courseName': '課程',
 			'displayName': '名字，姓氏',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': '載入更多',
+			'loading': '正在載入',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': '提交日期'
+			'submissionDate': '提交日期',
+			'tryAgain': 'Try Again'
 		};
 	}
 };
