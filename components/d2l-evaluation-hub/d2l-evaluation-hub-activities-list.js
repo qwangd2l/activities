@@ -129,7 +129,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	static get observers() {
 		return [
-			'_loadData(entity)'
+			'_loadData(entity)',
+			'_loadSorts(entity)'
 		];
 	}
 	ready() {
@@ -244,7 +245,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		try {
 			var result = await this._parseActivities(entity);
 			this._data = result;
-			return this._loadSorts(entity);
 		} catch (e) {
 			// Unable to load activities from entity.
 			return Promise.reject(e);
