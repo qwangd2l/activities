@@ -10,10 +10,13 @@ const LangDeImpl = (superClass) => class extends superClass {
 			'activityName': 'Name der Aktivität',
 			'courseName': 'Kurs',
 			'displayName': 'Vorname, Nachname',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': 'Mehr laden',
+			'loading': 'Wird geladen',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': 'Abgabedatum'
+			'submissionDate': 'Abgabedatum',
+			'tryAgain': 'Try Again'
 		};
 	}
 };
