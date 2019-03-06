@@ -12,7 +12,7 @@ import {Rels, Classes} from 'd2l-hypermedia-constants';
 
 class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], PolymerElement) {
 	static get template() {
-		return html`
+		const myTemplate = html`
 			<style>
 				:host {
 					display: block;
@@ -22,6 +22,8 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 			<d2l-icon icon="[[_activityIcon]]"></d2l-icon>
 			<span>[[_activityName]]</span>
 		`;
+		myTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
+		return myTemplate;
 	}
 	static get is() { return 'd2l-activity-name'; }
 	static get properties() {
