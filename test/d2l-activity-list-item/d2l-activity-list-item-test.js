@@ -20,9 +20,6 @@ describe('d2l-activity-list-item', () => {
 		sandbox = sinon.sandbox.create();
 		activityEntity = window.D2L.Hypermedia.Siren.Parse({
 			class:['activity'],
-			properties:{
-				description: 'Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis in the 20th Century: Building a Successful Budget'
-			},
 			links: [{
 				rel:['self'],
 				href: '/activity/1'
@@ -46,7 +43,8 @@ describe('d2l-activity-list-item', () => {
 				code: 'COURSE100',
 				startDate: null,
 				endDate: null,
-				isActive: true
+				isActive: true,
+				description: 'Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis in the 20th Century: Building a Successful Budget'
 			},
 			links: [{
 				rel: ['self'],

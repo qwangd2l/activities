@@ -577,29 +577,28 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			return;
 		}
 
-		this._description = sirenEntity.properties && sirenEntity.properties.description;
-
 		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
 			this._actionEnroll = sirenEntity.getAction('assign');
 		}
 		this._activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		this._organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
 
-		this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
-			bubbles: true,
-			composed: true
-		}));
-
 		if (this._organizationUrl) {
 			this._fetchEntity(this._organizationUrl)
-				.then(this._handleOrganizationResponse.bind(this));
+				.then(this._handleOrganizationResponse.bind(this))
+				.then(() => {
+					this.dispatchEvent(new CustomEvent('d2l-activity-text-loaded', {
+						bubbles: true,
+						composed: true
+					}));
+				});
 		}
 
 		this.href = sirenEntity.hasLink('self') && sirenEntity.getLinkByRel('self').href;
 	}
 
 	_handleOrganizationResponse(organization) {
-		this._organization = organization;
+		this._description = organization.properties && organization.properties.description;
 
 		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
