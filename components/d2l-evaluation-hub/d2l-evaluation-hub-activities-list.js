@@ -10,6 +10,7 @@ import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
+import '../d2l-activity-name/d2l-activity-name.js';
 
 /**
  * @customElement
@@ -60,7 +61,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
 								</d2l-td>
 								<d2l-td>
-									<span>[[_getDataProperty(s, 'activityName')]]</span>
+									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
 								</d2l-td>
 								<d2l-td>
 									<span>[[_getDataProperty(s, 'courseName')]]</span>
@@ -305,7 +306,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				var item = {
 					displayName: '',
 					courseName: '',
-					activityName: '',
+					activityNameHref: this._getActivityNameHref(activity),
 					submissionDate: this._getSubmissionDate(activity),
 					activityLink: this._getRelativeUriProperty(activity),
 					masterTeacher: ''
@@ -313,13 +314,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 				var getUserName = this._getUserPromise(activity, item);
 				var getCourseName = this._getCoursePromise(activity, item);
-				var getActivityName = this._getActivityPromise(activity, item);
 				var getMasterTeacherName =
 					this._shouldDisplayColumn('masterTeacher')
 						? this._getMasterTeacherPromise(activity, item)
 						: Promise.resolve();
 
-				Promise.all([getUserName, getCourseName, getActivityName, getMasterTeacherName]).then(function() {
+				Promise.all([getUserName, getCourseName, getMasterTeacherName]).then(function() {
 					resolve(item);
 				});
 			}.bind(this)));
@@ -406,25 +406,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}.bind(this));
 	}
 
-	_getActivityPromise(entity, item) {
-		var rel;
-		if (entity.hasClass(Classes.activities.userQuizAttemptActivity)) {
-			rel = Rels.quiz;
-		} else if (entity.hasClass(Classes.activities.userAssignmentActivity)) {
-			rel = Rels.assignment;
-		} else if (entity.hasClass(Classes.activities.userDiscussionActivity)) {
-			rel = Rels.Discussions.topic;
-		} else {
-			return Promise.resolve();
-		}
-		return this._followLink(entity, rel)
-			.then(function(a) {
-				if (a && a.entity && a.entity.properties) {
-					item.activityName = a.entity.properties.name;
-				}
-			});
-	}
-
 	_getCoursePromise(entity, item) {
 		return this._followLink(entity, Rels.organization)
 			.then(function(o) {
@@ -441,6 +422,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
 				}
 			});
+	}
+
+	_getActivityNameHref(entity) {
+		if (entity.hasLinkByRel(Rels.Activities.userActivityUsage)) {
+			const link = entity.getLinkByRel(Rels.Activities.userActivityUsage);
+			return link.href;
+		}
+		return '';
 	}
 
 	_getSubmissionDate(entity) {

@@ -12,13 +12,13 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		var expected = [];
 
 		expectedArray.forEach(function(item) {
-			expected.push({ text: item.displayName, link: item.activityLink });
-			expected.push({ text: item.activityName, link: '' });
-			expected.push({ text: item.courseName, link: '' });
-			expected.push({ text: item.submissionDate, link: '' });
+			expected.push({ text: item.displayName, href: item.activityLink });
+			expected.push({ href: item.activityNameHref });
+			expected.push({ text: item.courseName });
+			expected.push({ text: item.submissionDate });
 
 			if (includeMasterTeacher) {
-				expected.push({ text: item.masterTeacher, link: '' });
+				expected.push({ text: item.masterTeacher });
 			}
 		});
 
@@ -30,30 +30,30 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	}
 
 	function verifyData(expected, done) {
-		var data = list.shadowRoot.querySelectorAll('d2l-td');
+		const data = list.shadowRoot.querySelectorAll('d2l-td');
 
-		if (data.length !== expected.length) {
-			window.setTimeout(function() {
-				verifyData(expected, done);
-			}, 30);
-		} else {
-			for (var i = 0; i < expected.length; i++) {
-				var link = data[i].querySelector('d2l-link');
-				var span = data[i].querySelector('span');
+		for (let i = 0; i < expected.length; i++) {
+			const link = data[i].querySelector('d2l-link');
+			const span = data[i].querySelector('span');
+			const activityName = data[i].querySelector('d2l-activity-name');
 
-				var item = link !== null ? link : span;
-
-				assert.equal(expected[i].text, item.innerHTML);
+			if (link) {
+				assert.equal(expected[i].text, link.innerHTML);
+				assert.equal(expected[i].href, link.href);
+			} else if (span) {
+				assert.equal(expected[i].text, span.innerHTML);
+			} else if (activityName) {
+				assert.equal(expected[i].href, activityName.href);
 			}
-			done();
 		}
+		done();
 	}
 
 	var expectedData = [
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Assignment Name',
+			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/3',
 			masterTeacher: ''
@@ -61,7 +61,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Quiz Name',
+			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/2',
 			masterTeacher: ''
@@ -69,7 +69,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Topic Name',
+			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url',
 			masterTeacher: ''
@@ -91,7 +91,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Assignment Name',
+			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next1',
 			masterTeacher: 'Master Teacher'
@@ -99,7 +99,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Quiz Name',
+			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next2',
 			masterTeacher: 'Master Teacher'
@@ -107,7 +107,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Topic Name',
+			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next3',
 			masterTeacher: 'Master Teacher'
