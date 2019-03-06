@@ -39,7 +39,7 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 }
 
 function formatActivity(activity) {
-	return {
+	const formattedActivity = {
 		'class': [
 			activity.klass,
 			'activity'
@@ -81,29 +81,37 @@ function formatActivity(activity) {
 			},
 			{
 				'class': [
-					'completion',
-					'complete'
+					'date',
+					'localized-formatted-date'
 				],
 				'rel': [
-					'item'
+					'https://api.brightspace.com/rels/date'
 				],
-				'entities': [
-					{
-						'class': [
-							'date',
-							'completion-date'
-						],
-						'rel': [
-							'https://api.brightspace.com/rels/date'
-						],
-						'properties': {
-							'date': activity.submissionDate
-						}
-					}
-				]
+				'properties': {
+					'date': '2019-03-13T15:16:10.793Z',
+					'text': activity.localizedFormattedDate
+				}
 			}
 		]
 	};
+
+	if (activity.isDraft) {
+		const draftEntity = {
+			'class': [
+				'evaluation'
+			],
+			'rel': [
+				'https://api.brightspace.com/rels/evaluation'
+			],
+			'properties': {
+				'state': 'Draft'
+			}
+		};
+
+		formattedActivity.entities.push(draftEntity);
+	}
+
+	return formattedActivity;
 }
 
 function formatPage(entities, filterLocation, sortsLocation, nextLocation) {

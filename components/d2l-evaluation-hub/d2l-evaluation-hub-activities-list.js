@@ -10,6 +10,7 @@ import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
+
 /**
  * @customElement
  * @polymer
@@ -53,16 +54,23 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
 							<d2l-tr>
-								<dom-repeat items="[[_headers]]" as="h">
-									<template>
-										<template is="dom-if" if="[[_shouldDisplayColumn(h.key)]]">
-											<d2l-td>
-												<d2l-link href="[[s.activityLink]]" hidden$="[[!h.canLink]]">[[_getDataProperty(s, h.key)]]</d2l-link>
-												<span hidden$="[[h.canLink]]">[[_getDataProperty(s, h.key)]]</span>
-											</d2l-td>
-										</template>
-									</template>
-								</dom-repeat>
+								<d2l-td>
+									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'activityName')]]</span>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'courseName')]]</span>
+								</d2l-td>
+								<d2l-td>
+									<span>[[_getDataProperty(s, 'submissionDate')]]</span>
+								</d2l-td>
+								<template is="dom-if" if="[[_shouldDisplayColumn('masterTeacher')]]">
+									<d2l-td>
+										<span>[[_getDataProperty(s, 'masterTeacher')]]</span>
+									</d2l-td>
+								</template>
 							</d2l-tr>
 						</template>
 					</dom-repeat>
@@ -88,11 +96,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName', canLink: true },
-					{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName', canLink: false },
-					{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName', canLink: false },
-					{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate', canLink: false },
-					{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher', canLink: false }
+					{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName' },
+					{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName' },
+					{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName' },
+					{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate' },
+					{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher' }
 				]
 			},
 			_data: {
@@ -433,11 +441,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_getSubmissionDate(entity) {
-		if (entity.hasSubEntityByClass(Classes.activities.completion)) {
-			var i = entity.getSubEntityByClass(Classes.activities.completion);
-			if (i.hasSubEntityByClass(Classes.dates.date)) {
-				return i.getSubEntityByClass(Classes.dates.date).properties.date;
-			}
+		if (entity.hasSubEntityByClass('localized-formatted-date')) {
+			var i = entity.getSubEntityByClass('localized-formatted-date');
+			return i.properties.text;
 		}
 		return '';
 	}

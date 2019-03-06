@@ -265,7 +265,8 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			submissionDate: row.submissionDate,
+			localizedFormattedDate: row.localizedFormattedDate,
+			isDraft: row.isDraft,
 			rowData: row
 		};
 	});

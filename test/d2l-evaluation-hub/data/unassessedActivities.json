@@ -40,27 +40,17 @@
 			},
 			{
 				"class": [
-						"completion",
-						"complete"
+					"date",
+					"localized-formatted-date"
 				],
 				"rel": [
-						"item"
+					"https://api.brightspace.com/rels/date"
 				],
-				"entities": [
-						{
-								"class": [
-										"date",
-										"completion-date"
-								],
-								"rel": [
-										"https://api.brightspace.com/rels/date"
-								],
-								"properties": {
-										"date": "2018-02-03T17:00:00.000Z"
-								}
-						}
-				]
-		}
+				"properties": {
+					"date": "2019-03-13T15:16:10.793Z",
+					"text": "3/9/2019 10:16 AM"
+				  }
+			}
 			]
 		},{
 			"class": ["user-quiz-attempt-activity","activity"],
@@ -96,27 +86,17 @@
 			},
 			{
 				"class": [
-						"completion",
-						"complete"
+					"date",
+					"localized-formatted-date"
 				],
 				"rel": [
-						"item"
+					"https://api.brightspace.com/rels/date"
 				],
-				"entities": [
-						{
-								"class": [
-										"date",
-										"completion-date"
-								],
-								"rel": [
-										"https://api.brightspace.com/rels/date"
-								],
-								"properties": {
-										"date": "2019-02-22T02:00:00.000Z"
-								}
-						}
-				]
-		}
+				"properties": {
+					"date": "2019-03-13T15:16:10.793Z",
+					"text": "3/9/2019 10:16 AM"
+				  }
+			}
 			]
 		},{
 			"class": ["user-discussion-activity","activity"],
@@ -152,27 +132,17 @@
 			},
 			{
 				"class": [
-						"completion",
-						"complete"
+					"date",
+					"localized-formatted-date"
 				],
 				"rel": [
-						"item"
+					"https://api.brightspace.com/rels/date"
 				],
-				"entities": [
-						{
-								"class": [
-										"date",
-										"completion-date"
-								],
-								"rel": [
-										"https://api.brightspace.com/rels/date"
-								],
-								"properties": {
-										"date": "2019-02-20T02:00:00.000Z"
-								}
-						}
-				]
-		}
+				"properties": {
+					"date": "2019-03-13T15:16:10.793Z",
+					"text": "3/9/2019 10:16 AM"
+				  }
+			}
 			]
 		}
 	]
