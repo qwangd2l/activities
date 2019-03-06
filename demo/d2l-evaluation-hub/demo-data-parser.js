@@ -1,3 +1,6 @@
+import { createSortEndpoint } from './sort-handler';
+import { createPageEndpoint } from './page-handler';
+
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
 }
@@ -266,7 +269,8 @@ function parseActivities(data, users, activityNames, courses) {
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
 			localizedFormattedDate: row.localizedFormattedDate,
-			isDraft: row.isDraft
+			isDraft: row.isDraft,
+			rowData: row
 		};
 	});
 
@@ -355,38 +359,6 @@ function formatActivity(activity, selfHref) {
 	return formattedActivity;
 }
 
-function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
-	const entity = {
-		'links': [
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/filters'
-				],
-				'href': filterLocation
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/sorts'
-				],
-				'href': sortsLocation
-			},
-
-		],
-		'entities': entities
-	};
-
-	if (nextLocation) {
-		entity.links.push({
-			'rel': [
-				'next'
-			],
-			'href': nextLocation
-		});
-	}
-
-	return entity;
-}
-
 function getHrefForPageId(id) {
 	return `pages/${id}`;
 }
@@ -408,7 +380,9 @@ function getHrefForMasterTeacher(id) {
 *
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
-function getMappings(data) {
+function getMappings(table) {
+	const data = table.data;
+
 	const users = parseUsers(data);
 	const activityNames = parseActivityNames(data);
 	const courses = parseCourses(data);
@@ -466,9 +440,13 @@ function getMappings(data) {
 
 	const pages = pagedActivities.length;
 
-	pagedActivities.forEach((page, i) => {
-		mappings[getHrefForPageId(i)] = formatPage(page, 'filters/', 'sorts/', getHrefForNextPage(i, pages));
+	const sortsHref = 'sorts/';
+
+	pagedActivities.forEach((_, i) => {
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
 	});
+
+	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
 
 	return mappings;
 }

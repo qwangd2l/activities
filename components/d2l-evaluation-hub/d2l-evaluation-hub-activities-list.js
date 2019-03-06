@@ -21,9 +21,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-th {
-					font-weight: bold;
-				}
 				d2l-td {
 					font-weight: normal;
 				}
@@ -45,7 +42,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<dom-repeat items="[[_headers]]">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
-									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									<template is="dom-if" if="[[item.canSort]]">
+										<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.key]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									</template>
+									<template is="dom-if" if="[[!item.canSort]]">
+										<d2l-th><span>[[localize(item.localizationKey)]]</span></d2l-th>
+									</template>
 								</template>
 							</template>
 						</dom-repeat>
@@ -97,11 +99,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			_headers: {
 				type: Array,
 				value: [
-					{ key: 'displayName', localizationKey: 'displayName' },
-					{ key: 'activityName', localizationKey: 'activityName'},
-					{ key: 'courseName', localizationKey: 'courseName' },
-					{ key: 'submissionDate', localizationKey: 'submissionDate' },
-					{ key: 'masterTeacher', localizationKey: 'masterTeacher' }
+					{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName' },
+					{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName' },
+					{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName' },
+					{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate' },
+					{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher' }
 				]
 			},
 			_data: {
@@ -120,10 +122,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: String,
 				value: ''
 			},
-			_sortHref: {
-				type: String,
-				value: ''
-			},
 			_pageNextHref: {
 				type: String,
 				value: ''
@@ -132,7 +130,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 	static get observers() {
 		return [
-			'_loadData(entity)'
+			'_loadData(entity)',
+			'_loadSorts(entity)'
 		];
 	}
 	ready() {
@@ -149,24 +148,91 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
+	_loadSorts(entity) {
+		return this._followLink(entity, Rels.sorts)
+			.then(sortsEntity => {
+				if (!sortsEntity || !sortsEntity.entity) {
+					return Promise.reject('Could not load sorts endpoint');
+				}
+
+				this._headers.forEach((header, i) => {
+					if (header.sortClass) {
+						const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+						if (sort) {
+							this.set(`_headers.${i}.canSort`, true);
+						}
+					}
+				});
+
+				return Promise.resolve();
+			});
+	}
+
 	_sort(e) {
+		const header = this._headers.find(h => h.key === e.currentTarget.id);
+
+		if (!header) {
+			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
+		}
+		if (!header.canSort) {
+			return Promise.reject(`No matching sort for ${e.currentTarget.id}`);
+		}
+
+		let ascending = true;
+
 		if (e.currentTarget.nosort) {
 			e.currentTarget.removeAttribute('nosort');
 		} else if (e.currentTarget.desc) {
 			e.currentTarget.removeAttribute('desc');
 		} else {
+			ascending = false;
 			e.currentTarget.setAttribute('desc', 'desc');
 		}
 
-		var headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
-		for (var i = 0; i < headers.length; i++) {
-			if (headers[i] !== e.currentTarget) {
-				headers[i].removeAttribute('desc');
-				headers[i].setAttribute('nosort', 'nosort');
+		const headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
+		headers.forEach(h => {
+			if (h !== e.currentTarget) {
+				h.removeAttribute('desc');
+				h.setAttribute('nosort', 'nosort');
 			}
-		}
+		});
 
-		// TODO: get the new sorted data once sorting is enabled!!!
+		return this._followLink(this.entity, Rels.sorts)
+			.then((sortsEntity => {
+				if (!sortsEntity || !sortsEntity.entity) {
+					return Promise.reject('Could not load sorts endpoint');
+				}
+
+				const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+				if (!sort) {
+					return Promise.reject(`Could not find sort class ${header.sortClass}`);
+				}
+
+				const actionName = ascending ? 'sort-ascending' : 'sort-descending';
+				const action = sort.getActionByName(actionName);
+				if (!action) {
+					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
+				}
+
+				return this.performSirenAction(action);
+			}).bind(this))
+			.then((sortsEntity => {
+				if (!sortsEntity) {
+					return Promise.reject('Could not load sorts endpoint after sort is applied');
+				}
+				const action = sortsEntity.getActionByName('apply');
+				if (!action) {
+					return Promise.reject(`Could not find apply action in ${sortsEntity}`);
+				}
+				return action;
+			}).bind(this))
+			.then((collectionAction => {
+				const collection = this.performSirenAction(collectionAction);
+				return collection;
+			}).bind(this))
+			.then((collection => {
+				this.entity = collection;
+			}).bind(this));
 	}
 
 	async _loadData(entity) {
@@ -182,6 +248,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			this._data = result;
 		} catch (e) {
 			// Unable to load activities from entity.
+			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
 			this._loading = false;
@@ -259,7 +326,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}.bind(this));
 
 		this._filterHref = this._getHref(entity, Rels.filters);
-		//this._sortHref = this._getHref(entity, Rels.sort);
 		this._pageNextHref = this._getHref(entity, 'next');
 
 		const result = await Promise.all(promises);
