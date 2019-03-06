@@ -60,9 +60,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 							<d2l-tr>
 								<d2l-td>
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
-									<template is="dom-if" if="[[s.isDraft]]">
-										<d2l-activity-evaluation-icon-base draft></d2l-activity-evaluation-icon-base>
-									</template>
+									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td>
 									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
