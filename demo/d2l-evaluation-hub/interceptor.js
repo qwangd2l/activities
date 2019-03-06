@@ -19,9 +19,9 @@ function startMockServer(mappings, debug) {
 	window.d2lfetch.fetch = function(input, options) {
 		const path = parsePathNoLeadingSlash(input);
 		if (debug) {
-			console.groupCollapsed(path);
+			console.groupCollapsed(input);
 		}
-		return intercept(path, options, mappings, debug).catch(() => {
+		return intercept(input, path, mappings, debug).catch(() => {
 			if (debug) {
 				console.log('No mappings found, falling back to d2lfetch.fetch');
 				console.groupEnd();
@@ -29,19 +29,31 @@ function startMockServer(mappings, debug) {
 			return oldFetch(input, options);
 		});
 	};
+
+	const oldEntityFetch = window.D2L.Siren.EntityStore.fetch.bind(window.D2L.Siren.EntityStore);
+
+	window.D2L.Siren.EntityStore.fetch = function(entityId, token) {
+		return oldEntityFetch(entityId, token, true);
+	};
 }
 
-function intercept(path, options, mappings, debug) {
+function intercept(input, path, mappings, debug) {
 	if (mappings[path]) {
+
+		let endpoint = mappings[path];
+		if (mappings[path] instanceof Function) {
+			endpoint = mappings[path](input);
+		}
+
 		if (debug) {
-			console.dir(mappings[path]);
-			console.log(JSON.stringify(mappings[path], null, 2));
+			console.dir(endpoint);
+			console.log(JSON.stringify(endpoint, null, 2));
 			console.groupEnd();
 		}
 		return Promise.resolve({
 			ok: true,
 			json: function() {
-				return Promise.resolve(mappings[path]);
+				return Promise.resolve(endpoint);
 			}
 		});
 	}
