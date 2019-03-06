@@ -598,7 +598,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 	}
 
 	_handleOrganizationResponse(organization) {
-		this._description = organization.properties && organization.properties.description;
+		let description = organization.properties && organization.properties.description;
+		if (description) {
+			description = description.replace(/<[^>]*>/g, '');
+		}
+		this._description = description;
 
 		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);

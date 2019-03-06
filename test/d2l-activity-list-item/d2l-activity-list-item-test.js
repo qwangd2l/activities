@@ -44,7 +44,7 @@ describe('d2l-activity-list-item', () => {
 				startDate: null,
 				endDate: null,
 				isActive: true,
-				description: 'Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis in the 20th Century: Building a Successful Budget'
+				description: '<p>Financial Planning & Analysis: Building a Company\'s Budget from Scratch guides you through the core principles of Financial Planning and helps you to understand how a company prepares its budget. The video lessons touch on several awesome. Ultra-Financial Planning & Analysis in the 20th Century: Building a Successful Budget</p>'
 			},
 			links: [{
 				rel: ['self'],
