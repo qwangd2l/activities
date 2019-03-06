@@ -67,12 +67,12 @@
 						MockInteractions.click(filterOptions[i]);
 					}
 				}
-			}
+			};
 
 			var clearFilter = function() {
 				var clearButton = filterDropdown.shadowRoot.querySelector('d2l-button-subtle');
 				MockInteractions.click(clearButton);
-			}
+			};
 
 			suite('d2l-evaluation-hub', function() {
 				setup(function() {
@@ -99,13 +99,13 @@
 					var verifyFilter = function(filterTabs) {
 						assert.deepEqual(Array.from(filterTabs).map(tab => tab.text), expectedFilters);
 						done();
-					}
+					};
 					waitForFilter(verifyFilter);
 				});
 				test('applying and removing filters causes the count to update and events to fire', function(done) {
 					var add = 1;
 
-					quickEval.addEventListener('d2l-hm-filter-filters-updated', function(e, callback) {
+					quickEval.addEventListener('d2l-hm-filter-filters-updated', function(e) {
 						var dropdownButton = filterDropdown.shadowRoot.querySelector('d2l-dropdown-button-subtle').shadowRoot.querySelector('d2l-button-subtle');
 						assert.deepEqual(e.detail.filteredActivities, list.entity);
 						if (add === 1) {
@@ -120,7 +120,7 @@
 						add--;
 					});
 
-					waitForFilter(function(){ clickFilter('Assignment Name') });
+					waitForFilter(function() { clickFilter('Assignment Name'); });
 				});
 				test('clearing filters causes event to fire', function(done) {
 					var add = 2;
@@ -144,7 +144,7 @@
 						add--;
 					});
 
-					waitForFilter(function(){ clickFilter('Assignment Name') });
+					waitForFilter(function() { clickFilter('Assignment Name'); });
 				});
 			});
 
@@ -163,7 +163,7 @@
 					var verifyFilter = function(filterTabs) {
 						assert.deepEqual(Array.from(filterTabs).map(tab => tab.text), expectedFiltersWithMasterTeacher);
 						done();
-					}
+					};
 					waitForFilter(verifyFilter);
 				});
 			});
