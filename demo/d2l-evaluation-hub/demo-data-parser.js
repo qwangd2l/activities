@@ -4,9 +4,17 @@ function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
 }
 
+function distinct_ie11_safe(array) {
+	const map = {};
+	array.forEach(ele => {
+		map[ele] = ele;
+	});
+	return Object.keys(map);
+}
+
 function parseUsers(data) {
 	const names = data.map(row => formatName(row.firstName, row.lastName));
-	const uniqueNames = [... new Set(names)];
+	const uniqueNames = distinct_ie11_safe(names);
 
 	return uniqueNames;
 }
@@ -30,7 +38,7 @@ function getHrefForUserId(id) {
 
 function parseActivityNames(data) {
 	const activityNames = data.map(row => row.activityName);
-	const uniqueActivityNames = [... new Set(activityNames)];
+	const uniqueActivityNames = distinct_ie11_safe(activityNames);
 
 	return uniqueActivityNames;
 }
@@ -49,7 +57,7 @@ function getHrefForActivityNameId(id) {
 
 function parseCourses(data) {
 	const courseNames = data.map(row => row.courseName);
-	const uniqueCourseNames = [... new Set(courseNames)];
+	const uniqueCourseNames = distinct_ie11_safe(courseNames);
 
 	return uniqueCourseNames;
 }
@@ -255,7 +263,8 @@ function parseActivities(data, users, activityNames, courses) {
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
-			submissionDate: row.submissionDate
+			localizedFormattedDate: row.localizedFormattedDate,
+			isDraft: row.isDraft
 		};
 	});
 
@@ -263,7 +272,7 @@ function parseActivities(data, users, activityNames, courses) {
 }
 
 function formatActivity(activity) {
-	return {
+	var formattedActivity = {
 		'class': [
 			activity.klass,
 			'activity'
@@ -305,29 +314,37 @@ function formatActivity(activity) {
 			},
 			{
 				'class': [
-					'completion',
-					'complete'
+					'date',
+					'localized-formatted-date'
 				],
 				'rel': [
-					'item'
+					'https://api.brightspace.com/rels/date'
 				],
-				'entities': [
-					{
-						'class': [
-							'date',
-							'completion-date'
-						],
-						'rel': [
-							'https://api.brightspace.com/rels/date'
-						],
-						'properties': {
-							'date': activity.submissionDate
-						}
-					}
-				]
+				'properties': {
+					'date': '2019-03-13T15:16:10.793Z',
+					'text': activity.localizedFormattedDate
+				}
 			}
 		]
 	};
+
+	if (activity.isDraft) {
+		var draftEntity = {
+			'class': [
+				'evaluation'
+			],
+			'rel': [
+				'https://api.brightspace.com/rels/evaluation'
+			],
+			'properties': {
+				'state': 'Draft'
+			}
+		};
+
+		formattedActivity.entities.push(draftEntity);
+	}
+
+	return formattedActivity;
 }
 
 function formatPage(entities, filterLocation, sortsLocation, nextLocation) {

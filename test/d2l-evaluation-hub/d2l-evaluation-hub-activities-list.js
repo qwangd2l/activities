@@ -40,13 +40,10 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			for (var i = 0; i < expected.length; i++) {
 				var link = data[i].querySelector('d2l-link');
 				var span = data[i].querySelector('span');
-				var linkHidden = link.hasAttribute('hidden');
-				var spanHidden = span.hasAttribute('hidden');
 
-				assert.equal(expected[i].text, link.innerHTML);
-				assert.equal(expected[i].text, span.innerHTML);
-				assert.equal(!(expected[i].link), linkHidden);
-				assert.equal(!!(expected[i].link), spanHidden);
+				var item = link !== null ? link : span;
+
+				assert.equal(expected[i].text, item.innerHTML);
 			}
 			done();
 		}
@@ -57,7 +54,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'Special User Name',
 			courseName: 'Org Name',
 			activityName: 'Assignment Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/3',
 			masterTeacher: ''
 		},
@@ -65,7 +62,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Quiz Name',
-			submissionDate: '2019-02-22T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/2',
 			masterTeacher: ''
 		},
@@ -73,7 +70,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Topic Name',
-			submissionDate: '2019-02-20T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url',
 			masterTeacher: ''
 		}
@@ -95,7 +92,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Another Assignment Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next1',
 			masterTeacher: 'Master Teacher'
 		},
@@ -103,7 +100,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Another Quiz Name',
-			submissionDate: '2018-02-03T17:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next2',
 			masterTeacher: 'Master Teacher'
 		},
@@ -111,7 +108,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			displayName: 'User Name',
 			courseName: 'Org Name',
 			activityName: 'Another Topic Name',
-			submissionDate: '2019-02-20T02:00:00.000Z',
+			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next3',
 			masterTeacher: 'Master Teacher'
 		}
