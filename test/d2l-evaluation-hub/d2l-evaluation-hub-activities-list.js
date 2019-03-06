@@ -147,7 +147,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		});
 		test('headers display correctly', function(done) {
 			flush(function() {
-				var headers = list.shadowRoot.querySelectorAll('d2l-th d2l-table-col-sort-button');
+				var headers = list.shadowRoot.querySelectorAll('d2l-th');
 
 				assert.equal(expectedHeaders.length, headers.length);
 
@@ -162,7 +162,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			flush(function() {
 
-				var headers = list.shadowRoot.querySelectorAll('d2l-th d2l-table-col-sort-button');
+				var headers = list.shadowRoot.querySelectorAll('d2l-th');
 				assert.equal(expectedHeadersWithMasterTeacher.length, headers.length);
 
 				for (var i = 0; i < expectedHeadersWithMasterTeacher.length; i++) {
