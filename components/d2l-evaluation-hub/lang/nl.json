@@ -2,8 +2,8 @@
    "activityName" : "Naam activiteit",
    "courseName" : "Cursus",
    "displayName" : "Voornaam, achternaam",
-   "loading": "Loading",
    "loadMore" : "Meer laden",
-   "masterTeacher": "Master Teacher",
+   "loading" : "Laden",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "Datum van indiening"
 }

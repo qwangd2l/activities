@@ -2,8 +2,8 @@
    "activityName" : "Name der Aktivität",
    "courseName" : "Kurs",
    "displayName" : "Vorname, Nachname",
-   "loading": "Loading",
    "loadMore" : "Mehr laden",
-   "masterTeacher": "Master Teacher",
+   "loading" : "Wird geladen",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "Abgabedatum"
 }

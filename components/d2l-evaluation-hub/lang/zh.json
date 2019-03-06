@@ -2,8 +2,8 @@
    "activityName" : "活动名称",
    "courseName" : "课程",
    "displayName" : "名字，姓氏",
-   "loading": "Loading",
    "loadMore" : "加载更多",
-   "masterTeacher": "Master Teacher",
+   "loading" : "正在加载",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "提交日期"
 }

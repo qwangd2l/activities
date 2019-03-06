@@ -2,8 +2,8 @@
    "activityName" : "Aktivitetsnamn",
    "courseName" : "Kurs",
    "displayName" : "Förnamn, efternamn",
-   "loading": "Loading",
    "loadMore" : "Ladda mer",
-   "masterTeacher": "Master Teacher",
+   "loading" : "Laddar",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "Inlämningsdatum"
 }

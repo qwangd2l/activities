@@ -2,8 +2,8 @@
    "activityName" : "اسم النشاط",
    "courseName" : "المقرر التعليمي",
    "displayName" : "الاسم الأول، اسم العائلة",
-   "loading": "Loading",
    "loadMore" : "تحميل المزيد",
-   "masterTeacher": "Master Teacher",
+   "loading" : "يتم الآن التحميل",
+   "masterTeacher" : "Master Teacher",
    "submissionDate" : "تاريخ الإرسال"
 }
