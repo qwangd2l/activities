@@ -29,6 +29,9 @@
 					html {
 						font-size: 20px;
 					}
+					.d2l-activity-name-demo-div {
+						max-width: 500px;
+					}
 				</style>
 			`;
 			document.body.appendChild($_documentContainer.content);
@@ -39,9 +42,11 @@
 			<h3>Basic d2l-activity-name demo</h3>
 			<demo-snippet>
 				<template strip-whitespace>
-					<d2l-activity-name href="data/assignmentActivity.json" token="whatever"></d2l-activity-name>
-					<d2l-activity-name href="data/quizActivity.json" token="whatever"></d2l-activity-name>
-					<d2l-activity-name href="data/topicActivity.json" token="whatever"></d2l-activity-name>
+					<div class="d2l-activity-name-demo-div">
+						<d2l-activity-name href="data/assignmentActivity.json" token="whatever"></d2l-activity-name>
+						<d2l-activity-name href="data/quizActivity.json" token="whatever"></d2l-activity-name>
+						<d2l-activity-name href="data/topicActivity.json" token="whatever"></d2l-activity-name>
+					</div>
 				</template>
 			</demo-snippet>
 		</div>
