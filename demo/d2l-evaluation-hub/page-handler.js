@@ -1,4 +1,5 @@
 import { parseSortFromUrl, encodeSortState, decodeSortState } from './sort-handler';
+import { formatActivities } from './activity-handler';
 import chunk from 'lodash-es/chunk';
 
 function applySorts(activities, sorts, sortState) {
@@ -32,7 +33,8 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 		const sortState = decodeSortState(serializedSortState);
 
 		const sortedActivities = applySorts(activities, sorts, sortState);
-		const pagedActivities = chunk(sortedActivities, 3);
+		const formattedSortedActivities = formatActivities(sortedActivities);
+		const pagedActivities = chunk(formattedSortedActivities, 3);
 
 		return formatPage(pagedActivities[pageNumber], filtersHref, sortsHref, addSortToHref(nextPageHref, sortState));
 	};

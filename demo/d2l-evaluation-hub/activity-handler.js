@@ -1,8 +1,4 @@
-function getHrefForActivityId(id) {
-	return `activity/${id}`;
-}
-
-function formatActivity(activity, selfHref) {
+function formatActivity(activity) {
 	const formattedActivity = {
 		'class': [
 			activity.klass,
@@ -16,7 +12,7 @@ function formatActivity(activity, selfHref) {
 				'rel': [
 					'https://activities.api.brightspace.com/rels/user-activity-usage'
 				],
-				'href': selfHref
+				'href': activity.selfHref
 			},
 			{
 				'rel': [
@@ -88,17 +84,10 @@ function formatActivities(activities) {
 	const formattedActivities = [];
 
 	activities.forEach((activity, i) => {
-		const formattedActivity = formatActivity(activity, getHrefForActivityId(i));
+		const formattedActivity = formatActivity(activity);
 		formattedActivities[i] = formattedActivity;
 	});
 	return formattedActivities;
 }
 
-function mapActivities(mappings, activities) {
-	activities.forEach((activity, i) => {
-		mappings[getHrefForActivityId(i)] = activity;
-	});
-	return mappings;
-}
-
-export { formatActivities, mapActivities };
+export { formatActivities };
