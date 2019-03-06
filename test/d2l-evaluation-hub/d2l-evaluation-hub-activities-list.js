@@ -8,71 +8,90 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		await list._loadData(entity.entity);
 	}
 
-	function createExpectedData(expectedArray, includeMasterTeacher) {
-		var expected = [];
+	function createExpectedData(expectedData, includeMasterTeacher) {
+		var expectedActivities = [];
 
-		expectedArray.forEach(function(item) {
-			expected.push({ text: item.displayName, link: item.activityLink });
-			expected.push({ text: item.activityName, link: '' });
-			expected.push({ text: item.courseName, link: '' });
-			expected.push({ text: item.submissionDate, link: '' });
+		expectedData.forEach(function(item) {
+			var expectedActivity = {
+				isDraft: item.isDraft
+			};
+
+			var activityColumns = [];
+
+			activityColumns.push({ text: item.displayName, href: item.activityLink });
+			activityColumns.push({ href: item.activityNameHref });
+			activityColumns.push({ text: item.courseName });
+			activityColumns.push({ text: item.submissionDate });
 
 			if (includeMasterTeacher) {
-				expected.push({ text: item.masterTeacher, link: '' });
+				activityColumns.push({ text: item.masterTeacher });
 			}
+
+			expectedActivity.data = activityColumns;
+
+			expectedActivities.push(expectedActivity);
 		});
 
-		return expected;
+		return expectedActivities;
 	}
 
 	function createExpectedDataWithMasterTeacher(expectedArray) {
 		return createExpectedData(expectedArray, true);
 	}
 
-	function verifyData(expected, done) {
+	function verifyData(expectedActivities, done) {
 		var data = list.shadowRoot.querySelectorAll('d2l-td');
 
-		if (data.length !== expected.length) {
-			window.setTimeout(function() {
-				verifyData(expected, done);
-			}, 30);
-		} else {
-			for (var i = 0; i < expected.length; i++) {
-				var link = data[i].querySelector('d2l-link');
-				var span = data[i].querySelector('span');
+		var expectedActivityData = [].concat.apply(
+			[], expectedActivities.map(function(expectedActivity) {
+				return expectedActivity.data;
+			}));
 
-				var item = link !== null ? link : span;
+		for (var i = 0; i < expectedActivityData.length; i++) {
+			const link = data[i].querySelector('d2l-link');
+			const span = data[i].querySelector('span');
+			const activityName = data[i].querySelector('d2l-activity-name');
 
-				assert.equal(expected[i].text, item.innerHTML);
+			if (link) {
+				assert.equal(expectedActivityData[i].text, link.innerHTML);
+				assert.equal(expectedActivityData[i].href, link.href);
+			} else if (span) {
+				assert.equal(expectedActivityData[i].text, span.innerHTML);
+			} else if (activityName) {
+				assert.equal(expectedActivityData[i].href, activityName.href);
 			}
-			done();
 		}
+
+		done();
 	}
 
 	var expectedData = [
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Assignment Name',
+			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/3',
-			masterTeacher: ''
+			masterTeacher: '',
+			isDraft: true
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Quiz Name',
+			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/2',
-			masterTeacher: ''
+			masterTeacher: '',
+			isDraft: false
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Topic Name',
+			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url',
-			masterTeacher: ''
+			masterTeacher: '',
+			isDraft: false
 		}
 	];
 
@@ -91,26 +110,29 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Assignment Name',
+			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next1',
-			masterTeacher: 'Master Teacher'
+			masterTeacher: 'Master Teacher',
+			isDraft: true
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Quiz Name',
+			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next2',
-			masterTeacher: 'Master Teacher'
+			masterTeacher: 'Master Teacher',
+			isDraft: false
 		},
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'Another Topic Name',
+			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next3',
-			masterTeacher: 'Master Teacher'
+			masterTeacher: 'Master Teacher',
+			isDraft: false
 		}
 	];
 	var expectedHeaders = [
@@ -193,7 +215,9 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var expected = createExpectedData(expectedData);
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				verifyData(expected, done);
+				flush(function() {
+					verifyData(expected, done);
+				});
 			});
 		});
 		test('data displays correctly when master teacher toggled on', (done) => {
