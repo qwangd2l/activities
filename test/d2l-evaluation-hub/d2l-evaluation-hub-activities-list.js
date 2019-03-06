@@ -258,5 +258,20 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				MockInteractions.tap(loadMore);
 			});
 		});
+		test('when handling load more failure, alert should pop up and alert should hide when alerts cleared', (done) => {
+			list._handleLoadMoreFailure();
+
+			flush(function() {
+				var alert = list.shadowRoot.querySelector('#list-alert');
+				assert.equal(false, alert.hasAttribute('hidden'));
+
+				list._clearAlerts();
+				flush(function() {
+					assert.equal(true, alert.hasAttribute('hidden'));
+					done();
+				});
+
+			});
+		});
 	});
 })();

@@ -1,5 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
+import 'd2l-alert/d2l-alert.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -37,6 +38,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					display: none;
 				}
 			</style>
+			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]" has-close-button>
+				[[localize(_health.errorMessage)]]
+			</d2l-alert>
 			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
@@ -116,6 +120,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: Boolean,
 				value: true
 			},
+			_health: {
+				type: Object,
+				value: {
+					isHealthy: true,
+					errorMessage: ''
+				}
+			},
 			_loading: {
 				type: Boolean,
 				value: true
@@ -144,6 +155,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
 	}
+
 	constructor() { super(); }
 
 	_myEntityStoreFetch(url) {
@@ -260,26 +272,38 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	_loadMore() {
 		if (this._pageNextHref && !this._loading) {
 			this._loading = true;
-			this._followHref(this._pageNextHref).then(async function(u) {
-				if (u && u.entity) {
-					var tbody = this.shadowRoot.querySelector('d2l-tbody');
-					var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
+			this._followHref(this._pageNextHref)
+				.then(async function(u) {
+					if (u && u.entity) {
+						var tbody = this.shadowRoot.querySelector('d2l-tbody');
+						var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
 
-					try {
-						var result = await this._parseActivities(u.entity);
-						this._data = this._data.concat(result);
-					} catch (e) {
+						try {
+							var result = await this._parseActivities(u.entity);
+							this._data = this._data.concat(result);
+						} catch (e) {
 						// Unable to load more activities from entity.
-					} finally {
-						this._loading = false;
-						window.requestAnimationFrame(function() {
-							var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
-							newElementToFocus.focus();
-						});
+							throw e;
+						} finally {
+							this._loading = false;
+							window.requestAnimationFrame(function() {
+								var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
+								newElementToFocus.focus();
+							});
+						}
 					}
-				}
-			}.bind(this));
+				}.bind(this))
+				.then(this._clearAlerts.bind(this))
+				.catch(this._handleLoadMoreFailure.bind(this));
 		}
+	}
+
+	_clearAlerts() {
+		this.set('_health', { isHealthy: true, errorMessage: '' });
+	}
+
+	_handleLoadMoreFailure() {
+		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadMore' });
 	}
 
 	_followLink(entity, rel) {
