@@ -20,9 +20,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get template() {
 		return html`
 			<style include="d2l-table-style">
-				d2l-th {
-					font-weight: bold;
-				}
 				d2l-td {
 					font-weight: normal;
 				}
@@ -44,7 +41,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<dom-repeat items="[[_headers]]">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
-									<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.key]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									<template is="dom-if" if="[[item.canSort]]">
+										<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.key]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+									</template>
+									<template is="dom-if" if="[[!item.canSort]]">
+										<d2l-th><span>[[localize(item.localizationKey)]]</span></d2l-th>
+									</template>
 								</template>
 							</template>
 						</dom-repeat>
@@ -151,14 +153,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject('Could not load sorts endpoint');
 				}
 
-				this._headers.forEach(header => {
+				this._headers.forEach((header, i) => {
 					if (header.sortClass) {
 						const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
 						if (sort) {
-							header.canSort = true;
+							this.set(`_headers.${i}.canSort`, true);
 						}
 					}
 				});
+
 				return Promise.resolve();
 			});
 	}
