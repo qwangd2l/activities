@@ -13,7 +13,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 		expectedArray.forEach(function(item) {
 			expected.push({ text: item.displayName, href: item.activityLink });
-			expected.push({ href: item.activityName });
+			expected.push({ href: item.activityNameHref });
 			expected.push({ text: item.courseName });
 			expected.push({ text: item.submissionDate });
 
@@ -53,7 +53,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/assignmentActivity.json',
+			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/3',
 			masterTeacher: ''
@@ -61,7 +61,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/quizAttemptActivity.json',
+			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/2',
 			masterTeacher: ''
@@ -69,7 +69,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/topicActivity.json',
+			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url',
 			masterTeacher: ''
@@ -91,7 +91,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/nextAssignmentActivity.json',
+			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next1',
 			masterTeacher: 'Master Teacher'
@@ -99,7 +99,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/nextQuizAttemptActivity.json',
+			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next2',
 			masterTeacher: 'Master Teacher'
@@ -107,7 +107,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		{
 			displayName: 'User Name',
 			courseName: 'Org Name',
-			activityName: 'data/nextTopicActivity.json',
+			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
 			activityLink: '/the/best/vanity/url/next3',
 			masterTeacher: 'Master Teacher'

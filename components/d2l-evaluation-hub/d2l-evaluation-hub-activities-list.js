@@ -61,7 +61,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
 								</d2l-td>
 								<d2l-td>
-									<d2l-activity-name href="[[_getDataProperty(s, 'activityName')]]" token="[[token]]"></d2l-activity-name>
+									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
 								</d2l-td>
 								<d2l-td>
 									<span>[[_getDataProperty(s, 'courseName')]]</span>
@@ -306,7 +306,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				var item = {
 					displayName: '',
 					courseName: '',
-					activityName: this._getActivityNameHref(activity),
+					activityNameHref: this._getActivityNameHref(activity),
 					submissionDate: this._getSubmissionDate(activity),
 					activityLink: this._getRelativeUriProperty(activity),
 					masterTeacher: ''
