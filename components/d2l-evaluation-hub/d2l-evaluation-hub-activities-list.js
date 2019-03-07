@@ -29,6 +29,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				d2l-loading-spinner {
 					width: 100%;
 				}
+				d2l-alert {
+					margin: auto;
+				}
 				.d2l-evaluation-hub-activities-list-load-more-container {
 					padding-top: 1rem;
 					text-align: right;
@@ -38,9 +41,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					display: none;
 				}
 			</style>
-			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]" has-close-button>
-				[[localize(_health.errorMessage)]]
-			</d2l-alert>
 			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
@@ -85,6 +85,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
+			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]" has-close-button>
+				[[localize(_health.errorMessage)]]
+			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
 			<template is="dom-if" if="[[_pageNextHref]]">
