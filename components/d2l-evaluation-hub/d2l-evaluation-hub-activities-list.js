@@ -156,7 +156,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this.addEventListener('d2l-siren-entity-error', function() {
 			this._fullListLoading = false;
 			this._loading = false;
-			this._handleInitialLoadFailure();
+			this._handleFullLoadFailure();
 		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
 	}
@@ -268,7 +268,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			this._clearAlerts();
 		} catch (e) {
 			// Unable to load activities from entity.
-			this._handleInitialLoadFailure().bind(this);
+			this._handleFullLoadFailure().bind(this);
 			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
@@ -313,7 +313,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadMore' });
 	}
 
-	_handleInitialLoadFailure() {
+	_handleFullLoadFailure() {
 		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadData' });
 	}
 

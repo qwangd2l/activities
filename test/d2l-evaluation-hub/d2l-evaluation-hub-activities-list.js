@@ -278,7 +278,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			});
 		});
 		test('when handling initial load failure, alert should pop up and alert should hide when alerts cleared', (done) => {
-			list._handleInitialLoadFailure();
+			list._handleFullLoadFailure();
 
 			flush(function() {
 				var alert = list.shadowRoot.querySelector('#list-alert');
