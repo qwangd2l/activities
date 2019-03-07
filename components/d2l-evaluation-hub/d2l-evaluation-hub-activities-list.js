@@ -60,19 +60,23 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					@apply --d2l-body-compact-text;
 				}
 			</style>
-			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
-						<dom-repeat items="[[_headers]]">
+						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
 							<template>
-								<template is="dom-if" if="[[_shouldDisplayColumn(item.key)]]">
-									<template is="dom-if" if="[[item.canSort]]">
-										<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[item.key]]"><span>[[localize(item.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+								<dom-repeat items="[[headerColumn]]" as="header">
+									<template>
+										<template is="dom-if" if="[[_shouldDisplayColumn(header.key)]]">
+											<template is="dom-if" if="[[header.canSort]]">
+												<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]"><span>[[localize(header.localizationKey)]]</span></d2l-table-col-sort-button></d2l-th>
+											</template>
+											<template is="dom-if" if="[[!header.canSort]]">
+												<d2l-th><span>[[localize(header.localizationKey)]]</span></d2l-th>
+											</template>
+										</template>
 									</template>
-									<template is="dom-if" if="[[!item.canSort]]">
-										<d2l-th><span>[[localize(item.localizationKey)]]</span></d2l-th>
-									</template>
-								</template>
+								</dom-repeat>
 							</template>
 						</dom-repeat>
 					</d2l-tr>
@@ -132,14 +136,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				value: false,
 				reflectToAttribute: true
 			},
-			_headers: {
+			_headerColumns: {
 				type: Array,
 				value: [
-					{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName' },
-					{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName' },
-					{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName' },
-					{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate' },
-					{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher' }
+					[{ key: 'displayName', sortClass: 'first-name', canSort: false, localizationKey: 'displayName' }],
+					[{ key: 'activityName', sortClass: 'activity-name', canSort: false, localizationKey: 'activityName' }],
+					[{ key: 'courseName', sortClass: 'course-name', canSort: false, localizationKey: 'courseName' }],
+					[{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, localizationKey: 'submissionDate' }],
+					[{ key: 'masterTeacher', canSort: false, localizationKey: 'masterTeacher' }]
 				]
 			},
 			_data: {
@@ -204,13 +208,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject('Could not load sorts endpoint');
 				}
 
-				this._headers.forEach((header, i) => {
-					if (header.sortClass) {
-						const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
-						if (sort) {
-							this.set(`_headers.${i}.canSort`, true);
+				this._headerColumns.forEach((headerColumn, i) => {
+					headerColumn.forEach((header, j) => {
+						if (header.sortClass) {
+							const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+							if (sort) {
+								this.set(`_headerColumns.${i}.${j}.canSort`, true);
+							}
 						}
-					}
+					});
 				});
 
 				return Promise.resolve();
@@ -218,7 +224,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_sort(e) {
-		const header = this._headers.find(h => h.key === e.currentTarget.id);
+		const headers = [].concat.apply([], this._headerColumns);
+		const header = headers.find(h => h.key === e.currentTarget.id);
 
 		if (!header) {
 			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
@@ -238,8 +245,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			e.currentTarget.setAttribute('desc', 'desc');
 		}
 
-		const headers = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
-		headers.forEach(h => {
+		const headerElements = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
+		headerElements.forEach(h => {
 			if (h !== e.currentTarget) {
 				h.removeAttribute('desc');
 				h.setAttribute('nosort', 'nosort');
