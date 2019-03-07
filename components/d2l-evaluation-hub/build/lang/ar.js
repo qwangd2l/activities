@@ -17,9 +17,9 @@ const LangArImpl = (superClass) => class extends superClass {
 			'loadMore': 'تحميل المزيد',
 			'loading': 'يتم الآن التحميل',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'تاريخ الإرسال',
-			'tryAgain': 'Try Again',
-			'noSubmissions': 'There are no submissions that need your attention.'
+			'tryAgain': 'Try Again'
 		};
 	}
 };
