@@ -106,7 +106,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
-			<template is="dom-if" if="[[_shouldShowNoSubmissions]]">
+			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading)]]">
 				<div class="d2l-quick-eval-no-submissions">
 					<d2l-no-submissions-image></d2l-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
@@ -176,8 +176,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
-	_shouldShowNoSubmissions() {
-		return !this._data.length && !this._loading;
+	_shouldShowNoSubmissions(dateLength, isLoading) {
+		return !dateLength && !isLoading;
 	}
 
 	_loadSorts(entity) {
@@ -271,7 +271,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		if (!entity) {
 			return Promise.resolve();
 		}
-
 		this._loading = true;
 		this._fullListLoading = true;
 
