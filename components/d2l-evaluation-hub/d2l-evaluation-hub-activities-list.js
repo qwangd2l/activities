@@ -86,7 +86,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
-			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]" has-close-button>
+			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]">
 				[[localize(_health.errorMessage)]]
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
@@ -156,6 +156,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this.addEventListener('d2l-siren-entity-error', function() {
 			this._fullListLoading = false;
 			this._loading = false;
+			this._handleFullLoadFailure();
 		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
 	}
@@ -264,8 +265,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		try {
 			var result = await this._parseActivities(entity);
 			this._data = result;
+			this._clearAlerts();
 		} catch (e) {
 			// Unable to load activities from entity.
+			this._handleFullLoadFailure().bind(this);
 			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
@@ -308,6 +311,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_handleLoadMoreFailure() {
 		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadMore' });
+	}
+
+	_handleFullLoadFailure() {
+		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadData' });
 	}
 
 	_followLink(entity, rel) {
