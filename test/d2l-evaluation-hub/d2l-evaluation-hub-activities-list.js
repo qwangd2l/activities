@@ -151,6 +151,10 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			assert.equal(list.href, 'blah');
 			assert.equal(list.token, 't');
 		});
+		test('no alert displayed when healthy', function() {
+			var alert = list.shadowRoot.querySelector('#list-alert');
+			assert.equal(true, alert.hasAttribute('hidden'));
+		});
 		test('_fullListLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
 			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
 			assert.equal(loadingSpinner.hidden, false);
@@ -272,6 +276,36 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				};
 				loadMore.addEventListener('click', verify);
 				MockInteractions.tap(loadMore);
+			});
+		});
+		test('when handling load more failure, alert should pop up and alert should hide when alerts cleared', (done) => {
+			list._handleLoadMoreFailure();
+
+			flush(function() {
+				var alert = list.shadowRoot.querySelector('#list-alert');
+				assert.equal(false, alert.hasAttribute('hidden'));
+
+				list._clearAlerts();
+				flush(function() {
+					assert.equal(true, alert.hasAttribute('hidden'));
+					done();
+				});
+
+			});
+		});
+		test('when handling initial load failure, alert should pop up and alert should hide when alerts cleared', (done) => {
+			list._handleFullLoadFailure();
+
+			flush(function() {
+				var alert = list.shadowRoot.querySelector('#list-alert');
+				assert.equal(false, alert.hasAttribute('hidden'));
+
+				list._clearAlerts();
+				flush(function() {
+					assert.equal(true, alert.hasAttribute('hidden'));
+					done();
+				});
+
 			});
 		});
 	});

@@ -1,5 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
+import 'd2l-alert/d2l-alert.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
@@ -29,6 +30,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				}
 				d2l-loading-spinner {
 					width: 100%;
+				}
+				d2l-alert {
+					margin: auto;
+					margin-top: 1rem;
 				}
 				.d2l-evaluation-hub-activities-list-load-more-container {
 					padding-top: 1rem;
@@ -99,6 +104,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					</dom-repeat>
 				</d2l-tbody>
 			</d2l-table>
+			<d2l-alert id="list-alert" type="critical" hidden$="[[_health.isHealthy]]">
+				[[localize(_health.errorMessage)]]
+			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
 			<template is="dom-if" if="[[_pageNextHref]]">
@@ -106,7 +114,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
-			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading)]]">
+			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health)]]">
 				<div class="d2l-quick-eval-no-submissions">
 					<d2l-no-submissions-image></d2l-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
@@ -142,6 +150,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: Boolean,
 				value: true
 			},
+			_health: {
+				type: Object,
+				value: {
+					isHealthy: true,
+					errorMessage: ''
+				}
+			},
 			_loading: {
 				type: Boolean,
 				value: true
@@ -167,17 +182,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this.addEventListener('d2l-siren-entity-error', function() {
 			this._fullListLoading = false;
 			this._loading = false;
+			this._handleFullLoadFailure();
 		}.bind(this));
 		this._loadMore = this._loadMore.bind(this);
 	}
+
 	constructor() { super(); }
 
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
-	_shouldShowNoSubmissions(dateLength, isLoading) {
-		return !dateLength && !isLoading;
+	_shouldShowNoSubmissions(dateLength, isLoading, health) {
+		return !dateLength && !isLoading && health.isHealthy;
 	}
 
 	_loadSorts(entity) {
@@ -277,8 +294,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		try {
 			var result = await this._parseActivities(entity);
 			this._data = result;
+			this._clearAlerts();
 		} catch (e) {
 			// Unable to load activities from entity.
+			this._handleFullLoadFailure().bind(this);
 			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
@@ -289,26 +308,42 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	_loadMore() {
 		if (this._pageNextHref && !this._loading) {
 			this._loading = true;
-			this._followHref(this._pageNextHref).then(async function(u) {
-				if (u && u.entity) {
-					var tbody = this.shadowRoot.querySelector('d2l-tbody');
-					var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
+			this._followHref(this._pageNextHref)
+				.then(async function(u) {
+					if (u && u.entity) {
+						var tbody = this.shadowRoot.querySelector('d2l-tbody');
+						var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
 
-					try {
-						var result = await this._parseActivities(u.entity);
-						this._data = this._data.concat(result);
-					} catch (e) {
+						try {
+							var result = await this._parseActivities(u.entity);
+							this._data = this._data.concat(result);
+						} catch (e) {
 						// Unable to load more activities from entity.
-					} finally {
-						this._loading = false;
-						window.requestAnimationFrame(function() {
-							var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
-							newElementToFocus.focus();
-						});
+							throw e;
+						} finally {
+							this._loading = false;
+							window.requestAnimationFrame(function() {
+								var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
+								newElementToFocus.focus();
+							});
+						}
 					}
-				}
-			}.bind(this));
+				}.bind(this))
+				.then(this._clearAlerts.bind(this))
+				.catch(this._handleLoadMoreFailure.bind(this));
 		}
+	}
+
+	_clearAlerts() {
+		this.set('_health', { isHealthy: true, errorMessage: '' });
+	}
+
+	_handleLoadMoreFailure() {
+		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadMore' });
+	}
+
+	_handleFullLoadFailure() {
+		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadData' });
 	}
 
 	_followLink(entity, rel) {

@@ -27,7 +27,9 @@ function addSortToHref(href, sortState) {
 	}
 }
 
-function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref) {
+function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
+	var shouldFail = failFirstTime;
+
 	return (url) => {
 		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
@@ -35,6 +37,11 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 		const sortedActivities = applySorts(activities, sorts, sortState);
 		const formattedSortedActivities = formatActivities(sortedActivities);
 		const pagedActivities = chunk(formattedSortedActivities, 3);
+
+		if (shouldFail) {
+			shouldFail = false;
+			return null;
+		}
 
 		return formatPage(pagedActivities[pageNumber], filtersHref, sortsHref, addSortToHref(nextPageHref, sortState));
 	};
