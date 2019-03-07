@@ -12,6 +12,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 			'displayName': '이름, 성',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
 			'loadMore': '더 많이 로드',
 			'loading': '로드 중',
 			'masterTeacher': 'Master Teacher',

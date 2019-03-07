@@ -12,6 +12,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'displayName': '名字，姓氏',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
 			'loadMore': '載入更多',
 			'loading': '正在載入',
 			'masterTeacher': 'Master Teacher',

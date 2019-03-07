@@ -12,6 +12,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'displayName': 'Nome e Sobrenome',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
 			'loadMore': 'Carregar mais',
 			'loading': 'Carregando',
 			'masterTeacher': 'Master Teacher',

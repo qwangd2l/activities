@@ -12,6 +12,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'displayName': 'First Name, Last Name',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
 			'loading': 'Loading',
 			'loadMore': 'Load more',
 			'masterTeacher': 'Master Teacher',
