@@ -193,8 +193,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
-	_shouldShowNoSubmissions(dateLength, isLoading, health) {
-		return !dateLength && !isLoading && health.isHealthy;
+	_shouldShowNoSubmissions(dataLength, isLoading, health) {
+		return !dataLength && !isLoading && health.isHealthy;
 	}
 
 	_loadSorts(entity) {
