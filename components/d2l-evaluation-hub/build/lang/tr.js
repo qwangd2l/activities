@@ -12,11 +12,14 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Ders',
 			'displayName': 'Ad, Soyad',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': 'Daha fazla yükle',
+			'loading': 'Yükleniyor',
 			'masterTeacher': 'Master Teacher',
 			'noSubmissions': 'There are no submissions that need your attention.',
-			'submissionDate': 'Gönderme Tarihi'
+			'submissionDate': 'Gönderme Tarihi',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

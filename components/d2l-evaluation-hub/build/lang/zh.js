@@ -12,11 +12,14 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': '课程',
 			'displayName': '名字，姓氏',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': '加载更多',
+			'loading': '正在加载',
 			'masterTeacher': 'Master Teacher',
 			'noSubmissions': 'There are no submissions that need your attention.',
-			'submissionDate': '提交日期'
+			'submissionDate': '提交日期',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

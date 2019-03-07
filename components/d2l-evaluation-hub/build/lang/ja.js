@@ -12,11 +12,14 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'コース',
 			'displayName': '名, 姓',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': 'さらに読み込む',
+			'loading': '読み込み中',
 			'masterTeacher': 'Master Teacher',
 			'noSubmissions': 'There are no submissions that need your attention.',
-			'submissionDate': '送信日'
+			'submissionDate': '送信日',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

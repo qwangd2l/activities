@@ -12,11 +12,14 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Cursus',
 			'displayName': 'Voornaam, achternaam',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'loadMore': 'Meer laden',
+			'loading': 'Laden',
 			'masterTeacher': 'Master Teacher',
 			'noSubmissions': 'There are no submissions that need your attention.',
-			'submissionDate': 'Datum van indiening'
+			'submissionDate': 'Datum van indiening',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

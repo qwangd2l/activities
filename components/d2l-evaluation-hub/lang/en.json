@@ -4,9 +4,12 @@
   "checkBackOften": "Check back often for new submissions.",
   "courseName": "Course",
   "displayName": "First Name, Last Name",
+  "failedToLoadData": "Unable to load submissions. Try again in a few minutes.",
+  "failedToLoadMore": "Unable to load more submissions. Try again in a few minutes.",
   "loading": "Loading",
   "loadMore": "Load more",
   "masterTeacher": "Master Teacher",
   "noSubmissions": "There are no submissions that need your attention.",
-  "submissionDate": "Submission Date"
+  "submissionDate": "Submission Date",
+  "tryAgain": "Try Again"
 }
