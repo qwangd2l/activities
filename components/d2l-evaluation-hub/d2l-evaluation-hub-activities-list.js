@@ -31,6 +31,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				}
 				d2l-alert {
 					margin: auto;
+					margin-top: 1rem;
 				}
 				.d2l-evaluation-hub-activities-list-load-more-container {
 					padding-top: 1rem;
