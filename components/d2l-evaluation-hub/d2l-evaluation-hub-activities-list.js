@@ -66,16 +66,20 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(headerColumn.key)]]">
-									<dom-repeat items="[[headerColumn.headers]]" as="header">
-										<template>
+									<d2l-th>
+										<dom-repeat items="[[headerColumn.headers]]" as="header">
+											<template>
 												<template is="dom-if" if="[[header.canSort]]">
-													<d2l-th><d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]"><span>[[localize(header.key)]]</span></d2l-table-col-sort-button></d2l-th>
+													<d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]">
+														<span>[[localize(header.key)]]</span>
+													</d2l-table-col-sort-button>
 												</template>
 												<template is="dom-if" if="[[!header.canSort]]">
-													<d2l-th><span>[[localize(header.key)]]</span></d2l-th>
+													<span>[[localize(header.key)]]</span>
 												</template>
-										</template>
-									</dom-repeat>
+											</template>
+										</dom-repeat>
+									</d2l-th>
 								</template>
 							</template>
 						</dom-repeat>
