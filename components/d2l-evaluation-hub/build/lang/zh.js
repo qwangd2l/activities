@@ -13,6 +13,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': '加载更多',
 			'loading': '正在加载',
 			'masterTeacher': 'Master Teacher',
