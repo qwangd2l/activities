@@ -16,7 +16,12 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 			<style>
 				:host {
 					display: block;
+					padding-right: 20px;
 					white-space: nowrap;
+				}
+				:host(:dir(rtl)) {
+					padding-right: 0px;
+					padding-left: 20px;
 				}
 				.d2l-activity-name-icon {
 					display: inline-block;
