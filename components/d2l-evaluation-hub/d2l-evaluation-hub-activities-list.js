@@ -71,11 +71,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 											<template>
 												<template is="dom-if" if="[[header.canSort]]">
 													<d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]">
-														<span>[[localize(header.key)]]</span>
+														<span>
+															[[localize(header.key)]]<template is="dom-if" if="[[header.suffix]]">[[header.suffix]]</template>
+														</span>
 													</d2l-table-col-sort-button>
 												</template>
 												<template is="dom-if" if="[[!header.canSort]]">
-													<span>[[localize(header.key)]]</span>
+													<span>
+														[[localize(header.key)]]<template is="dom-if" if="[[header.suffix]]">[[header.suffix]]</template>
+													</span>
 												</template>
 											</template>
 										</dom-repeat>
@@ -145,7 +149,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				value: [
 					{
 						key: 'displayName',
-						headers: [{ key: 'displayName', sortClass: 'first-name', canSort: false }]
+						headers: [
+							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false },
+							{ key: 'lastName', sortClass: 'last-name', canSort: false }
+						]
 					},
 					{
 						key: 'activityName',
