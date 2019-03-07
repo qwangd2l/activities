@@ -170,9 +170,9 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		test('if _loading is true, d2l-no-submissions-image is not shown', () => {
 			var noSubmissionComponent = list.shadowRoot.querySelector('d2l-no-submissions-image');
 			assert.equal(noSubmissionComponent, null);
-
+			assert.equal(list._loading, true);
 		});
-		test('There is no data in the list d2l-no-submissions-image is shown', (done) => {
+		test('if there is no data in the list, d2l-no-submissions-image is shown', (done) => {
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
 				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 				assert.notEqual(noSubmissionComponent.style.display, 'none');
