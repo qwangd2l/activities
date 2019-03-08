@@ -16,13 +16,15 @@
 			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
-			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub-activities-list.js';
 			import startMockServer from './interceptor';
 			import mappingsParser from './demo-data-parser';
 			import data from './table';
 
 			const mappings = mappingsParser(data);
 			startMockServer(mappings, true);
+
+			// For IE11, we need to import the component after we've started the mock observer
+			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub-activities-list.js';
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
