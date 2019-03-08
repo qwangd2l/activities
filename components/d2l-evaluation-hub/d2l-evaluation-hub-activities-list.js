@@ -260,12 +260,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_updateSortState(event) {
-		var headerId = event.currentTarget.id;
+		const headerId = event.currentTarget.id;
 
 		this._headerColumns.forEach((headerColumn, i) => {
 			headerColumn.headers.forEach((header, j) => {
 				if (header.key === headerId) {
-					var descending = header.sorted && !header.desc;
+					const descending = header.sorted && !header.desc;
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
 
