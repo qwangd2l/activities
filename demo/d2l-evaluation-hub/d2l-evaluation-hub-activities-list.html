@@ -21,7 +21,8 @@
 			import data from './table';
 
 			const mappings = mappingsParser(data);
-			startMockServer(mappings, true);
+			// Parameters: data, network logging, api request delay
+			startMockServer(mappings, true, 100);
 
 			// For IE11, we need to import the component after we've started the mock observer
 			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub-activities-list.js';
