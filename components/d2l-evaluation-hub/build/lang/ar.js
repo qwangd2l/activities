@@ -14,6 +14,8 @@ const LangArImpl = (superClass) => class extends superClass {
 			'displayName': 'الاسم الأول، اسم العائلة',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'تحميل المزيد',
 			'loading': 'يتم الآن التحميل',
 			'masterTeacher': 'Master Teacher',

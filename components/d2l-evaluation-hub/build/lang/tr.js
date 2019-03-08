@@ -14,6 +14,8 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'displayName': 'Ad, Soyad',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'Daha fazla yükle',
 			'loading': 'Yükleniyor',
 			'masterTeacher': 'Master Teacher',

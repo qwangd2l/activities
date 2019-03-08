@@ -14,6 +14,8 @@ const LangDeImpl = (superClass) => class extends superClass {
 			'displayName': 'Vorname, Nachname',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'Mehr laden',
 			'loading': 'Wird geladen',
 			'masterTeacher': 'Master Teacher',

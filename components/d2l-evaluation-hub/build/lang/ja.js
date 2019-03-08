@@ -14,6 +14,8 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'displayName': '名, 姓',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'さらに読み込む',
 			'loading': '読み込み中',
 			'masterTeacher': 'Master Teacher',
