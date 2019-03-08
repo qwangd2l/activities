@@ -50,10 +50,12 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 	attached()  {
 		this.addEventListener('d2l-hm-filter-filters-updated', this._filterChanged);
+		this.addEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
 	}
 
 	detached() {
 		this.removeEventListener('d2l-hm-filter-filters-updated', this._filterChanged);
+		this.removeEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
 	}
 
 	_getFilterHref(entity) {
@@ -68,7 +70,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	}
 
 	_getFilterClasses(masterTeacher) {
-		var filters = [ 'activity-name', 'enrollments', 'completion-date' ];
+		let filters = [ 'activity-name', 'enrollments', 'completion-date' ];
 		if (masterTeacher) {
 			filters = filters.concat('primary-facilitator');
 		}
@@ -76,8 +78,13 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	}
 
 	_filterChanged(e) {
-		var list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
 		list.entity = e.detail.filteredActivities;
+		this.entity = e.detail.filteredActivities;
+	}
+
+	_sortChanged(e) {
+		this.entity = e.detail.sortedActivities;
 	}
 
 }

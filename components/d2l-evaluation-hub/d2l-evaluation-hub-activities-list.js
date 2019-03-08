@@ -307,6 +307,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			}).bind(this))
 			.then((collection => {
 				this.entity = collection;
+				this._dispatchSortUpdatedEvent(collection);
 			}).bind(this));
 	}
 
@@ -571,6 +572,21 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			return this.masterTeacher;
 		}
 		return true;
+	}
+
+	_dispatchSortUpdatedEvent(sorted) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-evaluation-hub-activities-list-sort-updated',
+				{
+					detail: {
+						sortedActivities: sorted
+					},
+					composed: true,
+					bubbles: true
+				}
+			)
+		);
 	}
 }
 
