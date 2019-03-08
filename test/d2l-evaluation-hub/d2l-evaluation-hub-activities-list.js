@@ -171,6 +171,22 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
+		test('if _loading is true, d2l-no-submissions-image is not shown', () => {
+			var noSubmissionComponent = list.shadowRoot.querySelector('d2l-no-submissions-image');
+			assert.equal(noSubmissionComponent, null);
+			assert.equal(list._loading, true);
+		});
+		test('if there is no data in the list, d2l-no-submissions-image is shown', (done) => {
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.notEqual(noSubmissionComponent.style.display, 'none');
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+					assert.equal(noSubmissionComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
 		test('headers display correctly', function(done) {
 			flush(function() {
 				var headers = list.shadowRoot.querySelectorAll('d2l-th');
