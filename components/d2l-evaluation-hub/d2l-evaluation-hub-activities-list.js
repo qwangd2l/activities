@@ -38,7 +38,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					white-space: nowrap;
 				}
 				.d2l-activity-name-column {
-					padding-right: 2.4em;
+					padding-right: 2.4rem;
 				}
 				:host(:dir(rtl)) .d2l-activity-name-column {
 					padding-right: 0;
