@@ -70,7 +70,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 										<dom-repeat items="[[headerColumn.headers]]" as="header">
 											<template>
 												<template is="dom-if" if="[[header.canSort]]">
-													<d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]">
+													<d2l-table-col-sort-button
+														nosort$="[[!header.sorted]]"
+														desc$="[[header.desc]]"
+														on-click="_updateSortState"
+														id="[[header.key]]"
+													>
 														<span>[[localize(header.key)]]</span>
 														<template is="dom-if" if="[[header.suffix]]">
 															<span>[[header.suffix]]&nbsp;</span>
@@ -155,21 +160,21 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					{
 						key: 'displayName',
 						headers: [
-							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false },
-							{ key: 'lastName', sortClass: 'last-name', canSort: false }
+							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false, sorted: false, desc: false  },
+							{ key: 'lastName', sortClass: 'last-name', canSort: false, sorted: false, desc: false  }
 						]
 					},
 					{
 						key: 'activityName',
-						headers: [{ key: 'activityName', sortClass: 'activity-name', canSort: false }]
+						headers: [{ key: 'activityName', sortClass: 'activity-name', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'courseName',
-						headers: [{ key: 'courseName', sortClass: 'course-name', canSort: false }]
+						headers: [{ key: 'courseName', sortClass: 'course-name', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'submissionDate',
-						headers: [{ key: 'submissionDate', sortClass: 'completion-date', canSort: false }]
+						headers: [{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'masterTeacher',
@@ -254,48 +259,38 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			});
 	}
 
-	_sort(e) {
-		const headers = [].concat.apply([], this._headerColumns.map(headerColumn => headerColumn.headers));
-		const header = headers.filter(h => h.key === e.currentTarget.id)[0];
+	_updateSortState(event) {
+		var headerId = event.currentTarget.id;
 
-		if (!header) {
-			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
-		}
-		if (!header.canSort) {
-			return Promise.reject(`No matching sort for ${e.currentTarget.id}`);
-		}
+		this._headerColumns.forEach((headerColumn, i) => {
+			headerColumn.headers.forEach((header, j) => {
+				if (header.key === headerId) {
+					var descending = header.sorted && !header.desc;
+					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
+					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
 
-		let ascending = true;
-
-		if (e.currentTarget.nosort) {
-			e.currentTarget.removeAttribute('nosort');
-		} else if (e.currentTarget.desc) {
-			e.currentTarget.removeAttribute('desc');
-		} else {
-			ascending = false;
-			e.currentTarget.setAttribute('desc', 'desc');
-		}
-
-		const headerElements = this.shadowRoot.querySelectorAll('d2l-table-col-sort-button');
-		headerElements.forEach(h => {
-			if (h !== e.currentTarget) {
-				h.removeAttribute('desc');
-				h.setAttribute('nosort', 'nosort');
-			}
+					this._fetchSortedData(header.sortClass, descending);
+				}
+				else {
+					this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
+				}
+			});
 		});
+	}
 
-		return this._followLink(this.entity, Rels.sorts)
+	_fetchSortedData(sortClass, descending) {
+		this._followLink(this.entity, Rels.sorts)
 			.then((sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject('Could not load sorts endpoint');
 				}
 
-				const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
+				const sort = sortsEntity.entity.getSubEntityByClass(sortClass);
 				if (!sort) {
-					return Promise.reject(`Could not find sort class ${header.sortClass}`);
+					return Promise.reject(`Could not find sort class ${sortClass}`);
 				}
 
-				const actionName = ascending ? 'sort-ascending' : 'sort-descending';
+				const actionName = descending ? 'sort-descending' : 'sort-ascending';
 				const action = sort.getActionByName(actionName);
 				if (!action) {
 					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
