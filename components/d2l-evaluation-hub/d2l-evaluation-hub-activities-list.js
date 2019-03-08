@@ -1,6 +1,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
 import 'd2l-alert/d2l-alert.js';
+import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -13,6 +14,7 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
+import './d2l-no-submissions-image.js';
 
 /**
  * @customElement
@@ -40,6 +42,22 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				}
 				[hidden] {
 					display: none;
+				}
+				.d2l-quick-eval-no-submissions {
+					text-align: center;
+				}
+				d2l-no-submissions-image {
+					padding-top: 30px;
+					padding-bottom: 30px;
+					height: 35%;
+					width: 35%;
+				}
+				.d2l-quick-eval-no-submissions-heading {
+					@apply --d2l-heading-2;
+					margin: 0;
+				}
+				.d2l-body-standard {
+					@apply --d2l-body-compact-text;
 				}
 			</style>
 			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headers.length]]" aria-rowcount$="[[_data.length]]">
@@ -94,6 +112,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			<template is="dom-if" if="[[_pageNextHref]]">
 				<div class="d2l-evaluation-hub-activities-list-load-more-container">
 					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
+				</div>
+			</template>
+			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy)]]">
+				<div class="d2l-quick-eval-no-submissions">
+					<d2l-no-submissions-image></d2l-no-submissions-image>
+					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
+					<p class="d2l-body-standard">[[localize('noSubmissions')]]</p>
+					<p class="d2l-body-standard">[[localize('checkBackOften')]]</p>
 				</div>
 			</template>
 		`;
@@ -165,6 +191,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
+	}
+
+	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy) {
+		return !dataLength && !isLoading && isHealthy;
 	}
 
 	_loadSorts(entity) {
@@ -258,7 +288,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		if (!entity) {
 			return Promise.resolve();
 		}
-
 		this._loading = true;
 		this._fullListLoading = true;
 

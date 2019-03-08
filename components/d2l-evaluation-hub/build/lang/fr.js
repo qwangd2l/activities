@@ -8,6 +8,8 @@ const LangFrImpl = (superClass) => class extends superClass {
 		super();
 		this.fr = {
 			'activityName': 'Nom de l\'activité',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Cours',
 			'displayName': 'Prénom et Nom de famille',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
@@ -15,6 +17,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'loadMore': 'En voir plus',
 			'loading': 'Chargement',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Date de soumission',
 			'tryAgain': 'Try Again'
 		};

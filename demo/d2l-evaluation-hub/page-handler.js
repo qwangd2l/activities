@@ -79,4 +79,4 @@ function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
 	return entity;
 }
 
-export { createPageEndpoint };
+export { createPageEndpoint, formatPage };

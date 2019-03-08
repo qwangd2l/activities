@@ -8,6 +8,8 @@ const LangJaImpl = (superClass) => class extends superClass {
 		super();
 		this.ja = {
 			'activityName': 'アクティビティ名',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'コース',
 			'displayName': '名, 姓',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
@@ -15,6 +17,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'loadMore': 'さらに読み込む',
 			'loading': '読み込み中',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': '送信日',
 			'tryAgain': 'Try Again'
 		};

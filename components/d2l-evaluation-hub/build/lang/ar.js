@@ -8,6 +8,8 @@ const LangArImpl = (superClass) => class extends superClass {
 		super();
 		this.ar = {
 			'activityName': 'اسم النشاط',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'المقرر التعليمي',
 			'displayName': 'الاسم الأول، اسم العائلة',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
@@ -15,6 +17,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'loadMore': 'تحميل المزيد',
 			'loading': 'يتم الآن التحميل',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'تاريخ الإرسال',
 			'tryAgain': 'Try Again'
 		};

@@ -8,6 +8,8 @@ const LangSvImpl = (superClass) => class extends superClass {
 		super();
 		this.sv = {
 			'activityName': 'Aktivitetsnamn',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Kurs',
 			'displayName': 'Förnamn, efternamn',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
@@ -15,6 +17,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'loadMore': 'Ladda mer',
 			'loading': 'Laddar',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Inlämningsdatum',
 			'tryAgain': 'Try Again'
 		};

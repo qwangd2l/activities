@@ -8,6 +8,8 @@ const LangFiImpl = (superClass) => class extends superClass {
 		super();
 		this.fi = {
 			'activityName': 'Activity Name',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Course',
 			'displayName': 'First Name, Last Name',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
@@ -15,6 +17,7 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'loading': 'Loading',
 			'loadMore': 'Load more',
 			'masterTeacher': 'Master Teacher',
+			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Submission Date',
 			'tryAgain': 'Try Again'
 		};
