@@ -7,8 +7,9 @@ function parsePathNoLeadingSlash(input) {
 	return path;
 }
 
-function startMockServer(mappings, debug) {
+function startMockServer(mappings, debug, delay) {
 	const oldFetch = window.d2lfetch.fetch.bind(window.d2lfetch);
+	delay = delay || 150;
 
 	if (debug) {
 		console.group('All Mappings');
@@ -21,7 +22,7 @@ function startMockServer(mappings, debug) {
 		if (debug) {
 			console.groupCollapsed(input);
 		}
-		return intercept(input, path, mappings, debug).catch(() => {
+		return intercept(input, path, mappings, debug).then(x => new Promise(resolve => setTimeout(() => resolve(x), delay))).catch(() => {
 			if (debug) {
 				console.log('No mappings found, falling back to d2lfetch.fetch');
 				console.groupEnd();

@@ -346,7 +346,7 @@ function getMappings(table) {
 
 	const sortsHref = 'sorts/';
 	for (let i = 0; i < pages; i++) {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages), i === 2);
 	}
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
 

@@ -135,10 +135,13 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: false
 		}
 	];
-	var expectedHeaders = [
-		'First Name, Last Name', 'Activity Name', 'Course', 'Submission Date'
+	var expectedColumnHeaders = [
+		['First Name', 'Last Name'],
+		['Activity Name'],
+		['Course'],
+		['Submission Date']
 	];
-	var expectedHeadersWithMasterTeacher = expectedHeaders.concat('Master Teacher');
+	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Master Teacher']]);
 
 	suite('d2l-evaluation-hub-activities-list', function() {
 		setup(function() {
@@ -150,6 +153,10 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		test('attributes are set correctly', function() {
 			assert.equal(list.href, 'blah');
 			assert.equal(list.token, 't');
+		});
+		test('no alert displayed when healthy', function() {
+			var alert = list.shadowRoot.querySelector('#list-alert');
+			assert.equal(true, alert.hasAttribute('hidden'));
 		});
 		test('_fullListLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
 			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
@@ -167,14 +174,32 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
+		test('if _loading is true, d2l-no-submissions-image is not shown', () => {
+			var noSubmissionComponent = list.shadowRoot.querySelector('d2l-no-submissions-image');
+			assert.equal(noSubmissionComponent, null);
+			assert.equal(list._loading, true);
+		});
+		test('if there is no data in the list, d2l-no-submissions-image is shown', (done) => {
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.notEqual(noSubmissionComponent.style.display, 'none');
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+					assert.equal(noSubmissionComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
 		test('headers display correctly', function(done) {
 			flush(function() {
 				var headers = list.shadowRoot.querySelectorAll('d2l-th');
 
-				assert.equal(expectedHeaders.length, headers.length);
+				assert.equal(expectedColumnHeaders.length, headers.length);
 
-				for (var i = 0; i < expectedHeaders.length; i++) {
-					assert.include(headers[i].innerHTML, expectedHeaders[i]);
+				for (var i = 0; i < expectedColumnHeaders.length; i++) {
+					expectedColumnHeaders[i].forEach(function(expectedHeader) {
+						assert.include(headers[i].innerHTML, expectedHeader);
+					});
 				}
 				done();
 			});
@@ -185,10 +210,12 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			flush(function() {
 
 				var headers = list.shadowRoot.querySelectorAll('d2l-th');
-				assert.equal(expectedHeadersWithMasterTeacher.length, headers.length);
+				assert.equal(expectedColumnHeadersWithMasterTeacher.length, headers.length);
 
-				for (var i = 0; i < expectedHeadersWithMasterTeacher.length; i++) {
-					assert.include(headers[i].innerHTML, expectedHeadersWithMasterTeacher[i]);
+				for (var i = 0; i < expectedColumnHeadersWithMasterTeacher.length; i++) {
+					expectedColumnHeadersWithMasterTeacher[i].forEach(function(expectedHeader) {
+						assert.include(headers[i].innerHTML, expectedHeader);
+					});
 				}
 				done();
 			});
@@ -256,6 +283,36 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				};
 				loadMore.addEventListener('click', verify);
 				MockInteractions.tap(loadMore);
+			});
+		});
+		test('when handling load more failure, alert should pop up and alert should hide when alerts cleared', (done) => {
+			list._handleLoadMoreFailure();
+
+			flush(function() {
+				var alert = list.shadowRoot.querySelector('#list-alert');
+				assert.equal(false, alert.hasAttribute('hidden'));
+
+				list._clearAlerts();
+				flush(function() {
+					assert.equal(true, alert.hasAttribute('hidden'));
+					done();
+				});
+
+			});
+		});
+		test('when handling initial load failure, alert should pop up and alert should hide when alerts cleared', (done) => {
+			list._handleFullLoadFailure();
+
+			flush(function() {
+				var alert = list.shadowRoot.querySelector('#list-alert');
+				assert.equal(false, alert.hasAttribute('hidden'));
+
+				list._clearAlerts();
+				flush(function() {
+					assert.equal(true, alert.hasAttribute('hidden'));
+					done();
+				});
+
 			});
 		});
 	});

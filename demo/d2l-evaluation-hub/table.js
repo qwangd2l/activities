@@ -22,10 +22,19 @@ export default
 		},
 		{
 			'class': 'first-name',
-			'id': 'byuser',
+			'id': 'byFirstName',
 			'fn': (x, y) => {
 				const xname = x.rowData.firstName;
 				const yname = y.rowData.firstName;
+				return compare(xname, yname);
+			}
+		},
+		{
+			'class': 'last-name',
+			'id': 'byLastName',
+			'fn': (x, y) => {
+				const xname = x.rowData.lastName;
+				const yname = y.rowData.lastName;
 				return compare(xname, yname);
 			}
 		},
@@ -54,7 +63,7 @@ export default
 			'lastName': 'Bedley',
 			'activityType': 'assignment',
 			'activityName': 'What is Love?',
-			'courseName': 'Music 304 - A Study of Haddaway',
+			'courseName': 'Music 304 - A Study of Haddaway Music 304 - A Study of Haddaway Music 304 - A Study of Haddaway Music 304 - A Study of Haddaway',
 			'localizedFormattedDate': '3/9/2019 10:16 AM',
 			'masterTeacher': {
 				'firstName': 'Brett',
@@ -65,7 +74,7 @@ export default
 			'firstName': 'Alex',
 			'lastName': 'Bedley',
 			'activityType': 'assignment',
-			'activityName': 'The Bestest Number',
+			'activityName': 'The Bestest Number The Bestest Number The Bestest Number The Bestest Number The Bestest Number The Bestest Number',
 			'courseName': 'Math 102 - Numbers',
 			'localizedFormattedDate': '3/9/2019 10:16 AM',
 			'masterTeacher': {
