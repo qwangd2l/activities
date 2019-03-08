@@ -15,6 +15,10 @@
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
 				{
+					"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+					"href":"data/assignmentActivity.json"
+				},
+				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/userUnique.json"
 				},{
@@ -54,12 +58,27 @@
 					"date": "2019-03-13T15:16:10.793Z",
 					"text": "3/9/2019 10:16 AM"
 				  }
+			},
+			{
+				"class": [
+					"evaluation"
+				],
+				"rel": [
+					"https://api.brightspace.com/rels/evaluation"
+				],
+				"properties": {
+					"state": "Draft"
+				}
 			}
 			]
 		},{
 			"class": ["user-quiz-attempt-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
+				{
+					"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+					"href":"data/quizAttemptActivity.json"
+				},
 				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/user.json"
@@ -106,6 +125,10 @@
 			"class": ["user-discussion-activity","activity"],
 			"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
 			"links":[
+				{
+					"rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+					"href":"data/topicActivity.json"
+				},
 				{
 					"rel":["https://api.brightspace.com/rels/user"],
 					"href":"data/user.json"

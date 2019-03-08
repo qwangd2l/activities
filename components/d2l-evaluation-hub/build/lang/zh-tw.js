@@ -8,12 +8,20 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 		super();
 		this.zhtw = {
 			'activityName': '活動名稱',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': '課程',
 			'displayName': '名字，姓氏',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': '載入更多',
+			'loading': '正在載入',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': '提交日期'
+			'noSubmissions': 'There are no submissions that need your attention.',
+			'submissionDate': '提交日期',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

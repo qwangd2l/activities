@@ -1,0 +1,19 @@
+{
+	"class": [
+		"user-assignment-activity",
+		"activity"
+	],
+	"entities": [
+		{
+			"class": [
+				"evaluation"
+			],
+			"rel": [
+				"https://api.brightspace.com/rels/evaluation"
+			],
+			"properties": {
+				"state": "Draft"
+			}
+		}
+	]
+}

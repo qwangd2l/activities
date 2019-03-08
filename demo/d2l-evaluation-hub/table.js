@@ -22,10 +22,19 @@ export default
 		},
 		{
 			'class': 'first-name',
-			'id': 'byuser',
+			'id': 'byFirstName',
 			'fn': (x, y) => {
 				const xname = x.rowData.firstName;
 				const yname = y.rowData.firstName;
+				return compare(xname, yname);
+			}
+		},
+		{
+			'class': 'last-name',
+			'id': 'byLastName',
+			'fn': (x, y) => {
+				const xname = x.rowData.lastName;
+				const yname = y.rowData.lastName;
 				return compare(xname, yname);
 			}
 		},
@@ -83,7 +92,8 @@ export default
 			'masterTeacher': {
 				'firstName': 'Chris',
 				'lastName': 'Alexander'
-			}
+			},
+			'isDraft': true
 		},
 		{
 			'firstName': 'Carol',

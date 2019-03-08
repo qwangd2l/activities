@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-		<title>d2l-evaluation-hub-activities-list demo</title>
+		<title>d2l-evaluation-hub-activities-list Empty State Demo</title>
 		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
 		<!-- For IE11 -->
@@ -16,16 +16,12 @@
 			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
-			import startMockServer from './interceptor';
-			import mappingsParser from './demo-data-parser';
-			import data from './table';
-
-			const mappings = mappingsParser(data);
-			// Parameters: data, network logging, api request delay
-			startMockServer(mappings, true, 100);
-
-			// For IE11, we need to import the component after we've started the mock observer
 			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub-activities-list.js';
+			import {formatPage } from './page-handler';
+			import startMockServer from './interceptor';
+
+			const mappings = {'pages/0': formatPage([], '', '')};
+			startMockServer(mappings, true);
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
@@ -46,19 +42,10 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="vertical-section-container fixedSize">
-			<h3>Basic d2l-evaluation-hub-activities-list demo</h3>
+			<h3>d2l-evaluation-hub-activities-list Empty State Demo</h3>
 			<demo-snippet>
-				<h4>Note: Load more button is expected to fail on second click, but should resolve itself when clicking it again</h4>
-				<hr/><br/>
 				<template strip-whitespace>
 					<d2l-evaluation-hub-activities-list href="pages/0" token="whatever"></d2l-evaluation-hub-activities-list>
-				</template>
-			</demo-snippet>
-			<demo-snippet>
-				<h4>Note: This will always show an error. It demonstrates how the component looks when failing to load data</h4>
-				<hr/><br/>
-				<template strip-whitespace>
-					<d2l-evaluation-hub-activities-list href="invalid" token="whatever"></d2l-evaluation-hub-activities-list>
 				</template>
 			</demo-snippet>
 		</div>

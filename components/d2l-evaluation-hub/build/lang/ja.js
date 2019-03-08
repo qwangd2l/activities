@@ -8,12 +8,20 @@ const LangJaImpl = (superClass) => class extends superClass {
 		super();
 		this.ja = {
 			'activityName': 'アクティビティ名',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'コース',
 			'displayName': '名, 姓',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'さらに読み込む',
+			'loading': '読み込み中',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': '送信日'
+			'noSubmissions': 'There are no submissions that need your attention.',
+			'submissionDate': '送信日',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

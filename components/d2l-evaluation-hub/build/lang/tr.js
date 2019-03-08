@@ -8,12 +8,20 @@ const LangTrImpl = (superClass) => class extends superClass {
 		super();
 		this.tr = {
 			'activityName': 'Etkinlik Adı',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Ders',
 			'displayName': 'Ad, Soyad',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'Daha fazla yükle',
+			'loading': 'Yükleniyor',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': 'Gönderme Tarihi'
+			'noSubmissions': 'There are no submissions that need your attention.',
+			'submissionDate': 'Gönderme Tarihi',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

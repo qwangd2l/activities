@@ -1,9 +1,10 @@
 import { parseSortFromUrl, encodeSortState, decodeSortState } from './sort-handler';
+import { formatActivities } from './activity-handler';
 import chunk from 'lodash-es/chunk';
 
 function applySorts(activities, sorts, sortState) {
 	sortState.forEach(appliedSort => {
-		const sortDefn = sorts.find(s => s.id === appliedSort.id);
+		const sortDefn = sorts.filter(s => s.id === appliedSort.id)[0];
 
 		let sortFn = sortDefn.fn;
 
@@ -26,92 +27,24 @@ function addSortToHref(href, sortState) {
 	}
 }
 
-function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref) {
+function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
+	var shouldFail = failFirstTime;
+
 	return (url) => {
 		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
 
 		const sortedActivities = applySorts(activities, sorts, sortState);
-		const pagedActivities = chunk(sortedActivities.map(a => formatActivity(a)), 3);
+		const formattedSortedActivities = formatActivities(sortedActivities);
+		const pagedActivities = chunk(formattedSortedActivities, 3);
+
+		if (shouldFail) {
+			shouldFail = false;
+			return null;
+		}
 
 		return formatPage(pagedActivities[pageNumber], filtersHref, sortsHref, addSortToHref(nextPageHref, sortState));
 	};
-}
-
-function formatActivity(activity) {
-	const formattedActivity = {
-		'class': [
-			activity.klass,
-			'activity'
-		],
-		'rel': [
-			'https://activities.api.brightspace.com/rels/user-activity-usage'
-		],
-		'links': [
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/user'
-				],
-				'href': activity.userHref
-			},
-			{
-				'rel': [
-					'https://api.brightspace.com/rels/organization'
-				],
-				'href': activity.courseHref
-			},
-			{
-				'rel': [
-					activity.activityRel
-				],
-				'href': activity.activityHref
-			}
-		],
-		'entities': [
-			{
-				'class': [
-					'relative-uri'
-				],
-				'rel': [
-					'item',
-				],
-				'properties': {
-					'path': '/this/is/not/used'
-				}
-			},
-			{
-				'class': [
-					'date',
-					'localized-formatted-date'
-				],
-				'rel': [
-					'https://api.brightspace.com/rels/date'
-				],
-				'properties': {
-					'date': '2019-03-13T15:16:10.793Z',
-					'text': activity.localizedFormattedDate
-				}
-			}
-		]
-	};
-
-	if (activity.isDraft) {
-		const draftEntity = {
-			'class': [
-				'evaluation'
-			],
-			'rel': [
-				'https://api.brightspace.com/rels/evaluation'
-			],
-			'properties': {
-				'state': 'Draft'
-			}
-		};
-
-		formattedActivity.entities.push(draftEntity);
-	}
-
-	return formattedActivity;
 }
 
 function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
@@ -146,4 +79,4 @@ function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
 	return entity;
 }
 
-export { createPageEndpoint };
+export { createPageEndpoint, formatPage };

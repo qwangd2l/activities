@@ -8,12 +8,20 @@ const LangDeImpl = (superClass) => class extends superClass {
 		super();
 		this.de = {
 			'activityName': 'Name der Aktivität',
+			'caughtUp': 'You\'re all caught up!',
+			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Kurs',
 			'displayName': 'Vorname, Nachname',
-			'loading': 'Loading',
+			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
+			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
+			'firstName': 'First Name',
+			'lastName': 'Last Name',
 			'loadMore': 'Mehr laden',
+			'loading': 'Wird geladen',
 			'masterTeacher': 'Master Teacher',
-			'submissionDate': 'Abgabedatum'
+			'noSubmissions': 'There are no submissions that need your attention.',
+			'submissionDate': 'Abgabedatum',
+			'tryAgain': 'Try Again'
 		};
 	}
 };

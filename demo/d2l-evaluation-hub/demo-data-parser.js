@@ -1,5 +1,6 @@
 import { createSortEndpoint } from './sort-handler';
 import { createPageEndpoint } from './page-handler';
+import { formatActivities } from './activity-handler';
 import chunk from 'lodash-es/chunk';
 
 function formatName(firstName, lastName) {
@@ -257,10 +258,15 @@ const relMapping = {
 	discussion: 'https://discussions.api.brightspace.com/rels/topic'
 };
 
+function getHrefForActivityId(id) {
+	return `activity/${id}`;
+}
+
 function parseActivities(data, users, activityNames, courses) {
-	const parsedActivities = data.map(row => {
+	const parsedActivities = data.map((row, i) => {
 		return {
 			klass: classMapping[row.activityType],
+			selfHref: getHrefForActivityId(i),
 			userHref: getHrefForUserId(users.indexOf(formatName(row.firstName, row.lastName))),
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
@@ -339,12 +345,15 @@ function getMappings(table) {
 	const pages = pagedActivities.length;
 
 	const sortsHref = 'sorts/';
-
-	pagedActivities.forEach((_, i) => {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages));
-	});
-
+	for (let i = 0; i < pages; i++) {
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages), i === 2);
+	}
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
+
+	const formattedActivities = formatActivities(activities);
+	formattedActivities.forEach((activity, i) => {
+		mappings[getHrefForActivityId(i)] = activity;
+	});
 
 	return mappings;
 }
