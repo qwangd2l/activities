@@ -244,7 +244,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_sort(e) {
 		const headers = [].concat.apply([], this._headerColumns.map(headerColumn => headerColumn.headers));
-		const header = headers.find(h => h.key === e.currentTarget.id);
+		const header = headers.filter(h => h.key === e.currentTarget.id)[0];
 
 		if (!header) {
 			return Promise.reject(`No matching header for ${e.currentTarget.id}`);
