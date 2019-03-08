@@ -4,7 +4,7 @@ import chunk from 'lodash-es/chunk';
 
 function applySorts(activities, sorts, sortState) {
 	sortState.forEach(appliedSort => {
-		const sortDefn = sorts.find(s => s.id === appliedSort.id);
+		const sortDefn = sorts.filter(s => s.id === appliedSort.id)[0];
 
 		let sortFn = sortDefn.fn;
 
