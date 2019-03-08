@@ -260,6 +260,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_updateSortState(event) {
+
+		let result;
 		const headerId = event.currentTarget.id;
 
 		this._headerColumns.forEach((headerColumn, i) => {
@@ -269,13 +271,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
 
-					this._fetchSortedData(header.sortClass, descending);
+					result = this._fetchSortedData(header.sortClass, descending);
 				}
 				else {
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
 				}
 			});
 		});
+
+		return result;
 	}
 
 	_fetchSortedData(sortClass, descending) {
