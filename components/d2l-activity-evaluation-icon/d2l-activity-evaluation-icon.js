@@ -1,7 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-icons/d2l-icon.js';
-import 'd2l-icons/tier1-icons.js';
 import './d2l-activity-evaluation-icon-base.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 
@@ -38,10 +36,6 @@ class ActivityEvaluationIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.
 		return [
 			'_configureBase(entity)'
 		];
-	}
-
-	constructor() {
-		super();
 	}
 
 	_configureBase(entity) {

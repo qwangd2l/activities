@@ -26,7 +26,7 @@
 				});
 		});
 
-		test('base no configured as draft when data does not contani evaluation information', function(done) {
+		test('base not configured as draft when data does not contain evaluation information', function(done) {
 
 			loadPromise('data/activity-no-evaluation.json', evaluationIcon)
 				.then(function(configuredEvaluationIcon) {
