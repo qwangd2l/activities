@@ -23,7 +23,7 @@ import './d2l-no-submissions-image.js';
 
 class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], EvaluationHubLocalize(PolymerElement)) {
 	static get template() {
-		return html`
+		const evaluationHubActivitiesListTemplate = html`
 			<style include="d2l-table-style">
 				d2l-td {
 					font-weight: normal;
@@ -72,10 +72,16 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 												<template is="dom-if" if="[[header.canSort]]">
 													<d2l-table-col-sort-button nosort on-click="_sort" id="[[header.key]]">
 														<span>[[localize(header.key)]]</span>
+														<template is="dom-if" if="[[header.suffix]]">
+															<span>[[header.suffix]]&nbsp;</span>
+														</template>
 													</d2l-table-col-sort-button>
 												</template>
 												<template is="dom-if" if="[[!header.canSort]]">
 													<span>[[localize(header.key)]]</span>
+													<template is="dom-if" if="[[header.suffix]]">
+														<span>[[header.suffix]]&nbsp;</span>
+													</template>
 												</template>
 											</template>
 										</dom-repeat>
@@ -131,6 +137,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				</div>
 			</template>
 		`;
+
+		evaluationHubActivitiesListTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
+		return evaluationHubActivitiesListTemplate;
 	}
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
@@ -145,7 +154,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				value: [
 					{
 						key: 'displayName',
-						headers: [{ key: 'displayName', sortClass: 'first-name', canSort: false }]
+						headers: [
+							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false },
+							{ key: 'lastName', sortClass: 'last-name', canSort: false }
+						]
 					},
 					{
 						key: 'activityName',
