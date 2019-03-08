@@ -40,6 +40,21 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					text-align: right;
 					width: 100%;
 				}
+				.d2l-evaluation-hub-truncated-column {
+					max-width: 10rem;
+					white-space: nowrap;
+				}
+				.d2l-activity-name-column {
+					padding-right: 2.4rem;
+				}
+				:host(:dir(rtl)) .d2l-activity-name-column {
+					padding-right: 0;
+					padding-left: 2.4rem;
+				}
+				.d2l-course-name-column {
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 				[hidden] {
 					display: none;
 				}
@@ -99,10 +114,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
-								<d2l-td>
+								<d2l-td class="d2l-evaluation-hub-truncated-column d2l-activity-name-column">
 									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
 								</d2l-td>
-								<d2l-td>
+								<d2l-td class="d2l-evaluation-hub-truncated-column d2l-course-name-column">
 									<span>[[_getDataProperty(s, 'courseName')]]</span>
 								</d2l-td>
 								<d2l-td>
