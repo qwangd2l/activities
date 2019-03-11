@@ -289,7 +289,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
 				}
 
-				return this.performSirenAction(action);
+				return this._performSirenActionWithQueryParams(action);
 			}).bind(this))
 			.then((sortsEntity => {
 				if (!sortsEntity) {
@@ -302,7 +302,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this.performSirenAction(collectionAction);
+				const collection = this._performSirenActionWithQueryParams(collectionAction);
 				return collection;
 			}).bind(this))
 			.then((collection => {
@@ -477,19 +477,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				if (filterOptions) {
 					var masterTeacherOption = filterOptions.getSubEntityByRel('https://api.brightspace.com/rels/filter');
 					var action = masterTeacherOption.getActionByName('add-filter');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filterOptions) {
 				if (filterOptions) {
 					var action = filterOptions.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filters) {
 				if (filters) {
 					var action = filters.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(enrollment) {
@@ -588,6 +588,23 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			)
 		);
 	}
+
+	_performSirenActionWithQueryParams(action) {
+		let url = new URL(action.href, window.location.origin);
+
+		if(!action.fields) {
+			action.fields = []
+		}
+
+		url.searchParams.forEach(function(value, key) {
+			if(!action.fields.find(x => x.name === key)){
+				action.fields.push({name: key, value: value, type: "hidden"});
+			}
+		});
+
+		return this.performSirenAction(action);
+	}
+
 }
 
 window.customElements.define(D2LEvaluationHubActivitiesList.is, D2LEvaluationHubActivitiesList);
