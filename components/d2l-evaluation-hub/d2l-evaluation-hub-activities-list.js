@@ -347,6 +347,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			if (entity.entities) {
 				var result = await this._parseActivities(entity);
 				this._data = result;
+			} else {
+				this._data = [];
 			}
 			this._clearAlerts();
 
