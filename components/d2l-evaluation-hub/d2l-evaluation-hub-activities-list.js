@@ -590,19 +590,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_performSirenActionWithQueryParams(action) {
-		let url = new URL(action.href, window.location.origin);
+		const url = new URL(action.href, window.location.origin);
 
-		if(!action.fields) {
+		if (!action.fields) {
 			action.fields = [];
 		}
 
 		url.searchParams.forEach(function(value, key) {
-			if(!action.fields.find(x => x.name === key)) {
-				action.fields.push({name: key, value: value, type: "hidden"});
+			if (!action.fields.filter(x => x.name === key)[0]) {
+				action.fields.push({name: key, value: value, type: 'hidden'});
 			}
 		});
 
-		return this.performSirenAction(action);
+		return this.performSirenAction(action, action.fields);
 	}
 
 }
