@@ -308,7 +308,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			});
 		});
-		test('when calling perform siren action with no query params and no fields, the fields are empty', (done) => {
+		test('when calling perform siren action with no query params and no fields, the fields are empty', () => {
 
 			const action = {
 				href : 'http://127.0.0.1/',
@@ -320,9 +320,8 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			const stub = sinon.stub(list, 'performSirenAction');
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action, []);
-			done();
 		});
-		test('when calling perform siren action with no query params, the fields are not modified', (done) => {
+		test('when calling perform siren action with no query params, the fields are not modified', () => {
 
 			const action = {
 				href : 'http://127.0.0.1/',
@@ -340,9 +339,8 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			const stub = sinon.stub(list, 'performSirenAction');
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action, action.fields);
-			done();
 		});
-		test('when calling perform siren action with query params, the query params are added as fields', (done) => {
+		test('when calling perform siren action with query params, the query params are added as fields', () => {
 
 			const action = {
 				href : 'http://127.0.0.1?testname=testvalue&anothertestname=anothertestvalue',
@@ -378,7 +376,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			const stub = sinon.stub(list, 'performSirenAction');
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action, fields);
-			done();
 		});
 	});
 })();
