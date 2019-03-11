@@ -593,11 +593,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		let url = new URL(action.href, window.location.origin);
 
 		if(!action.fields) {
-			action.fields = []
+			action.fields = [];
 		}
 
 		url.searchParams.forEach(function(value, key) {
-			if(!action.fields.find(x => x.name === key)){
+			if(!action.fields.find(x => x.name === key)) {
 				action.fields.push({name: key, value: value, type: "hidden"});
 			}
 		});
