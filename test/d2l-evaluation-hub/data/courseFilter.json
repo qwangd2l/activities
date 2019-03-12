@@ -10,6 +10,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "org-name"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"

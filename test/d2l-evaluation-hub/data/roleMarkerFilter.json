@@ -10,6 +10,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "primary-facilitator"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"

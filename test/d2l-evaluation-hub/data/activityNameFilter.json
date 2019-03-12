@@ -10,6 +10,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "assignment-name"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
@@ -35,6 +38,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "quiz-name"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
@@ -60,6 +66,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "topic-name"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"

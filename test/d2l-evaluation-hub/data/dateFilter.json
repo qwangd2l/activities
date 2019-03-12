@@ -10,6 +10,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "last-24-hours"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
@@ -21,6 +24,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "last-48-hours"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
@@ -32,6 +38,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "last-7-days"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
@@ -43,6 +52,9 @@
               "filter",
               "off"
           ],
+          "properties": {
+              "filter": "older"
+          },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
