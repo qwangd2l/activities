@@ -51,12 +51,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					padding-left: 0;
 					padding-right: 0.6rem;
 				}
-				.d2l-activity-name-column {
-					padding-right: 2.4rem;
+				d2l-activity-name {
+					padding-right: 1.4rem;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
-				:host(:dir(rtl)) .d2l-activity-name-column {
+				:host(:dir(rtl)) d2l-activity-name {
 					padding-right: 0;
-					padding-left: 2.4rem;
+					padding-left: 1.4rem;
 				}
 				.d2l-course-name-column {
 					overflow: hidden;

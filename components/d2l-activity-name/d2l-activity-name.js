@@ -28,8 +28,6 @@ class D2LActivityName extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityB
 				}
 				.d2l-activity-name-text {
 					display: inline-block;
-					overflow: hidden;
-					text-overflow: ellipsis;
 					vertical-align: middle;
 					max-width: 100%;
 				}
