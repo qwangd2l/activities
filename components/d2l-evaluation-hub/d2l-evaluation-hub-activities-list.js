@@ -40,6 +40,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					text-align: right;
 					width: 100%;
 				}
+				:host(:dir(rtl)) .d2l-evaluation-hub-activities-list-load-more-container {
+					text-align: left;
+				}
 				.d2l-evaluation-hub-truncated-column {
 					max-width: 10rem;
 					white-space: nowrap;
