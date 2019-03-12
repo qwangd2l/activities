@@ -44,6 +44,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					max-width: 10rem;
 					white-space: nowrap;
 				}
+				d2l-activity-evaluation-icon-base {
+					padding-left: 0.6rem;
+				}
+				:host(:dir(rtl)) d2l-activity-evaluation-icon-base {
+					padding-left: 0;
+					padding-right: 0.6rem;
+				}
 				.d2l-activity-name-column {
 					padding-right: 2.4rem;
 				}
@@ -92,10 +99,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 														id="[[header.key]]"
 													>
 														<span>[[localize(header.key)]]</span>
-														<template is="dom-if" if="[[header.suffix]]">
-															<span>[[header.suffix]]&nbsp;</span>
-														</template>
 													</d2l-table-col-sort-button>
+													<template is="dom-if" if="[[header.suffix]]">
+														<span>[[header.suffix]]&nbsp;</span>
+													</template>
 												</template>
 												<template is="dom-if" if="[[!header.canSort]]">
 													<span>[[localize(header.key)]]</span>
@@ -164,7 +171,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
 		return {
-			'masterTeacher': {
+			masterTeacher: {
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
@@ -271,6 +278,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 							const sort = sortsEntity.entity.getSubEntityByClass(header.sortClass);
 							if (sort) {
 								this.set(`_headerColumns.${i}.headers.${j}.canSort`, true);
+								if (sort.properties && sort.properties.applied && (sort.properties.priority === 0)) {
+									const descending = sort.properties.direction === 'descending';
+									this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
+									this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
+								}
 							}
 						}
 					});
@@ -321,7 +333,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject(new Error(`Could not find sort action ${actionName} for sort ${JSON.stringify(sort)}`));
 				}
 
-				return this.performSirenAction(action);
+				return this._performSirenActionWithQueryParams(action);
 			}).bind(this))
 			.then((sortsEntity => {
 				if (!sortsEntity) {
@@ -334,11 +346,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this.performSirenAction(collectionAction);
+				const collection = this._performSirenActionWithQueryParams(collectionAction);
 				return collection;
 			}).bind(this))
 			.then((collection => {
 				this.entity = collection;
+				this._dispatchSortUpdatedEvent(collection);
 				return Promise.resolve();
 			}).bind(this));
 	}
@@ -351,9 +364,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		this._fullListLoading = true;
 
 		try {
-			var result = await this._parseActivities(entity);
-			this._data = result;
+			if (entity.entities) {
+				var result = await this._parseActivities(entity);
+				this._data = result;
+			} else {
+				this._data = [];
+			}
 			this._clearAlerts();
+
 		} catch (e) {
 			// Unable to load activities from entity.
 			this._handleFullLoadFailure().bind(this);
@@ -374,8 +392,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
 
 						try {
-							var result = await this._parseActivities(u.entity);
-							this._data = this._data.concat(result);
+							if (u.entity.entities) {
+								var result = await this._parseActivities(u.entity);
+								this._data = this._data.concat(result);
+							}
 						} catch (e) {
 						// Unable to load more activities from entity.
 							throw e;
@@ -509,19 +529,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				if (filterOptions) {
 					var masterTeacherOption = filterOptions.getSubEntityByRel('https://api.brightspace.com/rels/filter');
 					var action = masterTeacherOption.getActionByName('add-filter');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filterOptions) {
 				if (filterOptions) {
 					var action = filterOptions.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filters) {
 				if (filters) {
 					var action = filters.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(enrollment) {
@@ -605,6 +625,38 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}
 		return true;
 	}
+
+	_dispatchSortUpdatedEvent(sorted) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-evaluation-hub-activities-list-sort-updated',
+				{
+					detail: {
+						sortedActivities: sorted
+					},
+					composed: true,
+					bubbles: true
+				}
+			)
+		);
+	}
+
+	_performSirenActionWithQueryParams(action) {
+		const url = new URL(action.href, window.location.origin);
+
+		if (!action.fields) {
+			action.fields = [];
+		}
+
+		url.searchParams.forEach(function(value, key) {
+			if (!action.fields.filter(x => x.name === key)[0]) {
+				action.fields.push({name: key, value: value, type: 'hidden'});
+			}
+		});
+
+		return this.performSirenAction(action);
+	}
+
 }
 
 window.customElements.define(D2LEvaluationHubActivitiesList.is, D2LEvaluationHubActivitiesList);
