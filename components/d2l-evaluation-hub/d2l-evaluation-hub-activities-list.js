@@ -44,6 +44,13 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					max-width: 10rem;
 					white-space: nowrap;
 				}
+				d2l-activity-evaluation-icon-base {
+					padding-left: 0.6rem;
+				}
+				:host(:dir(rtl)) d2l-activity-evaluation-icon-base {
+					padding-left: 0;
+					padding-right: 0.6rem;
+				}
 				.d2l-activity-name-column {
 					padding-right: 2.4rem;
 				}
