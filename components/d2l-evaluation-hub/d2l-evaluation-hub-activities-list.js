@@ -164,7 +164,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	static get is() { return 'd2l-evaluation-hub-activities-list'; }
 	static get properties() {
 		return {
-			'masterTeacher': {
+			masterTeacher: {
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
@@ -320,7 +320,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
 				}
 
-				return this.performSirenAction(action);
+				return this._performSirenActionWithQueryParams(action);
 			}).bind(this))
 			.then((sortsEntity => {
 				if (!sortsEntity) {
@@ -333,11 +333,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this.performSirenAction(collectionAction);
+				const collection = this._performSirenActionWithQueryParams(collectionAction);
 				return collection;
 			}).bind(this))
 			.then((collection => {
 				this.entity = collection;
+				this._dispatchSortUpdatedEvent(collection);
 			}).bind(this));
 	}
 
@@ -514,19 +515,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				if (filterOptions) {
 					var masterTeacherOption = filterOptions.getSubEntityByRel('https://api.brightspace.com/rels/filter');
 					var action = masterTeacherOption.getActionByName('add-filter');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filterOptions) {
 				if (filterOptions) {
 					var action = filterOptions.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(filters) {
 				if (filters) {
 					var action = filters.getActionByName('apply');
-					return this.performSirenAction(action);
+					return this._performSirenActionWithQueryParams(action);
 				}
 			}.bind(this))
 			.then(function(enrollment) {
@@ -610,6 +611,38 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		}
 		return true;
 	}
+
+	_dispatchSortUpdatedEvent(sorted) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-evaluation-hub-activities-list-sort-updated',
+				{
+					detail: {
+						sortedActivities: sorted
+					},
+					composed: true,
+					bubbles: true
+				}
+			)
+		);
+	}
+
+	_performSirenActionWithQueryParams(action) {
+		const url = new URL(action.href, window.location.origin);
+
+		if (!action.fields) {
+			action.fields = [];
+		}
+
+		url.searchParams.forEach(function(value, key) {
+			if (!action.fields.filter(x => x.name === key)[0]) {
+				action.fields.push({name: key, value: value, type: 'hidden'});
+			}
+		});
+
+		return this.performSirenAction(action, action.fields);
+	}
+
 }
 
 window.customElements.define(D2LEvaluationHubActivitiesList.is, D2LEvaluationHubActivitiesList);
