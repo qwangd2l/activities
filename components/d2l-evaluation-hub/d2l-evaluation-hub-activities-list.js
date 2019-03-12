@@ -92,10 +92,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 														id="[[header.key]]"
 													>
 														<span>[[localize(header.key)]]</span>
-														<template is="dom-if" if="[[header.suffix]]">
-															<span>[[header.suffix]]&nbsp;</span>
-														</template>
 													</d2l-table-col-sort-button>
+													<template is="dom-if" if="[[header.suffix]]">
+														<span>[[header.suffix]]&nbsp;</span>
+													</template>
 												</template>
 												<template is="dom-if" if="[[!header.canSort]]">
 													<span>[[localize(header.key)]]</span>
