@@ -158,7 +158,7 @@
 							"https://assignments.api.brightspace.com/rels/assessment-application"
 					],
 					"properties": {
-							"path": "/the/best/vanity/url"
+							"path": "/the/best/vanity/url?ou=11111"
 					}
 			},
 			{
