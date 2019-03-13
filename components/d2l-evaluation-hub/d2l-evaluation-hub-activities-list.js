@@ -503,59 +503,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return this._followLink(entity, Rels.organization)
 			.then(function(org) {
 				if (org && org.entity) {
-					return this._followLink(org.entity, Rels.enrollments);
+					return this._followLink(org.entity, 'https://enrollments.api.brightspace.com/rels/primary-facilitators');
 				}
 			}.bind(this))
 			.then(function(enrollment) {
-				if (enrollment && enrollment.entity) {
-					return this._followLink(enrollment.entity, Rels.filters);
-				}
-			}.bind(this))
-			.then(function(filters) {
-				if (filters && filters.entity && filters.entity.hasSubEntityByClass('role-markers')) {
-					var roleMarkerFilter = filters.entity.getSubEntityByClass('role-markers');
-					if (roleMarkerFilter.href) {
-						return this._followHref(roleMarkerFilter.href);
-					}
-				}
-			}.bind(this))
-			.then(function(filterOptions) {
-				if (filterOptions && filterOptions.entity) {
-					var action = filterOptions.entity.getActionByName('search');
-					if (action) {
-						var fields = [
-							{
-								name: 'search',
-								value: 'Primary Facilitator'
-							}
-						];
-
-						return this.performSirenAction(action, fields);
-					}
-				}
-			}.bind(this))
-			.then(function(filterOptions) {
-				if (filterOptions) {
-					var masterTeacherOption = filterOptions.getSubEntityByRel('https://api.brightspace.com/rels/filter');
-					var action = masterTeacherOption.getActionByName('add-filter');
-					return this._performSirenActionWithQueryParams(action);
-				}
-			}.bind(this))
-			.then(function(filterOptions) {
-				if (filterOptions) {
-					var action = filterOptions.getActionByName('apply');
-					return this._performSirenActionWithQueryParams(action);
-				}
-			}.bind(this))
-			.then(function(filters) {
-				if (filters) {
-					var action = filters.getActionByName('apply');
-					return this._performSirenActionWithQueryParams(action);
-				}
-			}.bind(this))
-			.then(function(enrollment) {
-				if (enrollment && enrollment.hasSubEntityByRel(Rels.userEnrollment)) {
-					var userEnrollment = enrollment.getSubEntityByRel(Rels.userEnrollment);
+				if (enrollment && enrollment.entity && enrollment.entity.hasSubEntityByRel(Rels.userEnrollment)) {
+					var userEnrollment = enrollment.entity.getSubEntityByRel(Rels.userEnrollment);
 					if (userEnrollment.href) {
 						return this._followHref(userEnrollment.href);
 					}
