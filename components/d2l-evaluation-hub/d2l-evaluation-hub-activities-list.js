@@ -14,7 +14,8 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
-import './d2l-no-submissions-image.js';
+import './d2l-evaluation-hub-no-submissions-image.js';
+import './d2l-evaluation-hub-no-filter-results-image.js';
 
 /**
  * @customElement
@@ -81,11 +82,17 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				.d2l-quick-eval-no-submissions {
 					text-align: center;
 				}
-				d2l-no-submissions-image {
+				d2l-evaluation-hub-no-submissions-image {
 					padding-top: 30px;
 					padding-bottom: 30px;
 					height: 35%;
 					width: 35%;
+				}
+				d2l-evaluation-hub-no-filter-results-image {
+					padding-top: 30px;
+					padding-bottom: 30px;
+					height: 15%;
+					width: 15%;
 				}
 				.d2l-quick-eval-no-submissions-heading {
 					@apply --d2l-heading-2;
@@ -171,7 +178,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			</template>
 			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy)]]">
 				<div class="d2l-quick-eval-no-submissions">
-					<d2l-no-submissions-image></d2l-no-submissions-image>
+					<d2l-evaluation-hub-no-submissions-image></d2l-evaluation-hub-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
 					<p class="d2l-body-standard">[[localize('noSubmissions')]]</p>
 					<p class="d2l-body-standard">[[localize('checkBackOften')]]</p>
