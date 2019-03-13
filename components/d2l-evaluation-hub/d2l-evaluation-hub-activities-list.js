@@ -87,7 +87,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					@apply --d2l-body-compact-text;
 				}
 			</style>
-			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-offscreen id="d2l-evaluation-hub-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
+			<d2l-table type="light" hidden$="[[_fullListLoading]]" title="[[localize('tableTitle')]]" aria-described-by$="d2l-evaluation-hub-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">

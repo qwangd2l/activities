@@ -21,6 +21,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'masterTeacher': 'Master Teacher',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Submission Date',
+			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'
 		};
 	}
