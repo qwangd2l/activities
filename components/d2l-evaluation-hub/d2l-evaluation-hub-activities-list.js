@@ -658,7 +658,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_getExtraParams(url) {
-		if (!url) return [];
+		if (!url || url === '') return [];
 
 		const extraParams = [];
 
