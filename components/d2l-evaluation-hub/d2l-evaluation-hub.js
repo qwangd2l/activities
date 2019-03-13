@@ -42,8 +42,8 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				}
 			</style>
 			<div class="d2l-evaluation-hub-top-bar">
-				<template is="dom-if" if="[[pageTitle]]">
-					<h1>[[pageTitle]]</h1>
+				<template is="dom-if" if="[[headerText]]">
+					<h1>[[headerText]]</h1>
 				</template>
 				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterClasses]]"></d2l-hm-filter>
 			</div>
@@ -53,7 +53,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 	static get properties() {
 		return {
-			pageTitle: {
+			headerText: {
 				type: String
 			},
 			masterTeacher: {
