@@ -76,6 +76,12 @@ function formatCourse(name, enrollmentHref) {
 					'https://api.brightspace.com/rels/enrollments'
 				],
 				'href':enrollmentHref
+			},
+			{
+				'rel': [
+					'https://enrollments.api.brightspace.com/rels/primary-facilitators'
+				],
+				'href': enrollmentHref
 			}
 		]
 	};

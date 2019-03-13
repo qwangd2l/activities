@@ -8,6 +8,12 @@
 				"https://api.brightspace.com/rels/enrollments"
 			],
 			"href":"data/course.json"
+		},
+		{
+			"rel": [
+				"https://enrollments.api.brightspace.com/rels/primary-facilitators"
+			],
+			"href":"data/course.json"
 		}
 	]
 }
