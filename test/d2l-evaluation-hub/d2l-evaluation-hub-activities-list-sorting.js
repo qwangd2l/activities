@@ -2,8 +2,12 @@ import {Rels} from 'd2l-hypermedia-constants';
 import SirenParse from 'siren-parser';
 
 function resetSortHeaders(list) {
-	list._headers.forEach(header => {
-		header.canSort = false;
+	list._headerColumns.forEach(column => {
+		column.headers.forEach(header => {
+			header.canSort = false;
+			header.sorted = false;
+			header.desc = false;
+		});
 	});
 }
 
@@ -50,7 +54,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 	});
 
 	test('sorting is disabled on all columns by default', () => {
-		expect(list._headers.filter(h => h.canSort)).to.be.empty;
+		expect(list._headerColumns.filter(column => column.headers.some(h => h.canSort))).to.be.empty;
 	});
 
 	test('_loadSorts silently does nothing on null entity', () => {
@@ -65,7 +69,9 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 
 		return list._loadSorts(entity)
 			.then(() => {
-				const enabledSorts = list._headers
+				const enabledSorts = list._headerColumns
+					.map (column => column.headers)
+					.flat()
 					.filter(h => h.canSort)
 					.map(h => h.sortClass);
 
@@ -93,17 +99,17 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			});
 	});
 
-	test('_sort a header we can\'t find does nothing', (done) => {
+	test('_updateSortState a header we can\'t find does nothing', (done) => {
 		const e = {
 			currentTarget: {}
 		};
 
-		list._sort(e)
+		list._updateSortState(e)
 			.then(() => {
-				done('_sort should have rejected');
+				done('_updateSortState should have rejected');
 			})
 			.catch((err) => {
-				expect(err.toString()).to.equal('Error: No matching header for undefined');
+				expect(err.toString()).to.equal('Error: Could not find sortable header for undefined');
 				done();
 			})
 			.catch((err) => {
@@ -111,19 +117,19 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			});
 	});
 
-	test('_sort an unsortable header does nothing', (done) => {
+	test('_updateSortState an unsortable header does nothing', (done) => {
 		const e = {
 			currentTarget: {
 				id: 'activityName'
 			}
 		};
 
-		list._sort(e)
+		list._updateSortState(e)
 			.then(() => {
-				done('_sort should have rejected');
+				done('_updateSortState should have rejected');
 			})
 			.catch((err) => {
-				expect(err.toString()).to.equal('Error: Sorting is not enabled for activityName');
+				expect(err.toString()).to.equal('Error: Could not find sortable header for activityName');
 				done();
 			})
 			.catch((err) => {
@@ -141,14 +147,13 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 
 		const e = {
 			currentTarget: {
-				id: 'activityName',
-				nosort: true,
-				removeAttribute: () => {}
+				id: 'activityName'
 			}
 		};
+
 		return list._loadSorts(formatCollection([]))
 			.then(() => {
-				return list._sort(e).then(() => {
+				return list._updateSortState(e).then(() => {
 					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
 				});
 			});
@@ -156,6 +161,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 
 	test('clicking a header twice sorts column descending', () => {
 		const mappings = {};
+		mappings['sort-ascending'] = formatSimpleSorts([]);
 		mappings['sort-descending'] = formatSimpleSorts([]);
 		mappings['apply'] = formatCollection([]);
 		stubPerformSirenAction(list, mappings);
@@ -164,14 +170,15 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 
 		const e = {
 			currentTarget: {
-				id: 'activityName',
-				setAttribute: () => {}
+				id: 'activityName'
 			}
 		};
 		return list._loadSorts(formatCollection([]))
 			.then(() => {
-				return list._sort(e).then(() => {
-					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
+				return list._updateSortState(e).then(() => {
+					return list._updateSortState(e).then(() => {
+						expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
+					});
 				});
 			});
 	});

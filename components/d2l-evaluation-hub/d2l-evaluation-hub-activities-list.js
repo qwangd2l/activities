@@ -287,24 +287,27 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						}
 					});
 				});
-
 				return Promise.resolve();
 			});
 	}
 
 	_updateSortState(event) {
 
-		let result;
 		const headerId = event.currentTarget.id;
+		let shouldSort = false;
+		let sortClass;
+		let descending;
 
 		this._headerColumns.forEach((headerColumn, i) => {
 			headerColumn.headers.forEach((header, j) => {
-				if (header.key === headerId) {
-					const descending = header.sorted && !header.desc;
+				if (header.key === headerId && header.canSort) {
+					const desc = header.sorted && !header.desc;
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
-					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
+					this.set(`_headerColumns.${i}.headers.${j}.desc`, desc);
 
-					result = this._fetchSortedData(header.sortClass, descending);
+					shouldSort = true;
+					sortClass = header.sortClass;
+					descending = desc;
 				}
 				else {
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
@@ -312,11 +315,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			});
 		});
 
-		return result;
+		if (shouldSort) {
+			return this._fetchSortedData(sortClass, descending);
+		} else {
+			return Promise.reject(new Error(`Could not find sortable header for ${headerId}`));
+		}
 	}
 
 	_fetchSortedData(sortClass, descending) {
-		this._followLink(this.entity, Rels.sorts)
+		return this._followLink(this.entity, Rels.sorts)
 			.then((sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject(new Error('Could not load sorts endpoint'));
