@@ -33,7 +33,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 					float: left;
 				}
 				.d2l-evaluation-hub-top-bar {
-					padding-top: 1rem;
+					padding-top: 0.25rem;
 				}
 				d2l-evaluation-hub-activities-list {
 					clear: both;
