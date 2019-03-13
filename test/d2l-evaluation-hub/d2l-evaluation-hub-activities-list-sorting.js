@@ -71,7 +71,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			.then(() => {
 				const enabledSorts = list._headerColumns
 					.map (column => column.headers)
-					.flat()
+					.reduce((acc, val) => acc.concat(val), []) // flatten
 					.filter(h => h.canSort)
 					.map(h => h.sortClass);
 
