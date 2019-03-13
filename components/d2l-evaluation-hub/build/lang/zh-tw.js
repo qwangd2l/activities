@@ -19,6 +19,8 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'loadMore': '載入更多',
 			'loading': '正在載入',
 			'masterTeacher': 'Master Teacher',
+			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noFilterResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': '提交日期',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',

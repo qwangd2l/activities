@@ -19,6 +19,8 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'loadMore': 'Meer laden',
 			'loading': 'Laden',
 			'masterTeacher': 'Master Teacher',
+			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noFilterResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Datum van indiening',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',

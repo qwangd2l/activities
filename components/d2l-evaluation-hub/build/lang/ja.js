@@ -19,6 +19,8 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'loadMore': 'さらに読み込む',
 			'loading': '読み込み中',
 			'masterTeacher': 'Master Teacher',
+			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noFilterResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': '送信日',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
