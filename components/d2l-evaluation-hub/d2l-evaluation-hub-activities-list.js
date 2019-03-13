@@ -26,7 +26,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		const evaluationHubActivitiesListTemplate = html`
 			<style include="d2l-table-style">
 				d2l-td {
-					font-weight: normal;
+					font-size: 0.7rem;
+				}
+				d2l-td.d2l-username-column {
+					font-size: 0.8rem;
+				}
+
+				/* Needed for Edge */
+				d2l-table-col-sort-button span {
+					color: var(--d2l-color-ferrite);
 				}
 				d2l-loading-spinner {
 					width: 100%;
@@ -87,7 +95,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					@apply --d2l-body-compact-text;
 				}
 			</style>
-			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-offscreen id="d2l-evaluation-hub-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
+			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-evaluation-hub-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
@@ -127,7 +136,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
 							<d2l-tr>
-								<d2l-td>
+								<d2l-td class="d2l-username-column">
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
