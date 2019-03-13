@@ -4,7 +4,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @customElement
  * @polymer
  */
-class D2LNoSubmissionImage extends PolymerElement {
+class D2LEvaluationHubNoSubmissionImage extends PolymerElement {
 	static get template() {
 		return html`
 			<style>
@@ -16,7 +16,6 @@ class D2LNoSubmissionImage extends PolymerElement {
 			    <defs>
 			        <style>.cls-1{isolation:isolate;}.cls-2{fill:#f9fafb;}.cls-3{fill:#e6eaf0;}.cls-4{fill:#9ea6b2;}.cls-5{fill:#7c8695;}.cls-6{fill:#b9c2d0;}.cls-7{opacity:0.1;mix-blend-mode:multiply;}.cls-10,.cls-12,.cls-13,.cls-16,.cls-8{fill:none;}.cls-8{stroke:#565a5c;}.cls-10,.cls-12,.cls-13,.cls-8{stroke-miterlimit:10;}.cls-10,.cls-8{stroke-width:0.852px;}.cls-9{fill:#565a5c;}.cls-10{stroke:#72777a;}.cls-11{fill:#fff;}.cls-12{stroke:#9ea6b2;stroke-width:1.122px;}.cls-12,.cls-13,.cls-16{stroke-linecap:round;}.cls-13{stroke:#46a661;stroke-width:2.525px;fill-rule:evenodd;}.cls-14{fill:#d3d9e3;}.cls-15{fill:#a9b1be;}.cls-16{stroke:#7c8695;stroke-linejoin:round;stroke-width:0.838px;}</style>
 			    </defs>
-			    <title>Asset 16</title>
 			    <g class="cls-1">
 			        <g id="Layer_2" data-name="Layer 2">
 			            <g id="Evaluation_Hub_Empty_State" data-name="Evaluation Hub Empty State">
@@ -78,8 +77,8 @@ class D2LNoSubmissionImage extends PolymerElement {
 		`;
 	}
 
-	static get is() { return 'd2l-no-submissions-image'; }
+	static get is() { return 'd2l-evaluation-hub-no-submissions-image'; }
 
 }
 
-window.customElements.define('d2l-no-submissions-image', D2LNoSubmissionImage);
+window.customElements.define('d2l-evaluation-hub-no-submissions-image', D2LEvaluationHubNoSubmissionImage);
