@@ -136,7 +136,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<dom-repeat items="[[_data]]" as="s">
 						<template>
 							<d2l-tr>
-								<d2l-td>
+								<d2l-td class="d2l-username-column">
 									<d2l-link href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
