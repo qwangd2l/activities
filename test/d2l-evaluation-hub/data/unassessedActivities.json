@@ -1,14 +1,18 @@
 {
-  "links":[
-    {
-      "rel":["next"],
-      "href":"data/next.json"
-    },
-    {
-      "rel":["https://api.brightspace.com/rels/filters"],
-      "href":"data/filters.json"
-    }
-  ],
+	"links":[
+		{
+			"rel":["next"],
+			"href":"data/next.json"
+		},
+		{
+			"rel":["https://api.brightspace.com/rels/filters"],
+			"href":"data/filters.json"
+		},
+		{
+			"rel":["self"],
+			"href":"https://www.example.com/?pageSize=20&filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9"
+		}
+	],
 	"entities":[
 		{
 			"class": ["user-assignment-activity","activity"],
@@ -154,7 +158,7 @@
 							"https://assignments.api.brightspace.com/rels/assessment-application"
 					],
 					"properties": {
-							"path": "/the/best/vanity/url"
+							"path": "/the/best/vanity/url?ou=11111"
 					}
 			},
 			{

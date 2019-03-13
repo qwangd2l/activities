@@ -71,7 +71,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url/3',
+			activityLink: '/the/best/vanity/url/3?filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9',
 			masterTeacher: '',
 			isDraft: true
 		},
@@ -80,7 +80,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url/2',
+			activityLink: '/the/best/vanity/url/2?filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9',
 			masterTeacher: '',
 			isDraft: false
 		},
@@ -89,7 +89,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url',
+			activityLink: '/the/best/vanity/url?ou=11111&filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9',
 			masterTeacher: '',
 			isDraft: false
 		}
@@ -112,7 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url/next1',
+			activityLink: '/the/best/vanity/url/next1?ou=11111&sort=Y3Rpb24iOjB9',
 			masterTeacher: 'Master Teacher',
 			isDraft: true
 		},
@@ -121,7 +121,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url/next2',
+			activityLink: '/the/best/vanity/url/next2?sort=Y3Rpb24iOjB9',
 			masterTeacher: 'Master Teacher',
 			isDraft: false
 		},
@@ -130,7 +130,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
-			activityLink: '/the/best/vanity/url/next3',
+			activityLink: '/the/best/vanity/url/next3?sort=Y3Rpb24iOjB9',
 			masterTeacher: 'Master Teacher',
 			isDraft: false
 		}
@@ -400,5 +400,103 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
 		});
+		test('when parsing url for sort and filter params and url is null, return empty array', () => {
+
+			var params = list._getExtraParams('');
+			assert.equal(params.length, 0);
+		});
+		test('when parsing url for sort and filter params and url is null, return empty array', () => {
+
+			var params = list._getExtraParams(null);
+			assert.equal(params.length, 0);
+		});
+		test('when parsing url for sort and filter params, if they are both present, return array with correct values', () => {
+			const url = 'https://www.example.com/?pageSize=20&filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9';
+
+			var params = list._getExtraParams(url);
+			assert.equal(params.length, 2);
+
+			const expectedParams = [
+				{
+					name: 'filter',
+					value: '96W3siU29ydCI6eyJJ'
+				},
+				{
+					name: 'sort',
+					value: 'Y3Rpb24iOjB9'
+				}
+			];
+			assert.deepEqual(params, expectedParams);
+		});
+		test('when parsing url for sort and filter params, if only sort is present, return array with correct values', () => {
+			const url = 'https://www.example.com/?pageSize=20&sort=Y3Rpb24iOjB9';
+
+			var params = list._getExtraParams(url);
+			assert.equal(params.length, 1);
+
+			const expectedParams = [
+				{
+					name: 'sort',
+					value: 'Y3Rpb24iOjB9'
+				}
+			];
+			assert.deepEqual(params, expectedParams);
+		});
+		test('when parsing url for sort and filter params, if only filter is present, return array with correct values', () => {
+			const url = 'https://www.example.com/?pageSize=20&filter=96W3siU29ydCI6eyJJ';
+
+			var params = list._getExtraParams(url);
+			assert.equal(params.length, 1);
+
+			const expectedParams = [
+				{
+					name: 'filter',
+					value: '96W3siU29ydCI6eyJJ'
+				}
+			];
+			assert.deepEqual(params, expectedParams);
+		});
+		test('when creating the evaluation link, if there are no extra params, return original link', () => {
+			const url = '/d2l/lms/tool/mark.d2l?ou=122041&db=1004';
+			const params = [];
+
+			var evalLink = list._buildRelativeUri(url, params);
+			assert.equal(evalLink, url);
+		});
+		test('when creating the evaluation link, if there are extra params, return correct link', () => {
+			const url = '/d2l/lms/tool/mark.d2l?ou=122041&db=1004';
+			const params = [
+				{
+					name: 'filter',
+					value: '96W3siU29ydCI6eyJJ'
+				},
+				{
+					name: 'sort',
+					value: 'Y3Rpb24iOjB9'
+				}
+			];
+			const expectedEvalLink = url + '&filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9';
+
+			var evalLink = list._buildRelativeUri(url, params);
+			assert.equal(evalLink, expectedEvalLink);
+		});
+		test('when creating the evaluation link, if there are extra params and url has no original params, return correct link', () => {
+			const url = '/d2l/lms/tool/122041/mark/1004/';
+			const params = [
+				{
+					name: 'filter',
+					value: '96W3siU29ydCI6eyJJ'
+				},
+				{
+					name: 'sort',
+					value: 'Y3Rpb24iOjB9'
+				}
+			];
+			const expectedEvalLink = url + '?filter=96W3siU29ydCI6eyJJ&sort=Y3Rpb24iOjB9';
+
+			var evalLink = list._buildRelativeUri(url, params);
+			assert.equal(evalLink, expectedEvalLink);
+		});
+
 	});
 })();
