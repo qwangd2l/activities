@@ -2,6 +2,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels} from 'd2l-hypermedia-constants';
+import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-common/components/d2l-hm-filter/d2l-hm-filter.js';
 import './d2l-evaluation-hub-activities-list.js';
 
@@ -16,12 +17,34 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				:host {
 					display: block;
 				}
+				h1 {
+					@apply --d2l-heading-1;
+					float: left;
+					margin: 0;
+				}
+				:host(:dir(rtl)) h1 {
+					float: right;
+				}
+				d2l-hm-filter {
+					float: right;
+					padding: 0 2rem;
+				}
+				:host(:dir(rtl)) d2l-hm-filter {
+					float: left;
+				}
 				.d2l-evaluation-hub-top-bar {
-					padding: 0.5rem 2rem 1rem 2rem;
-					text-align: right;
+					padding-top: 1rem;
+				}
+				d2l-evaluation-hub-activities-list {
+					clear: both;
+					display: block;
+					padding-top: 1rem;
 				}
 			</style>
 			<div class="d2l-evaluation-hub-top-bar">
+				<template is="dom-if" if="[[title]]">
+					<h1>[[title]]</h1>
+				</template>
 				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterClasses]]"></d2l-hm-filter>
 			</div>
 			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-evaluation-hub-activities-list>
@@ -30,6 +53,9 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 	static get properties() {
 		return {
+			title: {
+				type: String
+			},
 			masterTeacher: {
 				type: Boolean,
 				value: false,
