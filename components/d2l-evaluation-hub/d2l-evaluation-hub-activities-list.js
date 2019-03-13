@@ -401,7 +401,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 							this._loading = false;
 							window.requestAnimationFrame(function() {
 								var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
-								newElementToFocus.focus();
+								if (newElementToFocus) {
+									newElementToFocus.focus();
+								}
 							});
 						}
 					}
