@@ -87,7 +87,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					@apply --d2l-body-compact-text;
 				}
 			</style>
-			<d2l-table dir$=[[dir]] hidden$="[[_fullListLoading]]" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-table hidden$="[[_fullListLoading]]" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
@@ -179,10 +179,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			'masterTeacher': {
 				type: Boolean,
 				value: false,
-				reflectToAttribute: true
-			},
-			dir: {
-				type: String,
 				reflectToAttribute: true
 			},
 			_headerColumns: {
