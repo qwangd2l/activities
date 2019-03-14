@@ -53,7 +53,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				<template is="dom-if" if="[[headerText]]">
 					<h1>[[headerText]]</h1>
 				</template>
-				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterClasses]]"></d2l-hm-filter>
+				<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterIds]]"></d2l-hm-filter>
 			</div>
 			<div class="clear"></div>
 			<d2l-alert type="critical" hidden$="[[!_showFilterError]]">
@@ -77,9 +77,9 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				type: String,
 				computed: '_getFilterHref(entity)'
 			},
-			_filterClasses: {
+			_filterIds: {
 				type: Array,
-				computed: '_getFilterClasses(masterTeacher)'
+				computed: '_getFilterIds(masterTeacher)'
 			},
 			_showFilterError: {
 				type: Boolean,
@@ -115,10 +115,11 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		return '';
 	}
 
-	_getFilterClasses(masterTeacher) {
-		let filters = [ 'activity-name', 'enrollments', 'completion-date' ];
+	_getFilterIds(masterTeacher) {
+		// [ 'activity-name', 'enrollments', 'completion-date' ]
+		let filters = [ 'c806bbc6-cfb3-4b6b-ae74-d5e4e319183d', 'f2b32f03-556a-4368-945a-2614b9f41f76', '05de346e-c94d-4e4b-b887-9c86c9a80351' ];
 		if (masterTeacher) {
-			filters = filters.concat('primary-facilitator');
+			filters = filters.concat('35b3aca0-c10c-436d-b369-c8a3022455e3'); // [ 'primary-facilitator' ]
 		}
 		return filters;
 	}

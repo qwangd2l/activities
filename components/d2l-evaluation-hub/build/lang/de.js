@@ -12,6 +12,7 @@ const LangDeImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Kurs',
 			'displayName': 'Vorname, Nachname',
+			'evaluate': 'Evaluate {displayName}',
 			'failedToFilter': 'Unable to apply filter. Try again in a few minutes.',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
@@ -31,4 +32,3 @@ const LangDeImpl = (superClass) => class extends superClass {
 };
 
 export const LangDe = dedupingMixin(LangDeImpl);
-
