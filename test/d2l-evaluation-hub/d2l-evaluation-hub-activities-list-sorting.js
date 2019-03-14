@@ -1,13 +1,6 @@
 import {Rels} from 'd2l-hypermedia-constants';
 import SirenParse from 'siren-parser';
 
-function findSortHeader(list, sortClass) {
-	return list._headerColumns
-		.map(column => column.headers)
-		.reduce((acc, val) => acc.concat(val), [])  // ie11 flatten
-		.reduce((acc, val) => val.sortClass === sortClass ? val : acc, undefined); // ie11 find
-}
-
 function resetSortHeaders(list) {
 	list._headerColumns.forEach(column => {
 		column.headers.forEach(header => {
