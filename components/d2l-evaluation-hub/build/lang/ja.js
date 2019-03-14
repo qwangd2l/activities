@@ -12,7 +12,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'コース',
 			'displayName': '名, 姓',
-			'evaluate': 'Evaluate ',
+			'evaluate': 'Evaluate {displayName}',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',

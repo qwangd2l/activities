@@ -144,9 +144,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<template>
 							<d2l-tr>
 								<d2l-td class="d2l-username-column">
-									<d2l-offscreen id="d2l-evaluation-hub-activities-list-username">[[localize('evaluate')]][[_getDataProperty(s, 'displayName')]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-evaluation-hub-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
 									<d2l-link
-										title="[[localize('evaluate')]][[_getDataProperty(s, 'displayName')]]"
+										title="[[localize('evaluate', 'displayName', s.displayName)]]"
 										aria-describedby$="d2l-evaluation-hub-activities-list-username"
 										href="[[s.activityLink]]"
 									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
