@@ -429,7 +429,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					}
 				}.bind(this))
 				.then(this._clearAlerts.bind(this))
-				.catch(this._handleLoadMoreFailure.bind(this));
+				.catch(function() {
+					this._loading = false;
+					this._handleLoadMoreFailure();
+				}.bind(this));
 		}
 	}
 
