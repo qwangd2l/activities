@@ -68,6 +68,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedData = [
 		{
 			displayName: 'Special User Name',
+			userHref: 'data/userUnique.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -77,6 +78,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -86,6 +88,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -109,6 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedNextData = [
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -118,6 +122,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -127,6 +132,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -172,6 +178,17 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 				done();
+			});
+		});
+		test('if _loading is true, the Load More button is hidden', (done) => {
+			loadPromise('data/unassessedActivities.json').then(function() {
+				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
+				assert.notEqual(loadMore.style.display, 'none');
+				list._loading = true;
+				requestAnimationFrame(function() {
+					assert.equal(loadMore.style.display, 'none');
+					done();
+				});
 			});
 		});
 		test('if _loading is true, d2l-evaluation-hub-no-submissions-image and d2l-evaluation-hub-no-submissions-image are not shown', () => {
@@ -296,7 +313,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
 				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
 				var verify = function() {
-					if (loadMoreContainer.style.display === 'none') {
+					if (!list._loading && loadMoreContainer.style.display === 'none') {
 						verifyData(expectedNext, done);
 					} else {
 						window.setTimeout(function() {

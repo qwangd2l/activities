@@ -1,0 +1,11 @@
+{
+  "links": [
+    {
+      "rel": [
+        "https://api.brightspace.com/rels/sorts"
+      ],
+      "href": "data/sorting/initialSorts.json"
+    }
+  ],
+  "entities": []
+}
