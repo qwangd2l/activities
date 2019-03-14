@@ -148,8 +148,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									<d2l-link
 										title="[[localize('evaluate')]][[_getDataProperty(s, 'displayName')]]"
 										aria-describedby$="d2l-evaluation-hub-activities-list-username"
-										href="[[s.activityLink]]">[[_getDataProperty(s, 'displayName')]]
-									</d2l-link>
+										href="[[s.activityLink]]"
+									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td class="d2l-evaluation-hub-truncated-column d2l-activity-name-column">
