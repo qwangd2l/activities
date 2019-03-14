@@ -174,6 +174,17 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
+		test('if _loading is true, the Load More button is hidden', (done) => {
+			loadPromise('data/unassessedActivities.json').then(function() {
+				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
+				assert.notEqual(loadMore.style.display, 'none');
+				list._loading = true;
+				requestAnimationFrame(function() {
+					assert.equal(loadMore.style.display, 'none');
+					done();
+				});
+			});
+		});
 		test('if _loading is true, d2l-evaluation-hub-no-submissions-image is not shown', () => {
 			var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 			assert.equal(noSubmissionComponent, null);

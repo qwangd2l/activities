@@ -171,7 +171,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
-			<template is="dom-if" if="[[_pageNextHref]]">
+			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
 				<div class="d2l-evaluation-hub-activities-list-load-more-container">
 					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
@@ -274,6 +274,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
+	}
+
+	_shouldShowLoadMore(hasPageNextHref, isLoading) {
+		return hasPageNextHref && !isLoading;
 	}
 
 	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy) {
