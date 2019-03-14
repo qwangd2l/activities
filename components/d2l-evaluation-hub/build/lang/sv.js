@@ -12,6 +12,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': 'Kurs',
 			'displayName': 'Förnamn, efternamn',
+			'evaluate': 'Evaluate ',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',

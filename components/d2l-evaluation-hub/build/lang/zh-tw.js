@@ -12,6 +12,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'checkBackOften': 'Check back often for new submissions.',
 			'courseName': '課程',
 			'displayName': '名字，姓氏',
+			'evaluate': 'Evaluate ',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',
