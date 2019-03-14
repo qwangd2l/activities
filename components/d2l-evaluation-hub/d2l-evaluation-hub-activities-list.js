@@ -307,10 +307,16 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	}
 
 	_loadSorts(entity) {
+		// entity is null on initial load
+		if (!entity) {
+			return Promise.resolve();
+		}
+
 		return this._followLink(entity, Rels.sorts)
 			.then(sortsEntity => {
+
 				if (!sortsEntity || !sortsEntity.entity) {
-					return Promise.reject('Could not load sorts endpoint');
+					return Promise.reject(new Error('Could not load sorts endpoint'));
 				}
 
 				this._headerColumns.forEach((headerColumn, i) => {
@@ -328,7 +334,6 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						}
 					});
 				});
-
 				return Promise.resolve();
 			});
 	}
@@ -340,7 +345,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		this._headerColumns.forEach((headerColumn, i) => {
 			headerColumn.headers.forEach((header, j) => {
-				if (header.key === headerId) {
+				if ((header.key === headerId) && header.canSort) {
 					const descending = header.sorted && !header.desc;
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
@@ -353,36 +358,40 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			});
 		});
 
-		return result;
+		if (result) {
+			return result;
+		} else {
+			return Promise.reject(new Error(`Could not find sortable header for ${headerId}`));
+		}
 	}
 
 	_fetchSortedData(sortClass, descending) {
-		this._followLink(this.entity, Rels.sorts)
+		return this._followLink(this.entity, Rels.sorts)
 			.then((sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
-					return Promise.reject('Could not load sorts endpoint');
+					return Promise.reject(new Error('Could not load sorts endpoint'));
 				}
 
 				const sort = sortsEntity.entity.getSubEntityByClass(sortClass);
 				if (!sort) {
-					return Promise.reject(`Could not find sort class ${sortClass}`);
+					return Promise.reject(new Error(`Could not find sort class ${sortClass}`));
 				}
 
 				const actionName = descending ? 'sort-descending' : 'sort-ascending';
 				const action = sort.getActionByName(actionName);
 				if (!action) {
-					return Promise.reject(`Could not find sort action ${actionName} for sort ${sort}`);
+					return Promise.reject(new Error(`Could not find sort action ${actionName} for sort ${JSON.stringify(sort)}`));
 				}
 
 				return this._performSirenActionWithQueryParams(action);
 			}).bind(this))
 			.then((sortsEntity => {
 				if (!sortsEntity) {
-					return Promise.reject('Could not load sorts endpoint after sort is applied');
+					return Promise.reject(new Error('Could not load sorts endpoint after sort is applied'));
 				}
 				const action = sortsEntity.getActionByName('apply');
 				if (!action) {
-					return Promise.reject(`Could not find apply action in ${sortsEntity}`);
+					return Promise.reject(new Error(`Could not find apply action in ${sortsEntity}`));
 				}
 				return action;
 			}).bind(this))
@@ -393,6 +402,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			.then((collection => {
 				this.entity = collection;
 				this._dispatchSortUpdatedEvent(collection);
+				return Promise.resolve();
 			}).bind(this));
 	}
 
