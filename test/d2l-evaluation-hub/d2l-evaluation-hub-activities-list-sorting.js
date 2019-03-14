@@ -65,7 +65,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 		const enabledSortClasses = ['activity-name', 'course-name'];
 		enableSorts(list, enabledSortClasses);
 
-		const entity = formatCollection([]);
+		const entity = formatCollection();
 
 		return list._loadSorts(entity)
 			.then(() => {
@@ -84,7 +84,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 		mappings[Rels.sorts] = null;
 		stubFollowLink(list, mappings);
 
-		const entity = formatCollection([]);
+		const entity = formatCollection();
 
 		list._loadSorts(entity)
 			.then(() => {
@@ -140,7 +140,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 	test('clicking a header sorts column ascending', () => {
 		const mappings = {};
 		mappings['sort-ascending'] = formatSimpleSorts([]);
-		mappings['apply'] = formatCollection([]);
+		mappings['apply'] = formatCollection();
 		stubPerformSirenAction(list, mappings);
 		const enabledSort = 'activity-name';
 		enableSorts(list, [enabledSort]);
@@ -151,7 +151,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			}
 		};
 
-		return list._loadSorts(formatCollection([]))
+		return list._loadSorts(formatCollection())
 			.then(() => {
 				return list._updateSortState(e).then(() => {
 					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
@@ -163,7 +163,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 		const mappings = {};
 		mappings['sort-ascending'] = formatSimpleSorts([]);
 		mappings['sort-descending'] = formatSimpleSorts([]);
-		mappings['apply'] = formatCollection([]);
+		mappings['apply'] = formatCollection();
 		stubPerformSirenAction(list, mappings);
 		const enabledSort = 'activity-name';
 		enableSorts(list, [enabledSort]);
@@ -173,7 +173,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 				id: 'activityName'
 			}
 		};
-		return list._loadSorts(formatCollection([]))
+		return list._loadSorts(formatCollection())
 			.then(() => {
 				return list._updateSortState(e).then(() => {
 					return list._updateSortState(e).then(() => {
@@ -185,7 +185,7 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 
 });
 
-function formatCollection(entities) {
+function formatCollection() {
 	return {
 		'links': [
 			{
@@ -195,7 +195,7 @@ function formatCollection(entities) {
 				'href': 'not used'
 			}
 		],
-		'entities': entities
+		'entities': []
 	};
 }
 

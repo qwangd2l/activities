@@ -300,7 +300,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 		this._headerColumns.forEach((headerColumn, i) => {
 			headerColumn.headers.forEach((header, j) => {
-				if (header.key === headerId && header.canSort) {
+				if ((header.key === headerId) && header.canSort) {
 					const desc = header.sorted && !header.desc;
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 					this.set(`_headerColumns.${i}.headers.${j}.desc`, desc);
