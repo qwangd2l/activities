@@ -1,13 +1,6 @@
 import {Rels} from 'd2l-hypermedia-constants';
 import SirenParse from 'siren-parser';
 
-function findSortHeader(list, sortClass) {
-	return list._headerColumns
-		.map(column => column.headers)
-		.reduce((acc, val) => acc.concat(val), [])  // ie11 flatten
-		.reduce((acc, val) => val.sortClass === sortClass ? val : acc, undefined); // ie11 find
-}
-
 function resetSortHeaders(list) {
 	list._headerColumns.forEach(column => {
 		column.headers.forEach(header => {
@@ -162,8 +155,6 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			.then(() => {
 				return list._updateSortState(e).then(() => {
 					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
-					expect(findSortHeader(list, enabledSort).desc).to.be.false;
-					expect(findSortHeader(list, enabledSort).sorted).to.be.true;
 				});
 			});
 	});
@@ -187,8 +178,6 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 				return list._updateSortState(e).then(() => {
 					return list._updateSortState(e).then(() => {
 						expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
-						expect(findSortHeader(list, enabledSort).desc).to.be.true;
-						expect(findSortHeader(list, enabledSort).sorted).to.be.true;
 					});
 				});
 			});

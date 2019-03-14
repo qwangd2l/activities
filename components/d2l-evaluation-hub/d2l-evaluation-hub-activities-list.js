@@ -343,6 +343,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									const descending = sort.properties.direction === 'descending';
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
+								} else {
+									this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
+									this.set(`_headerColumns.${i}.headers.${j}.desc`, false);
 								}
 							}
 						}
