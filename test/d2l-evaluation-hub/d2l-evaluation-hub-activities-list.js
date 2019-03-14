@@ -174,20 +174,41 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
-		test('if _loading is true, d2l-evaluation-hub-no-submissions-image is not shown', () => {
+		test('if _loading is true, d2l-evaluation-hub-no-submissions-image and d2l-evaluation-hub-no-submissions-image are not shown', () => {
 			var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+			var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
 			assert.equal(noSubmissionComponent, null);
+			assert.equal(noCriteriaResultsComponent, null);
 			assert.equal(list._loading, true);
 		});
 		test('if there is no data in the list, d2l-evaluation-hub-no-submissions-image is shown', (done) => {
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
 				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 				assert.notEqual(noSubmissionComponent.style.display, 'none');
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				assert.equal(noCriteriaResultsComponent, null);
 				//This is here because of how dom-if works, we need to load activities once to ensure we actually
 				//render the d2l-quick-eval-no-submissions component and instantly hide it.
 				loadPromise('data/unassessedActivities.json').then(function() {
 					var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 					assert.equal(noSubmissionComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
+		test('if there is no data in the list and filters/search has been applied, d2l-evaluation-hub-no-criteria-results-image is shown', (done) => {
+			list.setAttribute('criteria-applied', '');
+
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				assert.notEqual(noCriteriaResultsComponent.style.display, 'none');
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.equal(noSubmissionComponent, null);
+				//This is here because of how dom-if works, we need to load activities once to ensure we actually
+				//render the d2l-evaluation-hub-no-criteria-results component and instantly hide it.
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+					assert.equal(noCriteriaResultsComponent.style.display, 'none');
 					done();
 				});
 			});
