@@ -13,6 +13,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'courseName': 'Kurs',
 			'displayName': 'Förnamn, efternamn',
 			'evaluate': 'Evaluate {displayName}',
+			'failedToFilter': 'Unable to apply filter. Try again in a few minutes.',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',

@@ -13,6 +13,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'courseName': 'المقرر التعليمي',
 			'displayName': 'الاسم الأول، اسم العائلة',
 			'evaluate': 'Evaluate {displayName}',
+			'failedToFilter': 'Unable to apply filter. Try again in a few minutes.',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',

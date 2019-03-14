@@ -13,6 +13,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'courseName': '课程',
 			'displayName': '名字，姓氏',
 			'evaluate': 'Evaluate {displayName}',
+			'failedToFilter': 'Unable to apply filter. Try again in a few minutes.',
 			'failedToLoadData': 'Unable to load submissions. Try again in a few minutes.',
 			'failedToLoadMore': 'Unable to load more submissions. Try again in a few minutes.',
 			'firstName': 'First Name',

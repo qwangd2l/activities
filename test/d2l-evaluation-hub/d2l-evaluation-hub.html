@@ -159,6 +159,31 @@
 
 					waitForFilter(function() { clickFilter('Assignment Name'); });
 				});
+				test('if there is an error with the filter, we catch an event and display an alert, and clear that after a successful filter action', function(done) {
+					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					var filtersSelected = 0;
+					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function() {
+						assert.isFalse(quickEval._showFilterError);
+						assert.isTrue(alert.hidden);
+						if (filtersSelected === 1) {
+							clearFilter();
+						}
+						filtersSelected++;
+					});
+					quickEval.addEventListener('d2l-hm-filter-error', function() {
+						assert.isTrue(quickEval._showFilterError);
+						assert.isFalse(alert.hidden);
+						clickFilter('Quiz Name');
+					});
+					quickEval.addEventListener('d2l-hm-filter-filters-updated', function() {
+						assert.isFalse(quickEval._showFilterError);
+						assert.isTrue(alert.hidden);
+						done();
+					});
+					assert.isFalse(quickEval._showFilterError);
+					assert.isTrue(alert.hidden);
+					waitForFilter(function() { filter.href = 'data/filters-error.json'; });
+				});
 			});
 
 			suite('d2l-evaluation-hub with master-teacher', function() {
