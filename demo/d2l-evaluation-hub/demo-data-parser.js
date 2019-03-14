@@ -16,20 +16,61 @@ function distinct_ie11_safe(array) {
 }
 
 function parseUsers(data) {
-	const names = data.map(row => formatName(row.firstName, row.lastName));
-	const uniqueNames = distinct_ie11_safe(names);
+	const parsedUsers = data.map((row, i) => {
+		return {
+			firstName: row.firstName,
+			lastName: row.lastName,
+			displayName: formatName(row.firstName, row.lastName),
+			href: getHrefForUserId(i)
+		};
+	});
 
-	return uniqueNames;
+	return parsedUsers;
 }
 
-function formatUser(name) {
+function formatUser(displayName, firstName, lastName, userHref) {
 	return {
 		'entities':[
 			{
+				'rel': ['https://api.brightspace.com/rels/user-profile'],
+				'entities':[
+					{
+						'class': ['default-image'],
+						'rel': ['https://api.brightspace.com/rels/profile-image']
+					}
+				]
+			},
+			{
 				'rel':['https://api.brightspace.com/rels/display-name'],
 				'properties':{
-					'name': name
+					'name': displayName
 				}
+			},
+			{
+				'class': [
+					'first',
+					'name',
+				],
+				'rel': ['https://api.brightspace.com/rels/first-name'],
+				'properties':{
+					'name': firstName
+				}
+			},
+			{
+				'class': [
+					'last',
+					'name',
+				],
+				'rel': ['https://api.brightspace.com/rels/last-name'],
+				'properties':{
+					'name': lastName
+				}
+			}
+		],
+		'links':[
+			{
+				'rel': ['self'],
+				'href': userHref
 			}
 		]
 	};
@@ -270,10 +311,11 @@ function getHrefForActivityId(id) {
 
 function parseActivities(data, users, activityNames, courses) {
 	const parsedActivities = data.map((row, i) => {
+
 		return {
 			klass: classMapping[row.activityType],
 			selfHref: getHrefForActivityId(i),
-			userHref: getHrefForUserId(users.indexOf(formatName(row.firstName, row.lastName))),
+			userHref: getHrefForUserId(i),
 			courseHref: getHrefForCourseId(courses.indexOf(row.courseName)),
 			activityRel: relMapping[row.activityType],
 			activityHref: getHrefForActivityNameId(activityNames.indexOf(row.activityName)),
@@ -317,7 +359,7 @@ function getMappings(table) {
 
 	const mappings = {};
 	users.forEach((user, i) => {
-		mappings[getHrefForUserId(i)] = formatUser(user);
+		mappings[getHrefForUserId(i)] = formatUser(user.displayName, user.firstName, user.lastName, user.href);
 	});
 	const teachersByCourse = {};
 	data.forEach(row => {
@@ -341,7 +383,7 @@ function getMappings(table) {
 				return formattedFilter;
 			});
 		mappings[getHrefForEnrollmentFilters(i)] = formatFilters(formattedFilters, getHrefForEnrollments(i));
-		mappings[getHrefForMasterTeacher(i)] = formatUser(teachersByCourse[course]);
+		mappings[getHrefForMasterTeacher(i)] = formatUser(teachersByCourse[course], 'first', 'last', 'href');
 		mappings[getHrefForEnrollments(i)] = formatEnrollments([ formatEnrollment(getHrefForUserEnrollment(i)) ], getHrefForEnrollmentFilters(i));
 		mappings[getHrefForUserEnrollment(i)] = formatUserEnrollment(getHrefForMasterTeacher(i));
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
