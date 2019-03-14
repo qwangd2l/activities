@@ -309,7 +309,7 @@ function getHrefForActivityId(id) {
 	return `activity/${id}`;
 }
 
-function parseActivities(data, users, activityNames, courses) {
+function parseActivities(data, activityNames, courses) {
 	const parsedActivities = data.map((row, i) => {
 
 		return {
@@ -355,7 +355,7 @@ function getMappings(table) {
 	const users = parseUsers(data);
 	const activityNames = parseActivityNames(data);
 	const courses = parseCourses(data);
-	const activities = parseActivities(data, users, activityNames, courses);
+	const activities = parseActivities(data, activityNames, courses);
 
 	const mappings = {};
 	users.forEach((user, i) => {
