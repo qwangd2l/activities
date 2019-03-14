@@ -68,6 +68,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedData = [
 		{
 			displayName: 'Special User Name',
+			userHref: 'data/userUnique.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -77,6 +78,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -86,6 +88,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -109,6 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedNextData = [
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -118,6 +122,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -127,6 +132,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
