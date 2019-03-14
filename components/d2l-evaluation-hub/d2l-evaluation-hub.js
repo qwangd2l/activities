@@ -45,6 +45,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				}
 				d2l-alert {
 					margin: auto;
+					margin-bottom: 0.5rem;
 				}
 			</style>
 			<div class="d2l-evaluation-hub-top-bar">
