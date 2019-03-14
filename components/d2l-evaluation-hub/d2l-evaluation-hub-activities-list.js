@@ -155,7 +155,9 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 						<template>
 							<d2l-tr>
 								<d2l-td class="d2l-username-column">
-									<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
+									<template is="dom-if" if="[[s.userHref]]">
+										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
+									</template>
 									<d2l-offscreen id="d2l-evaluation-hub-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
 									<d2l-link
 										title="[[localize('evaluate', 'displayName', s.displayName)]]"
