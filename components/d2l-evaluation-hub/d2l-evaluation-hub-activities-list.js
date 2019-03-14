@@ -79,7 +79,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				[hidden] {
 					display: none;
 				}
-				.d2l-quick-eval-no-submissions {
+				.d2l-quick-eval-no-submissions,
+				.d2l-evaluation-hub-no-criteria-results {
 					text-align: center;
 				}
 				d2l-evaluation-hub-no-submissions-image {
@@ -88,13 +89,14 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					height: 35%;
 					width: 35%;
 				}
-				d2l-evaluation-hub-no-filter-results-image {
+				d2l-evaluation-hub-no-criteria-results-image {
 					padding-top: 30px;
 					padding-bottom: 30px;
 					height: 15%;
 					width: 15%;
 				}
-				.d2l-quick-eval-no-submissions-heading {
+				.d2l-quick-eval-no-submissions-heading,
+				.d2l-evaluation-hub-no-criteria-results-heading {
 					@apply --d2l-heading-2;
 					margin: 0;
 				}
@@ -176,12 +178,19 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
-			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy)]]">
+			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
 				<div class="d2l-quick-eval-no-submissions">
 					<d2l-evaluation-hub-no-submissions-image></d2l-evaluation-hub-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
 					<p class="d2l-body-standard">[[localize('noSubmissions')]]</p>
 					<p class="d2l-body-standard">[[localize('checkBackOften')]]</p>
+				</div>
+			</template>
+			<template is="dom-if" if="[[_shouldShowNoCriteriaResults(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
+				<div class="d2l-evaluation-hub-no-criteria-results">
+					<d2l-evaluation-hub-no-criteria-results-image></d2l-evaluation-hub-no-criteria-results-image>
+					<h2 class="d2l-evaluation-hub-no-criteria-results-heading">[[localize('noResults')]]</h2>
+					<p class="d2l-body-standard">[[localize('noCriteriaMatch')]]</p>
 				</div>
 			</template>
 		`;
@@ -196,6 +205,10 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true
+			},
+			criteriaApplied: {
+				type: Boolean,
+				value: false
 			},
 			_headerColumns: {
 				type: Array,
@@ -276,8 +289,12 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
 
-	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy) {
-		return !dataLength && !isLoading && isHealthy;
+	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy, criteriaApplied) {
+		return !dataLength && !isLoading && isHealthy && !criteriaApplied;
+	}
+
+	_shouldShowNoCriteriaResults(dataLength, isLoading, isHealthy, criteriaApplied) {
+		return !dataLength && !isLoading && isHealthy && criteriaApplied;
 	}
 
 	_loadSorts(entity) {
