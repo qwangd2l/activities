@@ -135,7 +135,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		this._showFilterError = false;
 	}
 
-	_filterError(e) {
+	_filterError() {
 		this._showFilterError = true;
 	}
 
