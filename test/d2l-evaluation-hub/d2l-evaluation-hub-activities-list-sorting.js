@@ -162,8 +162,6 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 			.then(() => {
 				return list._updateSortState(e).then(() => {
 					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
-					expect(findSortHeader(list, enabledSort).desc).to.be.false;
-					expect(findSortHeader(list, enabledSort).sorted).to.be.true;
 				});
 			});
 	});
@@ -187,8 +185,6 @@ suite('d2l-evaluation-hub-activities-list-sorting', () => {
 				return list._updateSortState(e).then(() => {
 					return list._updateSortState(e).then(() => {
 						expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
-						expect(findSortHeader(list, enabledSort).desc).to.be.true;
-						expect(findSortHeader(list, enabledSort).sorted).to.be.true;
 					});
 				});
 			});
