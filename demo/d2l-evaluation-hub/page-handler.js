@@ -40,7 +40,7 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 
 		if (shouldFail) {
 			shouldFail = false;
-			return null;
+			throw new Error('simulated error');
 		}
 
 		return formatPage(pagedActivities[pageNumber], filtersHref, addSortToHref(sortsHref, sortState), addSortToHref(nextPageHref, sortState));
