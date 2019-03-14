@@ -91,6 +91,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 	attached()  {
 		this.addEventListener('d2l-hm-filter-filters-loaded', this._filtersLoaded);
+		this.addEventListener('d2l-hm-filter-filters-updating', this._filtersUpdating);
 		this.addEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.addEventListener('d2l-hm-filter-error', this._filterError);
 		this.addEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
@@ -98,6 +99,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 	detached() {
 		this.removeEventListener('d2l-hm-filter-filters-loaded', this._filtersLoaded);
+		this.removeEventListener('d2l-hm-filter-filters-updating', this._filtersUpdating);
 		this.removeEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.removeEventListener('d2l-hm-filter-error', this._filterError);
 		this.removeEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
@@ -126,6 +128,11 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
 		list.criteriaApplied = e.detail.totalSelectedFilters > 0;
 		this._showFilterError = false;
+	}
+
+	_filtersUpdating(e) {
+		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		list.setLoadingState(true);
 	}
 
 	_filtersChanged(e) {
