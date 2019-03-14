@@ -286,7 +286,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
 				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
 				var verify = function() {
-					if (loadMoreContainer.style.display === 'none') {
+					if (!list._loading && loadMoreContainer.style.display === 'none') {
 						verifyData(expectedNext, done);
 					} else {
 						window.setTimeout(function() {
