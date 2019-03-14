@@ -32,3 +32,4 @@ const LangJaImpl = (superClass) => class extends superClass {
 };
 
 export const LangJa = dedupingMixin(LangJaImpl);
+
