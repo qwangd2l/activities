@@ -20,7 +20,7 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'loadMore': 'Load more',
 			'masterTeacher': 'Master Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
-			'noFilterResults': 'No results here.',
+			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Submission Date',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',

@@ -20,7 +20,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 			'loading': '로드 중',
 			'masterTeacher': 'Master Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
-			'noFilterResults': 'No results here.',
+			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': '제출일',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',

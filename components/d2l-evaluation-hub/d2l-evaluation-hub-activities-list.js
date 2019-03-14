@@ -15,7 +15,7 @@ import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-evaluation-hub-no-submissions-image.js';
-import './d2l-evaluation-hub-no-filter-results-image.js';
+import './d2l-evaluation-hub-no-criteria-results-image.js';
 
 /**
  * @customElement

@@ -20,7 +20,7 @@ const LangDeImpl = (superClass) => class extends superClass {
 			'loading': 'Wird geladen',
 			'masterTeacher': 'Master Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
-			'noFilterResults': 'No results here.',
+			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'submissionDate': 'Abgabedatum',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
