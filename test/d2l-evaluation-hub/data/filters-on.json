@@ -1,0 +1,127 @@
+{
+  "class": [
+    "collection-filters"
+  ],
+  "properties": {
+    "applied": {
+      "c806bbc6-cfb3-4b6b-ae74-d5e4e319183d": 1,
+      "f2b32f03-556a-4368-945a-2614b9f41f76": 0,
+      "05de346e-c94d-4e4b-b887-9c86c9a80351": 0,
+      "35b3aca0-c10c-436d-b369-c8a3022455e3": 0
+    }
+  },
+  "entities": [
+    {
+      "class": [
+        "collection",
+        "filters",
+        "enrollments"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Course",
+      "href": "data/courseFilter-f2b32f03-556a-4368-945a-2614b9f41f76.json"
+    },
+    {
+      "class": [
+        "collection",
+        "filters",
+        "activity-type"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Activity Type",
+      "href": "data/nothing.json"
+    },
+    {
+      "class": [
+        "collection",
+        "filters",
+        "activity-name"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Activity Name",
+      "href": "data/activityNameFilter-c806bbc6-cfb3-4b6b-ae74-d5e4e319183d-on.json"
+    },
+    {
+      "class": [
+        "collection",
+        "filters",
+        "completion-date"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Date",
+      "href": "data/dateFilter-05de346e-c94d-4e4b-b887-9c86c9a80351.json"
+    },
+    {
+      "class": [
+        "collection",
+        "filters",
+        "primary-facilitator"
+      ],
+      "rel": [
+        "item",
+        "https://api.brightspace.com/rels/filters/collection"
+      ],
+      "title": "Primary Facilitator",
+      "href": "data/primaryFacilitatorFilter-35b3aca0-c10c-436d-b369-c8a3022455e3.json"
+    }
+  ],
+  "actions": [
+    {
+      "href": "components/d2l-activities/test/d2l-evaluation-hub/data/assignment.json",
+      "name": "apply",
+      "fields": [
+        {
+          "class": [
+            "base64",
+            "json"
+          ],
+          "type": "hidden",
+          "name": "filter",
+          "value": "eyJjODA2YmJjNi1jZmIzLTRiNmItYWU3NC1kNWU0ZTMxOTE4M2QiOlsiRmlyc3QgVG9waWMiXX0"
+        }
+      ]
+    },
+    {
+      "href": "components/d2l-activities/test/d2l-evaluation-hub/data/assignment.json",
+      "name": "apply",
+      "fields": [
+        {
+          "class": [
+            "base64",
+            "json"
+          ],
+          "type": "hidden",
+          "name": "filter",
+          "value": "i1jZmIzLTRiNmItYWU3NC"
+        }
+      ]
+    },
+    {
+      "href":"components/d2l-activities/test/d2l-evaluation-hub/data/filters-on.json",
+      "name":"clear",
+      "fields":[
+        {
+          "name":"existingState",
+          "class": [
+            "base64",
+            "json"
+          ],
+          "type":"hidden",
+          "value":""
+        }
+      ]
+    }
+  ]
+}
