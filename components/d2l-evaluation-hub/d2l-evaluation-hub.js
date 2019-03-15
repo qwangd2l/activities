@@ -132,7 +132,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		this._showFilterError = false;
 	}
 
-	_filtersUpdating(e) {
+	_filtersUpdating() {
 		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
 		list.setLoadingState(true);
 		this._showFilterError = false;
