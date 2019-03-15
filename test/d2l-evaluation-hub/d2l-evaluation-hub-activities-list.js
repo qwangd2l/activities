@@ -68,6 +68,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedData = [
 		{
 			displayName: 'Special User Name',
+			userHref: 'data/userUnique.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -77,6 +78,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -86,6 +88,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -109,6 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	var expectedNextData = [
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -118,6 +122,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -127,6 +132,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		},
 		{
 			displayName: 'User Name',
+			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
 			submissionDate: '3/9/2019 10:16 AM',
@@ -174,6 +180,23 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
+		test('setLoadingState lets consumers control the table loading', (done) => {
+			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+
+			loadPromise('data/unassessedActivities.json').then(function() {
+				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(list._fullListLoading, false);
+				assert.equal(list._loading, false);
+
+				list.setLoadingState(true);
+				requestAnimationFrame(function() {
+					assert.equal(loadingSpinner.hidden, false);
+					assert.equal(list._fullListLoading, true);
+					assert.equal(list._loading, true);
+					done();
+				});
+			});
+		});
 		test('if _loading is true, the Load More button is hidden', (done) => {
 			loadPromise('data/unassessedActivities.json').then(function() {
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
@@ -185,20 +208,41 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				});
 			});
 		});
-		test('if _loading is true, d2l-evaluation-hub-no-submissions-image is not shown', () => {
+		test('if _loading is true, d2l-evaluation-hub-no-submissions-image and d2l-evaluation-hub-no-submissions-image are not shown', () => {
 			var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+			var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
 			assert.equal(noSubmissionComponent, null);
+			assert.equal(noCriteriaResultsComponent, null);
 			assert.equal(list._loading, true);
 		});
 		test('if there is no data in the list, d2l-evaluation-hub-no-submissions-image is shown', (done) => {
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
 				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 				assert.notEqual(noSubmissionComponent.style.display, 'none');
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				assert.equal(noCriteriaResultsComponent, null);
 				//This is here because of how dom-if works, we need to load activities once to ensure we actually
 				//render the d2l-quick-eval-no-submissions component and instantly hide it.
 				loadPromise('data/unassessedActivities.json').then(function() {
 					var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 					assert.equal(noSubmissionComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
+		test('if there is no data in the list and filters/search has been applied, d2l-evaluation-hub-no-criteria-results-image is shown', (done) => {
+			list.setAttribute('criteria-applied', '');
+
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				assert.notEqual(noCriteriaResultsComponent.style.display, 'none');
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.equal(noSubmissionComponent, null);
+				//This is here because of how dom-if works, we need to load activities once to ensure we actually
+				//render the d2l-evaluation-hub-no-criteria-results component and instantly hide it.
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+					assert.equal(noCriteriaResultsComponent.style.display, 'none');
 					done();
 				});
 			});

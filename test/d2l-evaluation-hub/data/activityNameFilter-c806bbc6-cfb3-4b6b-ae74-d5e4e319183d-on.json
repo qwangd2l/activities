@@ -8,7 +8,7 @@
       {
           "class": [
               "filter",
-              "off"
+              "on"
           ],
           "properties": {
               "filter": "assignment-name"
@@ -20,7 +20,7 @@
           "title": "Assignment Name",
           "actions": [
               {
-                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
+                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter-c806bbc6-cfb3-4b6b-ae74-d5e4e319183d-on.json",
                   "name": "add-filter",
                   "method": "GET",
                   "fields": [
@@ -48,7 +48,7 @@
           "title": "Quiz Name",
           "actions": [
               {
-                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
+                  "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter-c806bbc6-cfb3-4b6b-ae74-d5e4e319183d-on.json",
                   "name": "add-filter",
                   "method": "GET",
                   "fields": [
@@ -78,7 +78,7 @@
   ],
   "actions": [
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter.json",
+          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/activityNameFilter-c806bbc6-cfb3-4b6b-ae74-d5e4e319183d-on.json",
           "name": "search",
           "fields": [
               {
@@ -96,7 +96,7 @@
           ]
       },
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/filters.json",
+          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/filters-on.json",
           "name": "apply",
           "fields": [
               {
