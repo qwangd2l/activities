@@ -115,6 +115,56 @@
 
 					waitForFilter(function() { filter.href = 'data/filters-on.json'; });
 				});
+				test('when a filter is selected an updating event is fired and the table is set to loading', function(done) {
+					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					quickEval.addEventListener('d2l-hm-filter-filters-updating', function() {
+						assert.equal(list._loading, true);
+						assert.equal(list._fullListLoading, true);
+						assert.equal(quickEval._showFilterError, false);
+						assert.equal(alert.hidden, true);
+						done();
+					});
+
+					waitForFilter(function() {
+						assert.equal(list._loading, false);
+						assert.equal(list._fullListLoading, false);
+						assert.equal(quickEval._showFilterError, false);
+						assert.equal(alert.hidden, true);
+						clickFilter('Assignment Name');
+					});
+				});
+				test('if there is an error when the filter is updating, the table is set back to not loading', function(done) {
+					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					var filtersSelected = 0;
+					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function() {
+						assert.equal(list._loading, false);
+						assert.equal(list._fullListLoading, false);
+						assert.equal(quickEval._showFilterError, false);
+						assert.equal(alert.hidden, true);
+						if (filtersSelected === 1) {
+							clearFilter();
+						}
+						filtersSelected++;
+					});
+					quickEval.addEventListener('d2l-hm-filter-filters-updating', function() {
+						assert.equal(list._loading, true);
+						assert.equal(list._fullListLoading, true);
+						assert.equal(quickEval._showFilterError, false);
+						assert.equal(alert.hidden, true);
+
+						quickEval.addEventListener('d2l-hm-filter-error', function() {
+							assert.equal(list._loading, false);
+							assert.equal(list._fullListLoading, false);
+							assert.equal(quickEval._showFilterError, true);
+							assert.equal(alert.hidden, false);
+							done();
+						});
+					});
+
+					waitForFilter(function() {
+						filter.href = 'data/filters-error.json';
+					});
+				});
 				test('applying and removing filters causes the count to update and events to fire', function(done) {
 					var add = 1;
 

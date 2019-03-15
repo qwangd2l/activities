@@ -180,6 +180,23 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				done();
 			});
 		});
+		test('setLoadingState lets consumers control the table loading', (done) => {
+			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+
+			loadPromise('data/unassessedActivities.json').then(function() {
+				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(list._fullListLoading, false);
+				assert.equal(list._loading, false);
+
+				list.setLoadingState(true);
+				requestAnimationFrame(function() {
+					assert.equal(loadingSpinner.hidden, false);
+					assert.equal(list._fullListLoading, true);
+					assert.equal(list._loading, true);
+					done();
+				});
+			});
+		});
 		test('if _loading is true, the Load More button is hidden', (done) => {
 			loadPromise('data/unassessedActivities.json').then(function() {
 				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
