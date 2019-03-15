@@ -304,6 +304,11 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 	constructor() { super(); }
 
+	setLoadingState(state) {
+		this.set('_fullListLoading', state);
+		this.set('_loading', state);
+	}
+
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
