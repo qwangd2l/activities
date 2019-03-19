@@ -25,7 +25,7 @@ import './d2l-quick-eval-no-criteria-results-image.js';
 
 class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], QuickEvalLocalize(PolymerElement)) {
 	static get template() {
-		const QuickEvalActivitiesListTemplate = html`
+		const quickEvalActivitiesListTemplate = html`
 			<style include="d2l-table-style">
 				d2l-td {
 					font-size: 0.7rem;
@@ -214,8 +214,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			</template>
 		`;
 
-		QuickEvalActivitiesListTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
-		return QuickEvalActivitiesListTemplate;
+		quickEvalActivitiesListTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
+		return quickEvalActivitiesListTemplate;
 	}
 	static get is() { return 'd2l-quick-eval-activities-list'; }
 	static get properties() {
