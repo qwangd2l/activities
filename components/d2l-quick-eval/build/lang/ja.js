@@ -20,7 +20,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'lastName': 'Last Name',
 			'loadMore': 'さらに読み込む',
 			'loading': '読み込み中',
-			'masterTeacher': 'Master Teacher',
+			'masterTeacher': 'Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
