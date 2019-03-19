@@ -172,6 +172,11 @@ describe('d2l-activity-list-item', () => {
 			});
 		});
 
+		it('should pass attest run', () => {
+			if (isAttestInstalled()) {
+				return runAttest();
+			}
+		});
 	});
 
 	describe('Responsive Behaviour', () => {
