@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-		<title>d2l-evaluation-hub-activities-list Empty State Demo</title>
+		<title>d2l-quick-eval-activities-list Empty State Demo</title>
 		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
 		<!-- For IE11 -->
@@ -25,7 +25,7 @@
 			startMockServer(mappings, true);
 
 			// For IE11, we need to import the component after we've started the mock observer
-			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub-activities-list.js';
+			import '../../components/d2l-quick-eval/d2l-quick-eval-activities-list.js';
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
@@ -46,17 +46,17 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="vertical-section-container fixedSize">
-			<h3>d2l-evaluation-hub-activities-list Empty State Demo</h3>
+			<h3>d2l-quick-eval-activities-list Empty State Demo</h3>
 			<demo-snippet>
 				<template strip-whitespace>
-					<d2l-evaluation-hub-activities-list href="pages/0" token="whatever"></d2l-evaluation-hub-activities-list>
+					<d2l-quick-eval-activities-list href="pages/0" token="whatever"></d2l-quick-eval-activities-list>
 				</template>
 			</demo-snippet>
 
-			<h3>d2l-evaluation-hub-activities-list Empty State With Filters Applied Demo</h3>
+			<h3>d2l-quick-eval-activities-list Empty State With Filters Applied Demo</h3>
 			<demo-snippet>
 				<template strip-whitespace>
-					<d2l-evaluation-hub-activities-list criteria-applied="true" href="pages/0" token="whatever"></d2l-evaluation-hub-activities-list>
+					<d2l-quick-eval-activities-list criteria-applied="true" href="pages/0" token="whatever"></d2l-quick-eval-activities-list>
 				</template>
 			</demo-snippet>
 		</div>

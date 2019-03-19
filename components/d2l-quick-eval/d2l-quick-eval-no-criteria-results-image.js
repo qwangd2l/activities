@@ -4,7 +4,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @customElement
  * @polymer
  */
-class D2LEvaluationHubNoCriteriaResultsImage extends PolymerElement {
+class D2LQuickEvalNoCriteriaResultsImage extends PolymerElement {
 	static get template() {
 		return html`
 			<style>
@@ -162,8 +162,8 @@ class D2LEvaluationHubNoCriteriaResultsImage extends PolymerElement {
 		`;
 	}
 
-	static get is() { return 'd2l-evaluation-hub-no-criteria-results-image'; }
+	static get is() { return 'd2l-quick-eval-no-criteria-results-image'; }
 
 }
 
-window.customElements.define('d2l-evaluation-hub-no-criteria-results-image', D2LEvaluationHubNoCriteriaResultsImage);
+window.customElements.define('d2l-quick-eval-no-criteria-results-image', D2LQuickEvalNoCriteriaResultsImage);

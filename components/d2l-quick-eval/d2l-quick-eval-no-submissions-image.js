@@ -4,7 +4,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @customElement
  * @polymer
  */
-class D2LEvaluationHubNoSubmissionImage extends PolymerElement {
+class D2LQuickEvalNoSubmissionImage extends PolymerElement {
 	static get template() {
 		return html`
 			<style>
@@ -77,8 +77,8 @@ class D2LEvaluationHubNoSubmissionImage extends PolymerElement {
 		`;
 	}
 
-	static get is() { return 'd2l-evaluation-hub-no-submissions-image'; }
+	static get is() { return 'd2l-quick-eval-no-submissions-image'; }
 
 }
 
-window.customElements.define('d2l-evaluation-hub-no-submissions-image', D2LEvaluationHubNoSubmissionImage);
+window.customElements.define('d2l-quick-eval-no-submissions-image', D2LQuickEvalNoSubmissionImage);

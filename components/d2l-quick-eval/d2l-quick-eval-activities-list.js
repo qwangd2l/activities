@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
+import {QuickEvalLocalize} from './QuickEvalLocalize.js';
 import 'd2l-alert/d2l-alert.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
@@ -15,17 +15,17 @@ import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
-import './d2l-evaluation-hub-no-submissions-image.js';
-import './d2l-evaluation-hub-no-criteria-results-image.js';
+import './d2l-quick-eval-no-submissions-image.js';
+import './d2l-quick-eval-no-criteria-results-image.js';
 
 /**
  * @customElement
  * @polymer
  */
 
-class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], EvaluationHubLocalize(PolymerElement)) {
+class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], QuickEvalLocalize(PolymerElement)) {
 	static get template() {
-		const evaluationHubActivitiesListTemplate = html`
+		const QuickEvalActivitiesListTemplate = html`
 			<style include="d2l-table-style">
 				d2l-td {
 					font-size: 0.7rem;
@@ -55,15 +55,15 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					margin: auto;
 					margin-top: 1rem;
 				}
-				.d2l-evaluation-hub-activities-list-load-more-container {
+				.d2l-quick-eval-activities-list-load-more-container {
 					padding-top: 1rem;
 					text-align: right;
 					width: 100%;
 				}
-				:host(:dir(rtl)) .d2l-evaluation-hub-activities-list-load-more-container {
+				:host(:dir(rtl)) .d2l-quick-eval-activities-list-load-more-container {
 					text-align: left;
 				}
-				.d2l-evaluation-hub-truncated-column {
+				.d2l-quick-eval-truncated-column {
 					max-width: 10rem;
 					white-space: nowrap;
 				}
@@ -91,23 +91,23 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					display: none;
 				}
 				.d2l-quick-eval-no-submissions,
-				.d2l-evaluation-hub-no-criteria-results {
+				.d2l-quick-eval-no-criteria-results {
 					text-align: center;
 				}
-				d2l-evaluation-hub-no-submissions-image {
+				d2l-quick-eval-no-submissions-image {
 					padding-top: 30px;
 					padding-bottom: 30px;
 					height: 35%;
 					width: 35%;
 				}
-				d2l-evaluation-hub-no-criteria-results-image {
+				d2l-quick-eval-no-criteria-results-image {
 					padding-top: 30px;
 					padding-bottom: 30px;
 					height: 15%;
 					width: 15%;
 				}
 				.d2l-quick-eval-no-submissions-heading,
-				.d2l-evaluation-hub-no-criteria-results-heading {
+				.d2l-quick-eval-no-criteria-results-heading {
 					@apply --d2l-heading-2;
 					margin: 0;
 				}
@@ -115,8 +115,8 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 					@apply --d2l-body-compact-text;
 				}
 			</style>
-			<d2l-offscreen id="d2l-evaluation-hub-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
-			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-evaluation-hub-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-offscreen id="d2l-quick-eval-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
+			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-quick-eval-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
@@ -160,18 +160,18 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 									<template is="dom-if" if="[[s.userHref]]">
 										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-evaluation-hub-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
 									<d2l-link
 										title="[[localize('evaluate', 'displayName', s.displayName)]]"
-										aria-describedby$="d2l-evaluation-hub-activities-list-username"
+										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
 									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
-								<d2l-td class="d2l-evaluation-hub-truncated-column d2l-activity-name-column">
+								<d2l-td class="d2l-quick-eval-truncated-column d2l-activity-name-column">
 									<d2l-activity-name href="[[_getDataProperty(s, 'activityNameHref')]]" token="[[token]]"></d2l-activity-name>
 								</d2l-td>
-								<d2l-td class="d2l-evaluation-hub-truncated-column d2l-course-name-column">
+								<d2l-td class="d2l-quick-eval-truncated-column d2l-course-name-column">
 									<span>[[_getDataProperty(s, 'courseName')]]</span>
 								</d2l-td>
 								<d2l-td>
@@ -193,31 +193,31 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
 			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
-				<div class="d2l-evaluation-hub-activities-list-load-more-container">
-					<d2l-button class="d2l-evaluation-hub-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
+				<div class="d2l-quick-eval-activities-list-load-more-container">
+					<d2l-button class="d2l-quick-eval-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
 			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
 				<div class="d2l-quick-eval-no-submissions">
-					<d2l-evaluation-hub-no-submissions-image></d2l-evaluation-hub-no-submissions-image>
+					<d2l-quick-eval-no-submissions-image></d2l-quick-eval-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
 					<p class="d2l-body-standard">[[localize('noSubmissions')]]</p>
 					<p class="d2l-body-standard">[[localize('checkBackOften')]]</p>
 				</div>
 			</template>
 			<template is="dom-if" if="[[_shouldShowNoCriteriaResults(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
-				<div class="d2l-evaluation-hub-no-criteria-results">
-					<d2l-evaluation-hub-no-criteria-results-image></d2l-evaluation-hub-no-criteria-results-image>
-					<h2 class="d2l-evaluation-hub-no-criteria-results-heading">[[localize('noResults')]]</h2>
+				<div class="d2l-quick-eval-no-criteria-results">
+					<d2l-quick-eval-no-criteria-results-image></d2l-quick-eval-no-criteria-results-image>
+					<h2 class="d2l-quick-eval-no-criteria-results-heading">[[localize('noResults')]]</h2>
 					<p class="d2l-body-standard">[[localize('noCriteriaMatch')]]</p>
 				</div>
 			</template>
 		`;
 
-		evaluationHubActivitiesListTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
-		return evaluationHubActivitiesListTemplate;
+		QuickEvalActivitiesListTemplate.setAttribute('strip-whitespace', 'strip-whitespace');
+		return QuickEvalActivitiesListTemplate;
 	}
-	static get is() { return 'd2l-evaluation-hub-activities-list'; }
+	static get is() { return 'd2l-quick-eval-activities-list'; }
 	static get properties() {
 		return {
 			masterTeacher: {
@@ -670,7 +670,7 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 	_dispatchSortUpdatedEvent(sorted) {
 		this.dispatchEvent(
 			new CustomEvent(
-				'd2l-evaluation-hub-activities-list-sort-updated',
+				'd2l-quick-eval-activities-list-sort-updated',
 				{
 					detail: {
 						sortedActivities: sorted
@@ -746,4 +746,4 @@ class D2LEvaluationHubActivitiesList extends mixinBehaviors([D2L.PolymerBehavior
 
 }
 
-window.customElements.define(D2LEvaluationHubActivitiesList.is, D2LEvaluationHubActivitiesList);
+window.customElements.define(D2LQuickEvalActivitiesList.is, D2LQuickEvalActivitiesList);

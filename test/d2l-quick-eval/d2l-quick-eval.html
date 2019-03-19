@@ -4,23 +4,23 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-		<title>d2l-evaluation-hub test</title>
+		<title>d2l-quick-eval test</title>
 
 		<script src="../../../@babel/polyfill/browser.js"></script>
 		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 		<script src="../../../wct-browser-legacy/browser.js"></script>
-		<script type="module" src="../../components/d2l-evaluation-hub/d2l-evaluation-hub.js"></script>
+		<script type="module" src="../../components/d2l-quick-eval/d2l-quick-eval.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
 			<template strip-whitespace>
-				<d2l-evaluation-hub href="data/unassessedActivities.json" token="whatever"></d2l-evaluation-hub>
+				<d2l-quick-eval href="data/unassessedActivities.json" token="whatever"></d2l-quick-eval>
 			</template>
 		</test-fixture>
 
 		<test-fixture id="masterTeacher">
 			<template strip-whitespace>
-				<d2l-evaluation-hub href="data/unassessedActivities.json" token="whatever" master-teacher></d2l-evaluation-hub>
+				<d2l-quick-eval href="data/unassessedActivities.json" token="whatever" master-teacher></d2l-quick-eval>
 			</template>
 		</test-fixture>
 
@@ -74,15 +74,15 @@
 				MockInteractions.click(clearButton);
 			};
 
-			suite('d2l-evaluation-hub', function() {
+			suite('d2l-quick-eval', function() {
 				setup(function() {
 					quickEval = fixture('basic');
 					filter = quickEval.shadowRoot.querySelector('d2l-hm-filter');
 					filterDropdown = filter.shadowRoot.querySelector('d2l-filter-dropdown');
-					list = quickEval.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+					list = quickEval.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 				});
 				test('instantiating the element works', function() {
-					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-evaluation-hub');
+					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-quick-eval');
 				});
 				test('the filter and list exist', function() {
 					assert.isNotNull(filter);
@@ -236,15 +236,15 @@
 				});
 			});
 
-			suite('d2l-evaluation-hub with master-teacher', function() {
+			suite('d2l-quick-eval with master-teacher', function() {
 				setup(function() {
 					quickEval = fixture('masterTeacher');
 					filter = quickEval.shadowRoot.querySelector('d2l-hm-filter');
 					filterDropdown = filter.shadowRoot.querySelector('d2l-filter-dropdown');
-					list = quickEval.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+					list = quickEval.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 				});
 				test('instantiating the element works', function() {
-					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-evaluation-hub');
+					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-quick-eval');
 					assert.isTrue(quickEval.masterTeacher);
 				});
 				test('only the filters we want are shown', function(done) {
