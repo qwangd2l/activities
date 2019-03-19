@@ -1,13 +1,12 @@
 import { parseSortFromUrl, encodeSortState, decodeSortState } from './sort-handler';
 import { formatActivities } from './activity-handler';
-import chunk from 'lodash-es/chunk';
 
 function getQueryParamOrDefault(
 	relativeUrl,
 	queryParam,
 	defaultValue
 ) {
-	const baseUrl = 'http://www.test.com/'
+	const baseUrl = 'http://www.test.com/';
 	const fullUrl = new URL(baseUrl + relativeUrl);
 
 	return fullUrl.searchParams.get(queryParam) || defaultValue;
@@ -18,7 +17,7 @@ function setQueryParam(
 	queryParam,
 	value
 ) {
-	const baseUrl = 'http://www.test.com/'
+	const baseUrl = 'http://www.test.com/';
 	const fullUrl = new URL(baseUrl + relativeUrl);
 	fullUrl.searchParams.set(queryParam, value);
 
@@ -41,22 +40,13 @@ function applySorts(activities, sorts, sortState) {
 	return activities;
 }
 
-function addSortToHref(href, sortState) {
-	if (href) {
-		if (sortState && sortState.length > 0) {
-			return `${href}?sort=${encodeSortState(sortState)}`;
-		}
-		return href;
-	}
-}
-
-function createPageEndpoint(activities, sorts, pageSize, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
-	var shouldFail = failFirstTime;
+function createPageEndpoint(activities, sorts, pageSize, filtersHref, sortsHref) {
+	var shouldFailOnLastLoadFirstTime = true;
 
 	return (url) => {
 
-		const bookmark = parseInt( getQueryParamOrDefault(url, 'bookmark', 0) );
-		const nextBookmark = bookmark + parseInt( pageSize ) ;
+		const bookmark = parseInt(getQueryParamOrDefault(url, 'bookmark', 0));
+		const nextBookmark = bookmark + parseInt(pageSize) ;
 
 		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
@@ -71,12 +61,12 @@ function createPageEndpoint(activities, sorts, pageSize, pageNumber, filtersHref
 		const nextSortHrefWithBookmark = setQueryParam(sortsHref, 'bookmark', nextBookmark);
 		const nextSortHrefWithBookmarkAndSort = setQueryParam(nextSortHrefWithBookmark, 'sort', encodeSortState(sortState));
 
-		if (shouldFail) {
-			shouldFail = false;
-			throw new Error('simulated error');
-		}
 		const hasMoreActivities = nextBookmark < activities.length;
 
+		if (shouldFailOnLastLoadFirstTime && !hasMoreActivities) {
+			shouldFailOnLastLoadFirstTime = false;
+			throw new Error('simulated error');
+		}
 
 		return formatPage(pagedActivities, filtersHref, nextSortHrefWithBookmarkAndSort, nextPageHrefWithBookmarkAndSort, hasMoreActivities);
 	};
