@@ -349,7 +349,11 @@ function getHrefForMasterTeacher(id) {
 *
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
-function getMappings(table) {
+function getMappings(table, pageSize) {
+	if (!pageSize) {
+		pageSize = 3;
+	}
+
 	const data = table.data;
 
 	const users = parseUsers(data);
@@ -389,12 +393,12 @@ function getMappings(table) {
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
-	const pagedActivities = chunk(activities, 3);
+	const pagedActivities = chunk(activities, pageSize);
 	const pages = pagedActivities.length;
 
 	const sortsHref = 'sorts/';
 	for (let i = 0; i < pages; i++) {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages), i === 2);
+		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, pageSize, i, 'filters/', sortsHref, getHrefForNextPage(i, pages), i === 2);
 	}
 	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
 

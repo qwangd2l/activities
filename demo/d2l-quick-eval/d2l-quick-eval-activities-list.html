@@ -21,7 +21,9 @@
 			import mappingsParser from './demo-data-parser';
 			import data from './table';
 
-			const mappings = mappingsParser(data);
+			const url = new URL(window.location);
+			const pageSize = url.searchParams.get('pageSize') || 3;
+			const mappings = mappingsParser(data, pageSize);
 			// Parameters: data, network logging, api request delay
 			startMockServer(mappings, true, 100);
 
