@@ -21,9 +21,7 @@
 			import mappingsParser from './demo-data-parser';
 			import data from './table';
 
-			const url = new URL(window.location);
-			const pageSize = url.searchParams.get('pageSize');
-			const mappings = mappingsParser(data, { pageSize: pageSize });
+			const mappings = mappingsParser(data);
 			// Parameters: data, network logging, api request delay
 			startMockServer(mappings, true, 100);
 
@@ -51,10 +49,10 @@
 		<div class="vertical-section-container fixedSize">
 			<h3>Basic d2l-quick-eval-activities-list demo</h3>
 			<demo-snippet>
-				<h4>Note: Load more button is expected to fail on second click, but should resolve itself when clicking it again</h4>
+				<h4>Note: Load more button is expected to fail on last click, but should resolve itself when clicking it again</h4>
 				<hr/><br/>
 				<template strip-whitespace>
-					<d2l-quick-eval-activities-list href="pages/0?sort=bydate-a" token="whatever"></d2l-quick-eval-activities-list>
+					<d2l-quick-eval-activities-list href="pages/?sort=bydate-a" token="whatever"></d2l-quick-eval-activities-list>
 				</template>
 			</demo-snippet>
 			<demo-snippet>
