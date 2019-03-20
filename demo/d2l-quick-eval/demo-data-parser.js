@@ -338,8 +338,7 @@ function getHrefForMasterTeacher(id) {
 *
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
-function getMappings(table, options) {
-	const pageSize = options.pageSize ? options.pageSize : 3;
+function getMappings(table) {
 
 	const data = table.data;
 
@@ -383,7 +382,7 @@ function getMappings(table, options) {
 	const pagesHref = 'pages/';
 	const sortsHref = 'sorts/';
 
-	mappings[pagesHref] = createPageEndpoint(activities, table.sorts, pageSize, 'filters/', sortsHref);
+	mappings[pagesHref] = createPageEndpoint(activities, table.sorts, 'filters/', sortsHref);
 
 	mappings[sortsHref] = createSortEndpoint(table.sorts, pagesHref, sortsHref);
 

@@ -40,13 +40,14 @@ function applySorts(activities, sorts, sortState) {
 	return activities;
 }
 
-function createPageEndpoint(activities, sorts, pageSize, filtersHref, sortsHref) {
+function createPageEndpoint(activities, sorts, filtersHref, sortsHref) {
 	var shouldFailOnLastLoadFirstTime = true;
 
 	return (url) => {
 
 		const bookmark = parseInt(getQueryParamOrDefault(url, 'bookmark', 0));
-		const nextBookmark = bookmark + parseInt(pageSize) ;
+		const pageSize = parseInt(getQueryParamOrDefault(url, 'pageSize', 3));
+		const nextBookmark = bookmark + pageSize;
 
 		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
