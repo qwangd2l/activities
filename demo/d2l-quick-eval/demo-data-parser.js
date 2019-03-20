@@ -349,10 +349,8 @@ function getHrefForMasterTeacher(id) {
 *
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
-function getMappings(table, pageSize) {
-	if (!pageSize) {
-		pageSize = 3;
-	}
+function getMappings(table, options) {
+	const pageSize = options.pageSize ? options.pageSize : 3;
 
 	const data = table.data;
 
