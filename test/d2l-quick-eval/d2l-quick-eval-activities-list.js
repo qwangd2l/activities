@@ -1,4 +1,5 @@
 import '@polymer/iron-test-helpers/mock-interactions.js';
+import SirenParse from 'siren-parser';
 
 (function() {
 	var list;
@@ -551,6 +552,69 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			var evalLink = list._buildRelativeUri(url, params);
 			assert.equal(evalLink, expectedEvalLink);
+		});
+
+		test('_formatDisplayName return firstName when firstName defined and lastName undefined', () => {
+			const expectedDisplayName = 'firstName';
+			const displayName = list._formatDisplayName(expectedDisplayName, '', '');
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return lastName when firstName undefined and lastName defined', () => {
+			const expectedDisplayName = 'lastName';
+			const displayName = list._formatDisplayName('', expectedDisplayName, '');
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined', () => {
+			const displayName = list._formatDisplayName('firstName', 'lastName', '');
+			assert.equal('firstName lastName', displayName);
+		});
+
+		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
+			const expectedDisplayName = 'displayName';
+			const displayName = list._formatDisplayName('', '', expectedDisplayName);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_tryGetName returns default value when subentity has class "default-name"', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'defaultValue';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': ['default-name'],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': 'someName'
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, expectedName);
+			assert.equal(name, expectedName);
+		});
+
+		test('_tryGetName returns expected name value name subentity is valid', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'expectedName';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': [],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': expectedName
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, 'defaultValue');
+			assert.equal(name, expectedName);
 		});
 
 	});

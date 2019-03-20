@@ -606,13 +606,57 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			});
 	}
 
+	_formatDisplayName(
+		firstName,
+		lastName,
+		defaultDisplayName
+	) {
+		if (!lastName && !firstName) {
+			return defaultDisplayName;
+		}
+		if (!lastName) {
+			return firstName;
+		}
+		if (!firstName) {
+			return lastName;
+		}
+		return firstName + ' ' + lastName;
+	}
+
+	_tryGetName(
+		entity,
+		rel,
+		defaultValue
+	) {
+		if (!entity || !entity.hasSubEntityByRel(rel)) {
+			return defaultValue;
+		}
+
+		const subEntity =  entity.getSubEntityByRel(rel);
+		if (!subEntity || !subEntity.properties || subEntity.hasClass('default-name')) {
+			return defaultValue;
+		}
+
+		return subEntity.properties.name;
+	}
+
 	_getUserPromise(entity, item) {
 		return this._followLink(entity, Rels.user)
 			.then(function(u) {
-				if (u && u.entity && u.entity.hasSubEntityByRel(Rels.displayName)) {
-					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
+				if (u && u.entity) {
+					const firstName = this._tryGetName(u.entity, Rels.firstName, '');
+					const lastName = this._tryGetName(u.entity, Rels.lastName, '');
+					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
+
+					const displayName = this._formatDisplayName(
+						firstName,
+						lastName,
+						defaultDisplayName
+					);
+
+					item.displayName = displayName;
 				}
-			});
+			}.bind(this));
 	}
 
 	_getUserHref(entity) {
