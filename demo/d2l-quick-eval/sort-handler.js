@@ -97,10 +97,11 @@ function formatSort(sort, sortsHref, ascState, descState, sortState) {
 		]
 	};
 
-	if (sortState[0] && sortState[0].id === sort.id) {
+	const lastSort = sortState.length - 1;
+	if (sortState[lastSort] && sortState[lastSort].id === sort.id) {
 		response.properties = {
 			applied: true,
-			direction: sortState[0].direction === 'd' ? 'descending' : 'ascending',
+			direction: sortState[lastSort].direction === 'd' ? 'descending' : 'ascending',
 			priority: 0
 		};
 	}
