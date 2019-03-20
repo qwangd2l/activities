@@ -6,8 +6,8 @@ function getQueryParamOrDefault(
 	queryParam,
 	defaultValue
 ) {
-	const baseUrl = 'http://www.test.com/';
-	const fullUrl = new URL(baseUrl + relativeUrl);
+	const baseUrl = window.location.origin;
+	const fullUrl = new URL(relativeUrl, baseUrl);
 
 	return fullUrl.searchParams.get(queryParam) || defaultValue;
 }
@@ -17,11 +17,11 @@ function setQueryParam(
 	queryParam,
 	value
 ) {
-	const baseUrl = 'http://www.test.com/';
-	const fullUrl = new URL(baseUrl + relativeUrl);
+	const baseUrl = window.location.origin;
+	const fullUrl = new URL(relativeUrl, baseUrl);
 	fullUrl.searchParams.set(queryParam, value);
 
-	return fullUrl.pathname.substr(1) + '?' + fullUrl.searchParams.toString();
+	return fullUrl.pathname.substr(1) + fullUrl.search;
 }
 
 function applySorts(activities, sorts, sortState) {
