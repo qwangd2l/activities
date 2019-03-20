@@ -64,7 +64,7 @@
   ],
   "actions": [
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/dateFilter-05de346e-c94d-4e4b-b887-9c86c9a80351.json",
+          "href": "components/d2l-activities/test/d2l-quick-eval/data/dateFilter-05de346e-c94d-4e4b-b887-9c86c9a80351.json",
           "name": "search",
           "fields": [
               {
@@ -82,7 +82,7 @@
           ]
       },
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/filters.json",
+          "href": "components/d2l-activities/test/d2l-quick-eval/data/filters.json",
           "name": "apply",
           "fields": [
               {

@@ -44,7 +44,7 @@ function enableSorts(list, sorts) {
 	return stubFollowLink(list, mappings);
 }
 
-suite('d2l-evaluation-hub-activities-list-sorting', () => {
+suite('d2l-quick-eval-activities-list-sorting', () => {
 	let list;
 
 	setup(function() {

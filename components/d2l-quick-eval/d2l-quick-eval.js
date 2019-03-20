@@ -1,18 +1,18 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {EvaluationHubLocalize} from './EvaluationHubLocalize.js';
+import {QuickEvalLocalize} from './QuickEvalLocalize.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {Rels} from 'd2l-hypermedia-constants';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-alert/d2l-alert.js';
 import 'd2l-common/components/d2l-hm-filter/d2l-hm-filter.js';
-import './d2l-evaluation-hub-activities-list.js';
+import './d2l-quick-eval-activities-list.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], EvaluationHubLocalize(PolymerElement)) {
+class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior], QuickEvalLocalize(PolymerElement)) {
 	static get template() {
 		return html`
 			<style>
@@ -34,10 +34,10 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 				:host(:dir(rtl)) d2l-hm-filter {
 					float: left;
 				}
-				.d2l-evaluation-hub-top-bar {
+				.d2l-quick-eval-top-bar {
 					padding-top: 0.25rem;
 				}
-				d2l-evaluation-hub-activities-list {
+				d2l-quick-eval-activities-list {
 					display: block;
 					padding-top: 1rem;
 				}
@@ -49,7 +49,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 					margin-bottom: 0.5rem;
 				}
 			</style>
-			<div class="d2l-evaluation-hub-top-bar">
+			<div class="d2l-quick-eval-top-bar">
 				<template is="dom-if" if="[[headerText]]">
 					<h1>[[headerText]]</h1>
 				</template>
@@ -59,7 +59,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 			<d2l-alert type="critical" hidden$="[[!_showFilterError]]">
 				[[localize('failedToFilter')]]
 			</d2l-alert>
-			<d2l-evaluation-hub-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-evaluation-hub-activities-list>
+			<d2l-quick-eval-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-quick-eval-activities-list>
 		`;
 	}
 
@@ -88,14 +88,14 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		};
 	}
 
-	static get is() { return 'd2l-evaluation-hub'; }
+	static get is() { return 'd2l-quick-eval'; }
 
 	attached()  {
 		this.addEventListener('d2l-hm-filter-filters-loaded', this._filtersLoaded);
 		this.addEventListener('d2l-hm-filter-filters-updating', this._filtersUpdating);
 		this.addEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.addEventListener('d2l-hm-filter-error', this._filterError);
-		this.addEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
+		this.addEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
 	}
 
 	detached() {
@@ -103,7 +103,7 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 		this.removeEventListener('d2l-hm-filter-filters-updating', this._filtersUpdating);
 		this.removeEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.removeEventListener('d2l-hm-filter-error', this._filterError);
-		this.removeEventListener('d2l-evaluation-hub-activities-list-sort-updated', this._sortChanged);
+		this.removeEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
 	}
 
 	_getFilterHref(entity) {
@@ -127,26 +127,26 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 	}
 
 	_filtersLoaded(e) {
-		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 		list.criteriaApplied = e.detail.totalSelectedFilters > 0;
 		this._showFilterError = false;
 	}
 
 	_filtersUpdating() {
-		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 		list.setLoadingState(true);
 		this._showFilterError = false;
 	}
 
 	_filtersChanged(e) {
-		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 		list.entity = e.detail.filteredActivities;
 		this.entity = e.detail.filteredActivities;
 		this._showFilterError = false;
 	}
 
 	_filterError() {
-		const list = this.shadowRoot.querySelector('d2l-evaluation-hub-activities-list');
+		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 		list.setLoadingState(false);
 		this._showFilterError = true;
 	}
@@ -157,4 +157,4 @@ class D2LEvaluationHub extends mixinBehaviors([D2L.PolymerBehaviors.Siren.Entity
 
 }
 
-window.customElements.define('d2l-evaluation-hub', D2LEvaluationHub);
+window.customElements.define('d2l-quick-eval', D2LQuickEval);

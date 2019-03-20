@@ -149,12 +149,12 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 	];
 	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Master Teacher']]);
 
-	suite('d2l-evaluation-hub-activities-list', function() {
+	suite('d2l-quick-eval-activities-list', function() {
 		setup(function() {
 			list = fixture('basic');
 		});
 		test('instantiating the element works', function() {
-			assert.equal(list.tagName.toLowerCase(), 'd2l-evaluation-hub-activities-list');
+			assert.equal(list.tagName.toLowerCase(), 'd2l-quick-eval-activities-list');
 		});
 		test('attributes are set correctly', function() {
 			assert.equal(list.href, 'blah');
@@ -199,7 +199,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		});
 		test('if _loading is true, the Load More button is hidden', (done) => {
 			loadPromise('data/unassessedActivities.json').then(function() {
-				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
+				var loadMore = list.shadowRoot.querySelector('.d2l-quick-eval-activities-list-load-more-container');
 				assert.notEqual(loadMore.style.display, 'none');
 				list._loading = true;
 				requestAnimationFrame(function() {
@@ -208,18 +208,18 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				});
 			});
 		});
-		test('if _loading is true, d2l-evaluation-hub-no-submissions-image and d2l-evaluation-hub-no-submissions-image are not shown', () => {
+		test('if _loading is true, d2l-quick-eval-no-submissions-image and d2l-quick-eval-no-submissions-image are not shown', () => {
 			var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
-			var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+			var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
 			assert.equal(noSubmissionComponent, null);
 			assert.equal(noCriteriaResultsComponent, null);
 			assert.equal(list._loading, true);
 		});
-		test('if there is no data in the list, d2l-evaluation-hub-no-submissions-image is shown', (done) => {
+		test('if there is no data in the list, d2l-quick-eval-no-submissions-image is shown', (done) => {
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
 				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 				assert.notEqual(noSubmissionComponent.style.display, 'none');
-				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
 				assert.equal(noCriteriaResultsComponent, null);
 				//This is here because of how dom-if works, we need to load activities once to ensure we actually
 				//render the d2l-quick-eval-no-submissions component and instantly hide it.
@@ -230,18 +230,18 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				});
 			});
 		});
-		test('if there is no data in the list and filters/search has been applied, d2l-evaluation-hub-no-criteria-results-image is shown', (done) => {
+		test('if there is no data in the list and filters/search has been applied, d2l-quick-eval-no-criteria-results-image is shown', (done) => {
 			list.setAttribute('criteria-applied', '');
 
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
-				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
 				assert.notEqual(noCriteriaResultsComponent.style.display, 'none');
 				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
 				assert.equal(noSubmissionComponent, null);
 				//This is here because of how dom-if works, we need to load activities once to ensure we actually
-				//render the d2l-evaluation-hub-no-criteria-results component and instantly hide it.
+				//render the d2l-quick-eval-no-criteria-results component and instantly hide it.
 				loadPromise('data/unassessedActivities.json').then(function() {
-					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-evaluation-hub-no-criteria-results');
+					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
 					assert.equal(noCriteriaResultsComponent.style.display, 'none');
 					done();
 				});
@@ -316,7 +316,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		});
 		test('the Load More button appears when there is a next link', (done) => {
 			loadPromise('data/unassessedActivities.json').then(function() {
-				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
+				var loadMore = list.shadowRoot.querySelector('.d2l-quick-eval-activities-list-load-more');
 				assert.equal(loadMore.tagName.toLowerCase(), 'd2l-button');
 				assert.notEqual(loadMore.style.display, 'none');
 				assert.notEqual(loadMore.disabled, 'true');
@@ -327,8 +327,8 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var expectedNext = createExpectedData(expectedData.concat(expectedNextData));
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				var loadMore = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more');
-				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-evaluation-hub-activities-list-load-more-container');
+				var loadMore = list.shadowRoot.querySelector('.d2l-quick-eval-activities-list-load-more');
+				var loadMoreContainer = list.shadowRoot.querySelector('.d2l-quick-eval-activities-list-load-more-container');
 				var verify = function() {
 					if (!list._loading && loadMoreContainer.style.display === 'none') {
 						verifyData(expectedNext, done);

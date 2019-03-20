@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-		<title>d2l-evaluation-hub demo</title>
+		<title>d2l-quick-eval demo</title>
 		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
 		<!-- For IE11 -->
@@ -26,7 +26,7 @@
 			startMockServer(mappings, true, 100);
 
 			// For IE11, we need to import the component after we've started the mock observer
-			import '../../components/d2l-evaluation-hub/d2l-evaluation-hub.js';
+			import '../../components/d2l-quick-eval/d2l-quick-eval.js';
 
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
@@ -47,12 +47,12 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="vertical-section-container fixedSize">
-			<h3>Basic d2l-evaluation-hub demo</h3>
+			<h3>Basic d2l-quick-eval demo</h3>
 			<demo-snippet>
 				<h4>Note: Load more button is expected to fail on second click, but should resolve itself when clicking it again</h4>
 				<hr/><br/>
 				<template strip-whitespace>
-					<d2l-evaluation-hub header-text="Quick Eval" master-teacher href="pages/0?sort=bydate-a" token="whatever"></d2l-evaluation-hub>
+					<d2l-quick-eval header-text="Quick Eval" master-teacher href="pages/0?sort=bydate-a" token="whatever"></d2l-quick-eval>
 				</template>
 			</demo-snippet>
 
@@ -60,7 +60,7 @@
 				<h4>Note: This will always show an error. It demonstrates how the component looks when failing to load data</h4>
 				<hr/><br/>
 				<template strip-whitespace>
-					<d2l-evaluation-hub master-teacher href="invalid" token="whatever"></d2l-evaluation-hub>
+					<d2l-quick-eval master-teacher href="invalid" token="whatever"></d2l-quick-eval>
 				</template>
 			</demo-snippet>
 
@@ -68,7 +68,7 @@
 				<h4>Note: This is hacking in the attribute to show what a filter error looks like. Once filter demo data exists, this demo can be improved.</h4>
 				<hr/><br/>
 				<template strip-whitespace>
-					<d2l-evaluation-hub _show-filter-error="true" header-text="Quick Eval" href="pages/0?sort=bydate-a" token="whatever"></d2l-evaluation-hub>
+					<d2l-quick-eval _show-filter-error="true" header-text="Quick Eval" href="pages/0?sort=bydate-a" token="whatever"></d2l-quick-eval>
 				</template>
 			</demo-snippet>
 		</div>

@@ -2,7 +2,7 @@
   "class": [
       "collection",
       "filters",
-      "primary-facilitator"
+      "enrollments"
   ],
   "entities": [
       {
@@ -11,18 +11,18 @@
               "off"
           ],
           "properties": {
-              "filter": "master-teacher"
+              "filter": "org-name"
           },
           "rel": [
               "item",
               "https://api.brightspace.com/rels/filter"
           ],
-          "title": "Master Teacher"
+          "title": "Org Name"
       }
   ],
   "actions": [
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/primaryFacilitatorFilter-35b3aca0-c10c-436d-b369-c8a3022455e3.json",
+          "href": "components/d2l-activities/test/d2l-quick-eval/data/courseFilter-f2b32f03-556a-4368-945a-2614b9f41f76.json",
           "name": "search",
           "fields": [
               {
@@ -40,7 +40,7 @@
           ]
       },
       {
-          "href": "components/d2l-activities/test/d2l-evaluation-hub/data/filters.json",
+          "href": "components/d2l-activities/test/d2l-quick-eval/data/filters.json",
           "name": "apply",
           "fields": [
               {
@@ -54,5 +54,5 @@
           ]
       }
   ],
-  "title": "Primary Facilitator"
+  "title": "Course"
 }
