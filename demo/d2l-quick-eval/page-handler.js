@@ -27,7 +27,7 @@ function addSortToHref(href, sortState) {
 	}
 }
 
-function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
+function createPageEndpoint(activities, sorts, pageSize, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
 	var shouldFail = failFirstTime;
 
 	return (url) => {
@@ -36,7 +36,7 @@ function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHre
 
 		const sortedActivities = applySorts(activities, sorts, sortState);
 		const formattedSortedActivities = formatActivities(sortedActivities);
-		const pagedActivities = chunk(formattedSortedActivities, 3);
+		const pagedActivities = chunk(formattedSortedActivities, pageSize);
 
 		if (shouldFail) {
 			shouldFail = false;
