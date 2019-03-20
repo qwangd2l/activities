@@ -65,6 +65,15 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		done();
 	}
 
+	function arrayContainsWhere(arr, f) {
+
+		const results = arr.map(function(elm) {
+			return f(elm);
+		});
+
+		return results.includes(true);
+	}
+
 	var expectedData = [
 		{
 			displayName: 'Special User Name',
@@ -410,6 +419,27 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
 		});
+		test('when calling perform siren action with no query params and custom params, fields contain custom params', () => {
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET'
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(Object.keys(customParams).length, fields.length);
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === p && elm.value === customParams[p]));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
+		});
 		test('when calling perform siren action with query params, the query params are added as fields', () => {
 
 			const action = {
@@ -454,6 +484,44 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
+		});
+		test('when calling perform siren action with query params and custom params, fields contain query params and custom params', () => {
+
+			const defaultParams = [
+				{
+					type: 'hidden',
+					name : 'testname',
+					value: 'testvalue'
+				},
+				{
+					type: 'hidden',
+					name : 'anothertestname',
+					value: 'anothertestvalue'
+				}
+			];
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET',
+				fields : defaultParams
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(4, fields.length);
+
+				assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === 'testname' && elm.value === 'testvalue'));
+				assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === 'anothertestname' && elm.value === 'anothertestvalue'));
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === p && elm.value === customParams[p]));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
 		});
 		test('when parsing url for sort and filter params and url is null, return empty array', () => {
 
