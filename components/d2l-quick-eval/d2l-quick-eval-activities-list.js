@@ -426,7 +426,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : {};
+				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
 				const collection = this._performSirenActionWithQueryParams(collectionAction, customParams);
 				return collection;
 			}).bind(this))
