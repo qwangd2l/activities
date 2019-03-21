@@ -295,7 +295,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	static get observers() {
 		return [
 			'_loadData(entity)',
-			'_loadSorts(entity)'
+			'_loadSorts(entity)',
+			'_handleNameSwap(_headerColumns.0.headers.*)'
 		];
 	}
 	ready() {
@@ -315,8 +316,19 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		this.set('_loading', state);
 	}
 
+
 	_computeNumberOfCurrentlyShownActivities(data) {
 		return data.length;
+	}
+
+	_handleNameSwap(entry) {
+		if (entry && entry.path.endsWith('1.sorted')) {
+			const tmp = this._headerColumns[0].headers[0];
+			this.set('_headerColumns.0.headers.0', this._headerColumns[0].headers[1]);
+			this.set('_headerColumns.0.headers.1', tmp);
+			this.set('_headerColumns.0.headers.0.suffix', ',');
+			this.set('_headerColumns.0.headers.1.suffix', '');
+		}
 	}
 
 	_myEntityStoreFetch(url) {
