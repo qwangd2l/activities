@@ -65,15 +65,6 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		done();
 	}
 
-	function arrayContainsWhere(arr, f) {
-
-		const results = arr.map(function(elm) {
-			return f(elm);
-		});
-
-		return results.includes(true);
-	}
-
 	var expectedData = [
 		{
 			displayName: 'Special User Name',
@@ -434,7 +425,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				assert.equal(Object.keys(customParams).length, fields.length);
 
 				Object.keys(customParams).forEach(function(p) {
-					assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === p && elm.value === customParams[p]));
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
 				});
 			});
 
@@ -513,11 +504,11 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 				const fields = passedAction.fields;
 				assert.equal(4, fields.length);
 
-				assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === 'testname' && elm.value === 'testvalue'));
-				assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === 'anothertestname' && elm.value === 'anothertestvalue'));
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'testname' && elm.value === 'testvalue'; }));
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'anothertestname' && elm.value === 'anothertestvalue'; }));
 
 				Object.keys(customParams).forEach(function(p) {
-					assert.isTrue(arrayContainsWhere(fields, (elm) => elm.name === p && elm.value === customParams[p]));
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
 				});
 			});
 
