@@ -11,11 +11,19 @@ class D2LEvaluationHubSkeleton extends PolymerElement {
 				:host {
                     display: inline-block;
                 }
-                .desktop {width:100%}
-                .mobile { display: none; }
+                .desktop { 
+                    width:100%
+                }
+                .mobile { 
+                    display: none;
+                }
                 @media (max-width: 768px) {
-                    .mobile { display:block; }
-                    .desktop { display: none; }
+                    .mobile {
+                        display:block;
+                    }
+                    .desktop { 
+                        display: none;
+                    }
                 }
             </style>
             <div class="desktop">

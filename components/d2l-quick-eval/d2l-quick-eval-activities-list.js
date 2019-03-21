@@ -17,6 +17,7 @@ import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
 import './d2l-quick-eval-skeleton.js';
+import './d2l-quick-eval-skeleton-no-headers';
 
 /**
  * @customElement
@@ -47,6 +48,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				/* Needed for Edge */
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
+				}
+				d2l-quick-eval-skeleton-no-headers {
+					width: 100%;
 				}
 				d2l-quick-eval-skeleton {
 					width: 100%;
@@ -191,7 +195,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				[[localize(_health.errorMessage)]]
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
-			<d2l-quick-eval-skeleton hidden$="[[!_loading]]"></d2l-quick-eval-skeleton>
+			<d2l-quick-eval-skeleton hidden$="[[!_fullListLoading]]"></d2l-quick-eval-skeleton>
+	     	<d2l-quick-eval-skeleton-no-headers hidden$="[[!_isLoadingMore(_fullListLoading,_loading)]]"></d2l-quick-eval-skeleton-no-headers>
+
 			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
 				<div class="d2l-quick-eval-activities-list-load-more-container">
 					<d2l-button class="d2l-quick-eval-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
@@ -309,6 +315,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		this.set('_loading', state);
 	}
 
+	_isLoadingMore(fullListLoading, isLoading) {
+		return !fullListLoading && isLoading;
+	}
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
