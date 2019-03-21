@@ -162,12 +162,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									<template is="dom-if" if="[[s.userHref]]">
 										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s)]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]</d2l-offscreen>
 									<d2l-link
-										title="[[_localizeEvaluationText(s)]]"
+										title="[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]"
 										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
-									>[[_formatDisplayName(s)]]</d2l-link>
+									>[[_formatDisplayName(s, _headerColumns.0.meta.firstThenLast)]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td class="d2l-quick-eval-truncated-column d2l-activity-name-column">
@@ -236,6 +236,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				value: [
 					{
 						key: 'displayName',
+						meta: { firstThenLast: true },
 						headers: [
 							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false, sorted: false, desc: false  },
 							{ key: 'lastName', sortClass: 'last-name', canSort: false, sorted: false, desc: false  }
@@ -316,7 +317,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		this.set('_loading', state);
 	}
 
-
 	_computeNumberOfCurrentlyShownActivities(data) {
 		return data.length;
 	}
@@ -328,6 +328,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			this.set('_headerColumns.0.headers.1', tmp);
 			this.set('_headerColumns.0.headers.0.suffix', ',');
 			this.set('_headerColumns.0.headers.1.suffix', '');
+			this.set('_headerColumns.0.meta.firstThenLast', this._headerColumns[0].headers[0].key === 'firstName');
 		}
 	}
 
@@ -630,14 +631,16 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_localizeEvaluationText(
-		data
+		data,
+		firstThenLast
 	) {
-		const formattedDisplayName = this._formatDisplayName(data);
+		const formattedDisplayName = this._formatDisplayName(data, firstThenLast);
 		return this.localize('evaluate', 'displayName', formattedDisplayName);
 	}
 
 	_formatDisplayName(
-		data
+		data,
+		firstThenLast
 	) {
 		const firstName = data.displayName.firstName;
 		const lastName = data.displayName.lastName;
@@ -652,7 +655,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		if (!firstName) {
 			return lastName;
 		}
-		return firstName + ' ' + lastName;
+
+		if (firstThenLast) {
+			return firstName + ' ' + lastName;
+		}
+
+		return lastName + ' ' + firstName;
 	}
 
 	_tryGetName(

@@ -641,7 +641,8 @@ import SirenParse from 'siren-parser';
 			assert.equal(expectedDisplayName, displayName);
 		});
 
-		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined', () => {
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is firstNameLastName', () => {
+			const firstThenLast = true;
 			const displayName = list._formatDisplayName(
 				{
 					displayName: {
@@ -649,9 +650,25 @@ import SirenParse from 'siren-parser';
 						lastName: 'lastName',
 						defaultDisplayName: ''
 					}
-				}
+				},
+				firstThenLast
 			);
 			assert.equal('firstName lastName', displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is lastNameFirstName', () => {
+			const firstThenLast = true;
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: 'firstName',
+						lastName: 'lastName',
+						defaultDisplayName: ''
+					}
+				},
+				!firstThenLast
+			);
+			assert.equal('lastName firstName', displayName);
 		});
 
 		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
