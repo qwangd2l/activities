@@ -653,8 +653,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return this._followLink(entity, Rels.user)
 			.then(function(u) {
 				if (u && u.entity) {
-					const firstName = this._tryGetName(u.entity, Rels.firstName, '');
-					const lastName = this._tryGetName(u.entity, Rels.lastName, '');
+					const firstName = this._tryGetName(u.entity, Rels.firstName, null);
+					const lastName = this._tryGetName(u.entity, Rels.lastName, null);
 					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
 
 					const displayName = {
