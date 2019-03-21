@@ -4,7 +4,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
  * @customElement
  * @polymer
  */
-class D2LEvaluationHubSkeletonDesktop extends PolymerElement {
+class D2LEvaluationHubSkeleton extends PolymerElement {
 	static get template() {
 		return html`
 			<style>
@@ -31,4 +31,4 @@ class D2LEvaluationHubSkeletonDesktop extends PolymerElement {
 
 }
 
-window.customElements.define('d2l-quick-eval-skeleton', D2LEvaluationHubSkeletonDesktop);
+window.customElements.define('d2l-quick-eval-skeleton', D2LEvaluationHubSkeleton);
