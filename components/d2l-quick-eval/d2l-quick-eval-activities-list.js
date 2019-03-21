@@ -27,13 +27,16 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	static get template() {
 		const quickEvalActivitiesListTemplate = html`
 			<style include="d2l-table-style">
+				.d2l-quick-eval-table {
+					--d2l-table-body-background-color: transparent;
+					--d2l-table-light-header-background-color: transparent;
+				}
 				d2l-td {
 					font-size: 0.7rem;
 				}
 				d2l-td.d2l-username-column {
 					font-size: 0.8rem;
 				}
-
 				.d2l-user-badge-image {
 					display: inline-block;
 					padding-right: 0.6rem;
@@ -43,7 +46,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					padding-right: 0;
 					padding-left: 0.6rem;
 				}
-
 				/* Needed for Edge */
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
@@ -116,7 +118,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 			</style>
 			<d2l-offscreen id="d2l-quick-eval-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
-			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-quick-eval-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-table class="d2l-quick-eval-table" type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-quick-eval-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
