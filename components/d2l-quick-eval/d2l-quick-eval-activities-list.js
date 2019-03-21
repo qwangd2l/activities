@@ -160,12 +160,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									<template is="dom-if" if="[[s.userHref]]">
 										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s)]]</d2l-offscreen>
 									<d2l-link
-										title="[[localize('evaluate', 'displayName', s.displayName)]]"
+										title="[[_localizeEvaluationText(s)]]"
 										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
-									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
+									>[[_formatDisplayName(s)]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td class="d2l-quick-eval-truncated-column d2l-activity-name-column">
@@ -606,11 +606,20 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			});
 	}
 
-	_formatDisplayName(
-		firstName,
-		lastName,
-		defaultDisplayName
+	_localizeEvaluationText(
+		data
 	) {
+		const formattedDisplayName = this._formatDisplayName(data);
+		return this.localize('evaluate', 'displayName', formattedDisplayName);
+	}
+
+	_formatDisplayName(
+		data
+	) {
+		const firstName = data.displayName.firstName;
+		const lastName = data.displayName.lastName;
+		const defaultDisplayName = data.displayName.defaultDisplayName;
+
 		if (!lastName && !firstName) {
 			return defaultDisplayName;
 		}
@@ -648,11 +657,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					const lastName = this._tryGetName(u.entity, Rels.lastName, '');
 					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
 
-					const displayName = this._formatDisplayName(
-						firstName,
-						lastName,
-						defaultDisplayName
-					);
+					const displayName = {
+						'firstName': firstName,
+						'lastName': lastName,
+						'defaultDisplayName': defaultDisplayName
+					};
 
 					item.displayName = displayName;
 				}
