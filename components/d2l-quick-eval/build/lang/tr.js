@@ -20,7 +20,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'lastName': 'Last Name',
 			'loadMore': 'Daha fazla yükle',
 			'loading': 'Yükleniyor',
-			'masterTeacher': 'Master Teacher',
+			'masterTeacher': 'Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',

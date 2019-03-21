@@ -147,7 +147,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		['Course'],
 		['Submission Date']
 	];
-	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Master Teacher']]);
+	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Teacher']]);
 
 	suite('d2l-quick-eval-activities-list', function() {
 		setup(function() {
