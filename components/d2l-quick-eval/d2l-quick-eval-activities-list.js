@@ -65,6 +65,18 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				:host(:dir(rtl)) .d2l-quick-eval-activities-list-load-more-container {
 					text-align: left;
 				}
+				.d2l-quick-eval-30-column {
+					width: 30%;
+				}
+				.d2l-quick-eval-25-column {
+					width: 25%;
+				}
+				.d2l-quick-eval-20-column {
+					width: 20%;
+				}
+				.d2l-quick-eval-15-column {
+					width: 15%;
+				}
 				.d2l-quick-eval-truncated-column {
 					max-width: 10rem;
 					white-space: nowrap;
@@ -124,7 +136,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(headerColumn.key)]]">
-									<d2l-th>
+									<d2l-th class$=[[_getWidthCssClass(headerColumn.key)]]>
 										<dom-repeat items="[[headerColumn.headers]]" as="header">
 											<template>
 												<template is="dom-if" if="[[header.canSort]]">
@@ -660,6 +672,41 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			result = item[prop];
 		}
 		return result;
+	}
+
+	_getWidthCssClass(columnKey) {
+		if (this.masterTeacher) {
+			switch (columnKey) {
+				case 'displayName':
+					return 'd2l-quick-eval-25-column';
+					break;
+				case 'activityName':
+				case 'courseName':
+				case 'masterTeacher':
+					return 'd2l-quick-eval-20-column';
+					break;
+				case 'submissionDate':
+					return 'd2l-quick-eval-15-column';
+					break;
+				default:
+					return '';
+			}
+		} else {
+			switch (columnKey) {
+				case 'displayName':
+					return 'd2l-quick-eval-30-column';
+					break;
+				case 'activityName':
+				case 'courseName':
+					return 'd2l-quick-eval-25-column';
+					break;
+				case 'submissionDate':
+					return 'd2l-quick-eval-20-column';
+					break;
+				default:
+					return '';
+			}
+		}
 	}
 
 	_shouldDisplayColumn(columnKey) {
