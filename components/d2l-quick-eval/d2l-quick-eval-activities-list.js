@@ -263,6 +263,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				type: Array,
 				value: [ ]
 			},
+			_numberOfCurrentlyShownActivities: {
+				type: Number,
+				computed: '_computeNumberOfCurrentlyShownActivities(_data)'
+			},
 			_fullListLoading: {
 				type: Boolean,
 				value: true
@@ -309,6 +313,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	setLoadingState(state) {
 		this.set('_fullListLoading', state);
 		this.set('_loading', state);
+	}
+
+	_computeNumberOfCurrentlyShownActivities(data) {
+		return data.length;
 	}
 
 	_myEntityStoreFetch(url) {
@@ -420,7 +428,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this._performSirenActionWithQueryParams(collectionAction);
+				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
+				const collection = this._performSirenActionWithQueryParams(collectionAction, customParams);
 				return collection;
 			}).bind(this))
 			.then((collection => {
@@ -684,7 +693,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		);
 	}
 
-	_performSirenActionWithQueryParams(action) {
+	_performSirenActionWithQueryParams(action, customParams) {
 		const url = new URL(action.href, window.location.origin);
 
 		if (!action.fields) {
@@ -696,6 +705,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				action.fields.push({name: key, value: value, type: 'hidden'});
 			}
 		});
+
+		if (customParams) {
+			Object.keys(customParams).forEach(function(paramName) {
+				action.fields.push({name: paramName, value: customParams[paramName], type: 'hidden'});
+			});
+		}
 
 		return this.performSirenAction(action);
 	}
