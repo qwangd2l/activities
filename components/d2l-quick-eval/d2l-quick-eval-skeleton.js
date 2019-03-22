@@ -12,14 +12,14 @@ class D2LEvaluationHubSkeleton extends PolymerElement {
                     display: inline-block;
                 }
                 .desktop { 
-                    width:100%
+                    width: 100%;
                 }
                 .mobile { 
                     display: none;
                 }
                 @media (max-width: 768px) {
                     .mobile {
-                        display:block;
+                        display: block;
                     }
                     .desktop { 
                         display: none;
@@ -27,10 +27,61 @@ class D2LEvaluationHubSkeleton extends PolymerElement {
                 }
             </style>
             <div class="desktop">
-                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMTcwIDE5NyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggNTAuMiAoNTUwNDcpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPkVIIC0gVGhpbiAtIEZsYXQgTGlzdCAtIFN1Ym1pc3Npb24gLSBvbGRlc3QgdG8gbmV3ZXN0PC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IkVILS0tVGhpbi0tLUZsYXQtTGlzdC0tLVN1Ym1pc3Npb24tLS1vbGRlc3QtdG8tbmV3ZXN0IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHkiIGZpbGw9IiNGMkYzRjUiIHg9IjAiIHk9IjciIHdpZHRoPSIxODAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTIiIGZpbGw9IiNGMkYzRjUiIHg9IjMxMiIgeT0iNyIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMyIgZmlsbD0iI0YyRjNGNSIgeD0iNjIwIiB5PSI3IiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS00IiBmaWxsPSIjRjJGM0Y1IiB4PSI5MzAiIHk9IjciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgZmlsbD0iI0YyRjNGNSIgeD0iMCIgeT0iMzgiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktOSIgZmlsbD0iI0YyRjNGNSIgeD0iMCIgeT0iOTMiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMTUiIGZpbGw9IiNGMkYzRjUiIHg9IjAiIHk9IjE0OCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMwIiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS02IiBmaWxsPSIjRjJGM0Y1IiB4PSIzMTYiIHk9IjQ1IiB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTEwIiBmaWxsPSIjRjJGM0Y1IiB4PSIzMTYiIHk9IjEwMCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0xNiIgZmlsbD0iI0YyRjNGNSIgeD0iMzE2IiB5PSIxNTUiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlIiBmaWxsPSIjRjJGM0Y1IiB4PSI0MCIgeT0iNDYiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTExIiBmaWxsPSIjRjJGM0Y1IiB4PSI0MCIgeT0iMTAxIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0xNyIgZmlsbD0iI0YyRjNGNSIgeD0iNDAiIHk9IjE1NiIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktNSIgZmlsbD0iI0YyRjNGNSIgeD0iMzQ3IiB5PSI0NiIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMTIiIGZpbGw9IiNGMkYzRjUiIHg9IjM0NyIgeT0iMTAxIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0xOCIgZmlsbD0iI0YyRjNGNSIgeD0iMzQ3IiB5PSIxNTYiIHdpZHRoPSIyNDAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTciIGZpbGw9IiNGMkYzRjUiIHg9IjYyMCIgeT0iNDYiIHdpZHRoPSIyNDAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTEzIiBmaWxsPSIjRjJGM0Y1IiB4PSI2MjAiIHk9IjEwMSIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMTkiIGZpbGw9IiNGMkYzRjUiIHg9IjYyMCIgeT0iMTU2IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS04IiBmaWxsPSIjRjJGM0Y1IiB4PSI5MzAiIHk9IjQ2IiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0xNCIgZmlsbD0iI0YyRjNGNSIgeD0iOTMwIiB5PSIxMDEiIHdpZHRoPSIxODAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTIwIiBmaWxsPSIjRjJGM0Y1IiB4PSI5MzAiIHk9IjE1NiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cGF0aCBkPSJNMCwyNiBMMTE3MCwyNiIgaWQ9IkxpbmUiIHN0cm9rZT0iI0YyRjNGNSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSI+PC9wYXRoPgogICAgICAgIDxwYXRoIGQ9Ik0wLDgwIEwxMTcwLDgwIiBpZD0iTGluZS1Db3B5IiBzdHJva2U9IiNGMkYzRjUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiPjwvcGF0aD4KICAgICAgICA8cGF0aCBkPSJNMCwxMzUgTDExNzAsMTM1IiBpZD0iTGluZS1Db3B5LTIiIHN0cm9rZT0iI0YyRjNGNSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSI+PC9wYXRoPgogICAgPC9nPgo8L3N2Zz4=" alt="">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <svg width="100%" viewBox="0 0 1170 197" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+                    <title>EH - Thin - Flat List - Submission - oldest to newest</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="EH---Thin---Flat-List---Submission---oldest-to-newest" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect id="Rectangle-Copy" fill="#F2F3F5" x="0" y="7" width="180" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-2" fill="#F2F3F5" x="312" y="7" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-3" fill="#F2F3F5" x="620" y="7" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-4" fill="#F2F3F5" x="930" y="7" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle" fill="#F2F3F5" x="0" y="38" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-9" fill="#F2F3F5" x="0" y="93" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-15" fill="#F2F3F5" x="0" y="148" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-6" fill="#F2F3F5" x="316" y="45" width="18" height="18" rx="4"></rect>
+                        <rect id="Rectangle-Copy-10" fill="#F2F3F5" x="316" y="100" width="18" height="18" rx="4"></rect>
+                        <rect id="Rectangle-Copy-16" fill="#F2F3F5" x="316" y="155" width="18" height="18" rx="4"></rect>
+                        <rect id="Rectangle" fill="#F2F3F5" x="40" y="46" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-11" fill="#F2F3F5" x="40" y="101" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-17" fill="#F2F3F5" x="40" y="156" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-5" fill="#F2F3F5" x="347" y="46" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-12" fill="#F2F3F5" x="347" y="101" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-18" fill="#F2F3F5" x="347" y="156" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-7" fill="#F2F3F5" x="620" y="46" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-13" fill="#F2F3F5" x="620" y="101" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-19" fill="#F2F3F5" x="620" y="156" width="240" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-8" fill="#F2F3F5" x="930" y="46" width="180" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-14" fill="#F2F3F5" x="930" y="101" width="180" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-20" fill="#F2F3F5" x="930" y="156" width="180" height="14" rx="4"></rect>
+                        <path d="M0,26 L1170,26" id="Line" stroke="#F2F3F5" stroke-linecap="square"></path>
+                        <path d="M0,80 L1170,80" id="Line-Copy" stroke="#F2F3F5" stroke-linecap="square"></path>
+                        <path d="M0,135 L1170,135" id="Line-Copy-2" stroke="#F2F3F5" stroke-linecap="square"></path>
+                    </g>
+                </svg>
             </div>
             <div class="mobile">
-                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjEwMCUiIHZpZXdCb3g9IjAgMCAyMzcgMjA5IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1MC4yICg1NTA0NykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+bW9iaWxlIGFzc2lnbm1lbnQgZW5kIGNvcHk8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0ibW9iaWxlLWFzc2lnbm1lbnQtZW5kLWNvcHkiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0yMSIgZmlsbD0iI0YyRjNGNSIgeD0iLTEiIHk9IjExIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtQ29weS0yMiIgZmlsbD0iI0YyRjNGNSIgeD0iMCIgeT0iNDIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMjMiIGZpbGw9IiNGMkYzRjUiIHg9IjAiIHk9Ijk3IiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTI0IiBmaWxsPSIjRjJGM0Y1IiB4PSIwIiB5PSIxNTIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMjUiIGZpbGw9IiNGMkYzRjUiIHg9IjM5IiB5PSI1MCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNCIgcng9IjQiPjwvcmVjdD4KICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLUNvcHktMjYiIGZpbGw9IiNGMkYzRjUiIHg9IjM5IiB5PSIxMDUiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTQiIHJ4PSI0Ij48L3JlY3Q+CiAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS1Db3B5LTI3IiBmaWxsPSIjRjJGM0Y1IiB4PSIzOSIgeT0iMTYwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE0IiByeD0iNCI+PC9yZWN0PgogICAgICAgIDxwYXRoIGQ9Ik0tMSwzMCBMMjM3LDMwIiBpZD0iTGluZS1Db3B5LTMiIHN0cm9rZT0iI0YyRjNGNSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSI+PC9wYXRoPgogICAgICAgIDxwYXRoIGQ9Ik0tMSw4My41IEwyMzcsODMuNSIgaWQ9IkxpbmUtQ29weS00IiBzdHJva2U9IiNGMkYzRjUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiPjwvcGF0aD4KICAgICAgICA8cGF0aCBkPSJNLTEsMTM4LjUgTDIzNywxMzguNSIgaWQ9IkxpbmUtQ29weS01IiBzdHJva2U9IiNGMkYzRjUiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiPjwvcGF0aD4KICAgIDwvZz4KPC9zdmc+" alt="">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <svg width="100%" viewBox="0 0 237 209" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+                    <title>mobile assignment end copy</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="mobile-assignment-end-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect id="Rectangle-Copy-21" fill="#F2F3F5" x="-1" y="11" width="180" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-22" fill="#F2F3F5" x="0" y="42" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-23" fill="#F2F3F5" x="0" y="97" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-24" fill="#F2F3F5" x="0" y="152" width="30" height="30" rx="4"></rect>
+                        <rect id="Rectangle-Copy-25" fill="#F2F3F5" x="39" y="50" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-26" fill="#F2F3F5" x="39" y="105" width="120" height="14" rx="4"></rect>
+                        <rect id="Rectangle-Copy-27" fill="#F2F3F5" x="39" y="160" width="120" height="14" rx="4"></rect>
+                        <path d="M-1,30 L237,30" id="Line-Copy-3" stroke="#F2F3F5" stroke-linecap="square"></path>
+                        <path d="M-1,83.5 L237,83.5" id="Line-Copy-4" stroke="#F2F3F5" stroke-linecap="square"></path>
+                        <path d="M-1,138.5 L237,138.5" id="Line-Copy-5" stroke="#F2F3F5" stroke-linecap="square"></path>
+                    </g>
+                </svg>   
             </div>    
 		`;
 	}
