@@ -660,7 +660,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			return firstName + ' ' + lastName;
 		}
 
-		return lastName + ' ' + firstName;
+		return lastName + ', ' + firstName;
 	}
 
 	_tryGetName(

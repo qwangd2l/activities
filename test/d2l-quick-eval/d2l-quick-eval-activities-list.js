@@ -668,7 +668,7 @@ import SirenParse from 'siren-parser';
 				},
 				!firstThenLast
 			);
-			assert.equal('lastName firstName', displayName);
+			assert.equal('lastName, firstName', displayName);
 		});
 
 		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
