@@ -679,15 +679,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			switch (columnKey) {
 				case 'displayName':
 					return 'd2l-quick-eval-25-column';
-					break;
 				case 'activityName':
 				case 'courseName':
 				case 'masterTeacher':
 					return 'd2l-quick-eval-20-column';
-					break;
 				case 'submissionDate':
 					return 'd2l-quick-eval-15-column';
-					break;
 				default:
 					return '';
 			}
@@ -695,14 +692,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			switch (columnKey) {
 				case 'displayName':
 					return 'd2l-quick-eval-30-column';
-					break;
 				case 'activityName':
 				case 'courseName':
 					return 'd2l-quick-eval-25-column';
-					break;
 				case 'submissionDate':
 					return 'd2l-quick-eval-20-column';
-					break;
 				default:
 					return '';
 			}
