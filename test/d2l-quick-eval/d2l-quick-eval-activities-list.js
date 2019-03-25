@@ -641,7 +641,8 @@ import SirenParse from 'siren-parser';
 			assert.equal(expectedDisplayName, displayName);
 		});
 
-		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined', () => {
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is firstNameLastName', () => {
+			const firstThenLast = true;
 			const displayName = list._formatDisplayName(
 				{
 					displayName: {
@@ -649,9 +650,25 @@ import SirenParse from 'siren-parser';
 						lastName: 'lastName',
 						defaultDisplayName: ''
 					}
-				}
+				},
+				firstThenLast
 			);
 			assert.equal('firstName lastName', displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is lastNameFirstName', () => {
+			const firstThenLast = true;
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: 'firstName',
+						lastName: 'lastName',
+						defaultDisplayName: ''
+					}
+				},
+				!firstThenLast
+			);
+			assert.equal('lastName, firstName', displayName);
 		});
 
 		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
@@ -706,6 +723,44 @@ import SirenParse from 'siren-parser';
 
 			const name = list._tryGetName(SirenParse(userEntity), nameRel, 'defaultValue');
 			assert.equal(name, expectedName);
+		});
+
+		test('firstName begins before lastName, clicking lastName puts it before firstName and clicking firstName puts it before lastName', (done) => {
+
+			var nameHeaders = list._headerColumns[0].headers;
+			assert.equal('firstName', nameHeaders[0].key);
+
+			list._headerColumns[0].headers[0].canSort = true;
+			list._headerColumns[0].headers[1].canSort = true;
+
+			flush(function() {
+				var lastNameHeader = list.shadowRoot.querySelector('#lastName');
+
+				var verifyFirstNameNameFirst = function() {
+					assert.equal('firstName', nameHeaders[0].key);
+					assert.equal(',', nameHeaders[0].suffix);
+					assert.equal('', nameHeaders[1].suffix);
+
+					done();
+				};
+
+				var verifyLastNameFirst = function() {
+					assert.equal('lastName', nameHeaders[0].key);
+					assert.equal(',', nameHeaders[0].suffix);
+					assert.equal('', nameHeaders[1].suffix);
+
+					lastNameHeader.removeEventListener('click', verifyLastNameFirst);
+
+					var firstNameHeader = list.shadowRoot.querySelector('#firstName');
+					firstNameHeader.addEventListener('click', verifyFirstNameNameFirst);
+
+					MockInteractions.tap(firstNameHeader);
+				};
+
+				lastNameHeader.addEventListener('click', verifyLastNameFirst);
+				MockInteractions.tap(lastNameHeader);
+
+			});
 		});
 
 	});
