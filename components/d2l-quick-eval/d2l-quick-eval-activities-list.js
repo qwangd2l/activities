@@ -17,7 +17,7 @@ import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
 import './d2l-quick-eval-skeleton.js';
-import './d2l-quick-eval-skeleton-no-headers';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 
 /**
  * @customElement
@@ -49,9 +49,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
 				}
-				d2l-quick-eval-skeleton-no-headers {
-					width: 100%;
-				}
 				d2l-quick-eval-skeleton {
 					width: 100%;
 				}
@@ -73,6 +70,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 				d2l-activity-evaluation-icon-base {
 					padding-left: 0.6rem;
+				}
+				d2l-loading-spinner {
+					width: 100%;
 				}
 				:host(:dir(rtl)) d2l-activity-evaluation-icon-base {
 					padding-left: 0;
@@ -196,7 +196,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
 			<d2l-quick-eval-skeleton hidden$="[[!_fullListLoading]]"></d2l-quick-eval-skeleton>
-	     	<d2l-quick-eval-skeleton-no-headers hidden$="[[!_isLoadingMore(_fullListLoading,_loading)]]"></d2l-quick-eval-skeleton-no-headers>
+	     	<d2l-loading-spinner size="80" hidden$="[[!_isLoadingMore(_fullListLoading,_loading)]]"></d2l-loading-spinner>
 
 			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
 				<div class="d2l-quick-eval-activities-list-load-more-container">
