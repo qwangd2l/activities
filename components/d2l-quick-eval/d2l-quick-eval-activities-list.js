@@ -324,7 +324,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	_isLoadingMore(fullListLoading, isLoading) {
 		return !fullListLoading && isLoading;
 	}
-  
+
 	_computeNumberOfCurrentlyShownActivities(data) {
 		return data.length;
 	}
