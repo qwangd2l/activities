@@ -165,33 +165,33 @@ import SirenParse from 'siren-parser';
 			var alert = list.shadowRoot.querySelector('#list-alert');
 			assert.equal(true, alert.hasAttribute('hidden'));
 		});
-		test('_fullListLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
-			assert.equal(loadingSpinner.hidden, false);
+		test('_fullListLoading and _loading are set to true before data is loaded, and loading-skeleton is present', () => {
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
+			assert.equal(loadingskeleton.hidden, false);
 			assert.equal(list._fullListLoading, true);
 			assert.equal(list._loading, true);
 		});
-		test('_fullListLoading and _loading is set to false after data is loaded and the loading spinner is hidden', (done) => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+		test('_fullListLoading and _loading is set to false after data is loaded and the loading skeleton is hidden', (done) => {
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(loadingskeleton.hidden, true);
 				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 				done();
 			});
 		});
 		test('setLoadingState lets consumers control the table loading', (done) => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(loadingskeleton.hidden, true);
 				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 
 				list.setLoadingState(true);
 				requestAnimationFrame(function() {
-					assert.equal(loadingSpinner.hidden, false);
+					assert.equal(loadingskeleton.hidden, false);
 					assert.equal(list._fullListLoading, true);
 					assert.equal(list._loading, true);
 					done();

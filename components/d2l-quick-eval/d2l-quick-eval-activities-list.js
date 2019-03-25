@@ -4,7 +4,6 @@ import 'd2l-alert/d2l-alert.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
@@ -17,6 +16,8 @@ import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
+import './d2l-quick-eval-skeleton.js';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 
 /**
  * @customElement
@@ -50,7 +51,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
 				}
-				d2l-loading-spinner {
+				d2l-quick-eval-skeleton {
 					width: 100%;
 				}
 				d2l-alert {
@@ -71,6 +72,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 				d2l-activity-evaluation-icon-base {
 					padding-left: 0.6rem;
+				}
+				d2l-loading-spinner {
+					width: 100%;
 				}
 				:host(:dir(rtl)) d2l-activity-evaluation-icon-base {
 					padding-left: 0;
@@ -193,7 +197,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				[[localize(_health.errorMessage)]]
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
-			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
+			<d2l-quick-eval-skeleton hidden$="[[!_fullListLoading]]"></d2l-quick-eval-skeleton>
+	     	<d2l-loading-spinner size="80" hidden$="[[!_isLoadingMore(_fullListLoading,_loading)]]"></d2l-loading-spinner>
+
 			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
 				<div class="d2l-quick-eval-activities-list-load-more-container">
 					<d2l-button class="d2l-quick-eval-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
@@ -315,6 +321,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	setLoadingState(state) {
 		this.set('_fullListLoading', state);
 		this.set('_loading', state);
+	}
+
+	_isLoadingMore(fullListLoading, isLoading) {
+		return !fullListLoading && isLoading;
 	}
 
 	_computeNumberOfCurrentlyShownActivities(data) {
