@@ -28,13 +28,16 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	static get template() {
 		const quickEvalActivitiesListTemplate = html`
 			<style include="d2l-table-style">
+				.d2l-quick-eval-table {
+					--d2l-table-body-background-color: transparent;
+					--d2l-table-light-header-background-color: transparent;
+				}
 				d2l-td {
 					font-size: 0.7rem;
 				}
 				d2l-td.d2l-username-column {
 					font-size: 0.8rem;
 				}
-
 				.d2l-user-badge-image {
 					display: inline-block;
 					padding-right: 0.6rem;
@@ -44,7 +47,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					padding-right: 0;
 					padding-left: 0.6rem;
 				}
-
 				/* Needed for Edge */
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
@@ -120,7 +122,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 			</style>
 			<d2l-offscreen id="d2l-quick-eval-activities-list-table-summary">[[localize('tableTitle')]]</d2l-offscreen>
-			<d2l-table type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-quick-eval-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
+			<d2l-table class="d2l-quick-eval-table" type="light" hidden$="[[_fullListLoading]]" aria-describedby$="d2l-quick-eval-activities-list-table-summary" aria-colcount$="[[_headerColumns.length]]" aria-rowcount$="[[_data.length]]">
 				<d2l-thead>
 					<d2l-tr>
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
@@ -164,12 +166,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									<template is="dom-if" if="[[s.userHref]]">
 										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s)]]</d2l-offscreen>
 									<d2l-link
-										title="[[localize('evaluate', 'displayName', s.displayName)]]"
+										title="[[_localizeEvaluationText(s)]]"
 										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
-									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
+									>[[_formatDisplayName(s)]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td class="d2l-quick-eval-truncated-column d2l-activity-name-column">
@@ -267,6 +269,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				type: Array,
 				value: [ ]
 			},
+			_numberOfCurrentlyShownActivities: {
+				type: Number,
+				computed: '_computeNumberOfCurrentlyShownActivities(_data)'
+			},
 			_fullListLoading: {
 				type: Boolean,
 				value: true
@@ -318,6 +324,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	_isLoadingMore(fullListLoading, isLoading) {
 		return !fullListLoading && isLoading;
 	}
+  
+	_computeNumberOfCurrentlyShownActivities(data) {
+		return data.length;
+	}
+
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
@@ -427,7 +438,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this._performSirenActionWithQueryParams(collectionAction);
+				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
+				const collection = this._performSirenActionWithQueryParams(collectionAction, customParams);
 				return collection;
 			}).bind(this))
 			.then((collection => {
@@ -615,13 +627,66 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			});
 	}
 
+	_localizeEvaluationText(
+		data
+	) {
+		const formattedDisplayName = this._formatDisplayName(data);
+		return this.localize('evaluate', 'displayName', formattedDisplayName);
+	}
+
+	_formatDisplayName(
+		data
+	) {
+		const firstName = data.displayName.firstName;
+		const lastName = data.displayName.lastName;
+		const defaultDisplayName = data.displayName.defaultDisplayName;
+
+		if (!lastName && !firstName) {
+			return defaultDisplayName;
+		}
+		if (!lastName) {
+			return firstName;
+		}
+		if (!firstName) {
+			return lastName;
+		}
+		return firstName + ' ' + lastName;
+	}
+
+	_tryGetName(
+		entity,
+		rel,
+		defaultValue
+	) {
+		if (!entity || !entity.hasSubEntityByRel(rel)) {
+			return defaultValue;
+		}
+
+		const subEntity =  entity.getSubEntityByRel(rel);
+		if (!subEntity || !subEntity.properties || subEntity.hasClass('default-name')) {
+			return defaultValue;
+		}
+
+		return subEntity.properties.name;
+	}
+
 	_getUserPromise(entity, item) {
 		return this._followLink(entity, Rels.user)
 			.then(function(u) {
-				if (u && u.entity && u.entity.hasSubEntityByRel(Rels.displayName)) {
-					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
+				if (u && u.entity) {
+					const firstName = this._tryGetName(u.entity, Rels.firstName, null);
+					const lastName = this._tryGetName(u.entity, Rels.lastName, null);
+					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
+
+					const displayName = {
+						'firstName': firstName,
+						'lastName': lastName,
+						'defaultDisplayName': defaultDisplayName
+					};
+
+					item.displayName = displayName;
 				}
-			});
+			}.bind(this));
 	}
 
 	_getUserHref(entity) {
@@ -691,7 +756,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		);
 	}
 
-	_performSirenActionWithQueryParams(action) {
+	_performSirenActionWithQueryParams(action, customParams) {
 		const url = new URL(action.href, window.location.origin);
 
 		if (!action.fields) {
@@ -703,6 +768,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				action.fields.push({name: key, value: value, type: 'hidden'});
 			}
 		});
+
+		if (customParams) {
+			Object.keys(customParams).forEach(function(paramName) {
+				action.fields.push({name: paramName, value: customParams[paramName], type: 'hidden'});
+			});
+		}
 
 		return this.performSirenAction(action);
 	}

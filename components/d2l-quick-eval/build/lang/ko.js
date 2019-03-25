@@ -20,7 +20,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 			'lastName': 'Last Name',
 			'loadMore': '더 많이 로드',
 			'loading': '로드 중',
-			'masterTeacher': 'Master Teacher',
+			'masterTeacher': 'Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',

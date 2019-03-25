@@ -20,7 +20,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'lastName': 'Last Name',
 			'loadMore': 'Ladda mer',
 			'loading': 'Laddar',
-			'masterTeacher': 'Master Teacher',
+			'masterTeacher': 'Teacher',
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',

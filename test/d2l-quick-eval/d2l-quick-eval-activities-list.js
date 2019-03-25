@@ -1,4 +1,5 @@
 import '@polymer/iron-test-helpers/mock-interactions.js';
+import SirenParse from 'siren-parser';
 
 (function() {
 	var list;
@@ -18,7 +19,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			var activityColumns = [];
 
-			activityColumns.push({ text: item.displayName, href: item.activityLink });
+			activityColumns.push({ text: item.displayName.defaultDisplayName, href: item.activityLink });
 			activityColumns.push({ href: item.activityNameHref });
 			activityColumns.push({ text: item.courseName });
 			activityColumns.push({ text: item.submissionDate });
@@ -67,7 +68,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 	var expectedData = [
 		{
-			displayName: 'Special User Name',
+			displayName: { firstName: 'Special User', lastName: 'Name', defaultDisplayName: 'Special User Name' },
 			userHref: 'data/userUnique.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
@@ -77,7 +78,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: true
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
@@ -87,7 +88,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: false
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
@@ -111,7 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 	var expectedNextData = [
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
@@ -121,7 +122,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: true
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
@@ -131,7 +132,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: false
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
@@ -147,7 +148,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		['Course'],
 		['Submission Date']
 	];
-	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Master Teacher']]);
+	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Teacher']]);
 
 	suite('d2l-quick-eval-activities-list', function() {
 		setup(function() {
@@ -410,6 +411,27 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
 		});
+		test('when calling perform siren action with no query params and custom params, fields contain custom params', () => {
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET'
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(Object.keys(customParams).length, fields.length);
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
+		});
 		test('when calling perform siren action with query params, the query params are added as fields', () => {
 
 			const action = {
@@ -454,6 +476,44 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
+		});
+		test('when calling perform siren action with query params and custom params, fields contain query params and custom params', () => {
+
+			const defaultParams = [
+				{
+					type: 'hidden',
+					name : 'testname',
+					value: 'testvalue'
+				},
+				{
+					type: 'hidden',
+					name : 'anothertestname',
+					value: 'anothertestvalue'
+				}
+			];
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET',
+				fields : defaultParams
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(4, fields.length);
+
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'testname' && elm.value === 'testvalue'; }));
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'anothertestname' && elm.value === 'anothertestvalue'; }));
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
 		});
 		test('when parsing url for sort and filter params and url is null, return empty array', () => {
 
@@ -551,6 +611,101 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			var evalLink = list._buildRelativeUri(url, params);
 			assert.equal(evalLink, expectedEvalLink);
+		});
+
+		test('_formatDisplayName return firstName when firstName defined and lastName undefined', () => {
+			const expectedDisplayName = 'firstName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: expectedDisplayName,
+						lastName: '',
+						defaultDisplayName: ''
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return lastName when firstName undefined and lastName defined', () => {
+			const expectedDisplayName = 'lastName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: '',
+						lastName: expectedDisplayName,
+						defaultDisplayName: ''
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined', () => {
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: 'firstName',
+						lastName: 'lastName',
+						defaultDisplayName: ''
+					}
+				}
+			);
+			assert.equal('firstName lastName', displayName);
+		});
+
+		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
+			const expectedDisplayName = 'displayName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: '',
+						lastName: '',
+						defaultDisplayName: expectedDisplayName
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_tryGetName returns default value when subentity has class "default-name"', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'defaultValue';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': ['default-name'],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': 'someName'
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, expectedName);
+			assert.equal(name, expectedName);
+		});
+
+		test('_tryGetName returns expected name value name subentity is valid', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'expectedName';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': [],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': expectedName
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, 'defaultValue');
+			assert.equal(name, expectedName);
 		});
 
 	});
