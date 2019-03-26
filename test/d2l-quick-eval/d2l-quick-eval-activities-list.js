@@ -552,6 +552,41 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var evalLink = list._buildRelativeUri(url, params);
 			assert.equal(evalLink, expectedEvalLink);
 		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher off)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate'];
+			const expectedCssClasses = ['d2l-quick-eval-30-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-20-column'];
 
+			for (let i = 0; i < 4; i++) {
+				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
+				assert.equal(actualCssClass, expectedCssClasses[i]);
+			}
+		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher on)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate', 'masterTeacher'];
+			const expectedCssClasses = ['d2l-quick-eval-25-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-15-column', 'd2l-quick-eval-20-column'];
+
+			list.masterTeacher = true;
+
+			for (let i = 0; i < 5; i++) {
+				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
+				assert.equal(actualCssClass, expectedCssClasses[i]);
+			}
+		});
+		test('_getWidthCssClass throws an error when passed an invalid column key', () => {
+			try {
+				list._getWidthCssClass('notARealColumnKey');
+			} catch (err) {
+				assert.equal(err.message, 'Invalid column key');
+			}
+		});
+		test('_getWidthCssClass throws an error when passed an invalid column key (with master teacher on)', () => {
+			list.masterTeacher = true;
+
+			try {
+				list._getWidthCssClass('notARealColumnKey');
+			} catch (err) {
+				assert.equal(err.message, 'Invalid column key');
+			}
+		});
 	});
 })();
