@@ -11,37 +11,16 @@ function resetSortHeaders(list) {
 	});
 }
 
-function stubPerformSirenAction(list, mappings) {
-	const oldPerformSirenAction = list.performSirenAction.bind(list);
+function stubLoadSorts(list, entity, enabledSorts) {
+	const stub = sinon.stub(list, '_followLink');
 
-	list.performSirenAction = (action, fields) => {
-		if (mappings[action.name]) {
-			return Promise.resolve(SirenParse(mappings[action.name]));
-		}
-		return oldPerformSirenAction(action, fields);
-	};
-}
-
-function stubFollowLink(list, mappings) {
-	const oldFollowLink = list._followLink.bind(list);
-
-	list._followLink = (entity, rel) => {
-		if (mappings[rel]) {
-			return Promise.resolve({ entity: SirenParse(mappings[rel]) });
-		}
-		return oldFollowLink(entity, rel);
+	const sortEntity = {
+		entities: enabledSorts.map(sort => formatSort(sort.className, sort.applied, sort.direction, sort.priority))
 	};
 
-	return oldFollowLink;
-}
+	stub.withArgs(entity, Rels.sorts).returns(Promise.resolve({ entity: SirenParse(sortEntity) }));
 
-function enableSorts(list, sorts) {
-	const sortEntities = sorts.map(formatSimpleSort);
-	const sortsEntity = formatSimpleSorts(sortEntities);
-
-	const mappings = {};
-	mappings[Rels.sorts] = sortsEntity;
-	return stubFollowLink(list, mappings);
+	return stub;
 }
 
 suite('d2l-quick-eval-activities-list-sorting', () => {
@@ -57,147 +36,202 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 		expect(list._headerColumns.filter(column => column.headers.some(h => h.canSort))).to.be.empty;
 	});
 
-	test('_loadSorts silently does nothing on null entity', () => {
-		return list._loadSorts(null);
-	});
+	suite('_loadSorts', () => {
+		test('_loadSorts silently does nothing on null entity', () => {
+			return list._loadSorts(null);
+		});
 
-	test('_loadSorts determines which headers are sortable', () => {
-		const enabledSortClasses = ['activity-name', 'course-name'];
-		enableSorts(list, enabledSortClasses);
+		suite('_loadSorts error cases', () => {
+			const testData = [
+				{
+					name: 'null sortEntity',
+					sortEntity: Promise.resolve(null)
+				},
+				{
+					name: 'null sortEntity.entity',
+					sortEntity: Promise.resolve({ entity: null })
+				},
+				{
+					name: '_followLink rejection',
+					sortEntity: Promise.reject()
+				}
+			];
 
-		const entity = formatCollection();
+			testData.forEach(testCase => {
+				test('_loadSorts rejects on ' + testCase.name, (done) => {
+					const stub = sinon.stub(list, '_followLink');
+					const entity = {};
 
-		return list._loadSorts(entity)
-			.then(() => {
-				const enabledSorts = list._headerColumns
-					.map (column => column.headers)
-					.reduce((acc, val) => acc.concat(val), []) // flatten
-					.filter(h => h.canSort)
-					.map(h => h.sortClass);
+					stub.withArgs(entity, Rels.sorts)
+						.returns(testCase.sortEntity);
 
-				expect(enabledSorts).to.have.same.members(enabledSortClasses);
-			});
-	});
-
-	test('_loadSorts rejects on bad sort entity', (done) => {
-		const mappings = {};
-		mappings[Rels.sorts] = null;
-		stubFollowLink(list, mappings);
-
-		const entity = formatCollection();
-
-		list._loadSorts(entity)
-			.then(() => {
-				done('_loadSorts should have rejected');
-			})
-			.catch((err) => {
-				expect(err.toString()).to.equal('Error: Could not load sorts endpoint');
-				done();
-			})
-			.catch((err) => {
-				done(err);
-			});
-	});
-
-	test('_updateSortState a header we can\'t find does nothing', (done) => {
-		const e = {
-			currentTarget: {}
-		};
-
-		list._updateSortState(e)
-			.then(() => {
-				done('_updateSortState should have rejected');
-			})
-			.catch((err) => {
-				expect(err.toString()).to.equal('Error: Could not find sortable header for undefined');
-				done();
-			})
-			.catch((err) => {
-				done(err);
-			});
-	});
-
-	test('_updateSortState an unsortable header does nothing', (done) => {
-		const e = {
-			currentTarget: {
-				id: 'activityName'
-			}
-		};
-
-		list._updateSortState(e)
-			.then(() => {
-				done('_updateSortState should have rejected');
-			})
-			.catch((err) => {
-				expect(err.toString()).to.equal('Error: Could not find sortable header for activityName');
-				done();
-			})
-			.catch((err) => {
-				done(err);
-			});
-	});
-
-	test('clicking a header sorts column ascending', () => {
-		const mappings = {};
-		mappings['sort-ascending'] = formatSimpleSorts([]);
-		mappings['apply'] = formatCollection();
-		stubPerformSirenAction(list, mappings);
-		const enabledSort = 'activity-name';
-		enableSorts(list, [enabledSort]);
-
-		const e = {
-			currentTarget: {
-				id: 'activityName'
-			}
-		};
-
-		return list._loadSorts(formatCollection())
-			.then(() => {
-				return list._updateSortState(e).then(() => {
-					expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
+					list._loadSorts(entity)
+						.then(() => {
+							done('_loadSorts should have rejected');
+						})
+						.catch(() => {
+							done();
+						})
+						.catch((err) => {
+							done(err);
+						});
 				});
 			});
+		});
+
+		test('_loadSorts determines which headers are sortable', () => {
+			const enabledSortClasses = [{ className:'activity-name' }, {className: 'course-name' }];
+			const entity = {};
+
+			stubLoadSorts(list, entity, enabledSortClasses);
+
+			return list._loadSorts(entity)
+				.then(() => {
+					const enabledSorts = list._headerColumns
+						.map(column => column.headers)
+						.reduce((acc, val) => acc.concat(val), []) // flatten
+						.filter(h => h.canSort)
+						.map(h => h.sortClass);
+
+					expect(enabledSorts).to.have.same.members(enabledSortClasses.map(x => x.className));
+				});
+		});
+		test('_loadSorts only sets the primary sort header to sorted', () => {
+			const enabledSortClasses = [
+				{ className: 'first-name', applied: true, direction: 'descending', priority: 0 },
+				{ className: 'completion-date', applied: true, direction: 'ascending', priority: 1 },
+				{ className: 'last-name', applied: false }
+			];
+			const entity = {};
+
+			stubLoadSorts(list, entity, enabledSortClasses);
+
+			return list._loadSorts(entity)
+				.then(() => {
+					const activeSorts = list._headerColumns
+						.map(column => column.headers)
+						.reduce((acc, val) => acc.concat(val), []) // flatten
+						.filter(h => h.sorted);
+
+					expect(activeSorts).to.have.lengthOf(1);
+					expect(activeSorts[0]).to.have.property('sortClass', 'first-name');
+					expect(activeSorts[0]).to.have.property('desc', true);
+				});
+		});
 	});
 
-	test('clicking a header twice sorts column descending', () => {
-		const mappings = {};
-		mappings['sort-ascending'] = formatSimpleSorts([]);
-		mappings['sort-descending'] = formatSimpleSorts([]);
-		mappings['apply'] = formatCollection();
-		stubPerformSirenAction(list, mappings);
-		const enabledSort = 'activity-name';
-		enableSorts(list, [enabledSort]);
+	suite('_updateSortState', () => {
+		suite('_updateSortState error cases', () => {
+			const testData = [
+				{
+					name: 'header not found',
+					currentTarget: {}
+				},
+				{
+					name: 'unsortable header',
+					currentTarget: 'activityName'
+				}
+			];
+			testData.forEach(testCase => {
+				test(testCase.name, (done) => {
+					var stub = sinon.stub(list, '_fetchSortedData');
+					const e = {
+						currentTarget: testCase.currentTarget
+					};
 
-		const e = {
-			currentTarget: {
-				id: 'activityName'
-			}
-		};
-		return list._loadSorts(formatCollection())
-			.then(() => {
-				return list._updateSortState(e).then(() => {
-					return list._updateSortState(e).then(() => {
-						expect(list.entity).to.deep.equal(SirenParse(mappings['apply']));
+					list._updateSortState(e)
+						.then(() => {
+							done('_updateSortState should have rejected');
+						})
+						.catch(() => {
+							expect(stub.notCalled, '_fetchSortedData should not be called').to.be.true;
+							done();
+						})
+						.catch((err) => {
+							done(err);
+						});
+				});
+			});
+		});
+
+		suite('_updateSortState only sets sortable header to sorted', () => {
+			const testData = [
+				{
+					name: 'ascending',
+					desc: false
+				},
+				{
+					name: 'descending',
+					desc: true
+				}
+			];
+
+			testData.forEach(testCase => {
+				test(testCase.name, () => {
+					const activeSortKey = 'activityName';
+					const stub = sinon.stub(list, '_fetchSortedData', () => Promise.resolve());
+					const e = {
+						currentTarget: {
+							id: activeSortKey
+						}
+					};
+
+					list._headerColumns.forEach(column => {
+						column.headers.forEach(header => {
+							if (header.key === activeSortKey) {
+								header.canSort = true;
+								header.desc = !testCase.desc;
+								header.sorted = testCase.desc;
+							}
+						});
 					});
+
+					return list._updateSortState(e)
+						.then(() => {
+							const activeSorts = list._headerColumns
+								.map(column => column.headers)
+								.reduce((acc, val) => acc.concat(val), []) // flatten
+								.filter(h => h.sorted);
+
+							expect(activeSorts).to.have.lengthOf(1);
+							expect(activeSorts[0]).to.have.property('key', activeSortKey);
+							expect(activeSorts[0]).to.have.property('desc', testCase.desc);
+							expect(stub.withArgs('activity-name', testCase.desc).calledOnce).to.be.true;
+						});
 				});
 			});
+		});
 	});
 
-});
+	suite('_fetchSortedData', () => {
+		test('_fetchSortedData correctly fetches data', () => {
+			const appliedSortClass = 'activity-name';
+			const activityNameSort = formatSort(appliedSortClass);
+			const sorts = SirenParse(formatSimpleSorts([activityNameSort]));
+			const sortAction = sorts.getSubEntityByClass(appliedSortClass).getActionByName('sort-ascending');
+			const applyAction = sorts.getActionByName('apply');
+			const collection = {};
 
-function formatCollection() {
-	return {
-		'links': [
-			{
-				'rel': [
-					Rels.sorts
-				],
-				'href': 'not used'
-			}
-		],
-		'entities': []
-	};
-}
+			const followLinkStub = sinon.stub(list, '_followLink');
+			const performActionStub = sinon.stub(list, '_performSirenActionWithQueryParams');
+			const sortUpdatedStub = sinon.stub(list, '_dispatchSortUpdatedEvent');
+			const loadDataStub = sinon.stub(list, '_loadData');
+			const loadSortsStub = sinon.stub(list, '_loadSorts');
+
+			followLinkStub.withArgs(list.entity, Rels.sorts).returns(Promise.resolve({ entity: sorts }));
+			performActionStub.withArgs(sortAction).returns(sorts);
+			performActionStub.withArgs(applyAction).returns(collection);
+
+			return list._fetchSortedData('activity-name', false)
+				.then(actual => {
+					expect(sortUpdatedStub.withArgs(collection).calledOnce).to.be.true;
+					expect(loadDataStub.withArgs(collection).calledOnce).to.be.true;
+					expect(loadSortsStub.withArgs(collection).calledOnce).to.be.true;
+					expect(actual).to.deep.equal(collection);
+				});
+		});
+	});
+});
 
 function formatSimpleSorts(sortEntities) {
 	return {
@@ -219,10 +253,15 @@ function formatSimpleSorts(sortEntities) {
 	};
 }
 
-function formatSimpleSort(klass) {
+function formatSort(klass, applied, direction, priority) {
 	return {
 		rel: ['https://api.brightspace.com/rels/sort'],
 		class: ['sort', klass],
+		properties: {
+			applied: applied,
+			direction: direction,
+			priority: priority
+		},
 		actions: [
 			{
 				name: 'sort-ascending',
