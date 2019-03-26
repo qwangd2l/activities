@@ -667,7 +667,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 		if (!this._organizationUrl) {
 			return;
 		}
-		var match = /[0-9]+$/.exec(this._organizationUrl);
+		const match = /[0-9]+$/.exec(this._organizationUrl);
 
 		if (!match) {
 			return;

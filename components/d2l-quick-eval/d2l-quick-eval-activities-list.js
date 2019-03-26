@@ -471,7 +471,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 		try {
 			if (entity.entities) {
-				var result = await this._parseActivities(entity);
+				const result = await this._parseActivities(entity);
 				this._data = result;
 			} else {
 				this._data = [];
@@ -494,12 +494,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			this._followHref(this._pageNextHref)
 				.then(async function(u) {
 					if (u && u.entity) {
-						var tbody = this.shadowRoot.querySelector('d2l-tbody');
-						var lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
+						const tbody = this.shadowRoot.querySelector('d2l-tbody');
+						const lastFocusableTableElement = D2L.Dom.Focus.getLastFocusableDescendant(tbody, false);
 
 						try {
 							if (u.entity.entities) {
-								var result = await this._parseActivities(u.entity);
+								const result = await this._parseActivities(u.entity);
 								this._data = this._data.concat(result);
 							}
 						} catch (e) {
@@ -508,7 +508,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 						} finally {
 							this._loading = false;
 							window.requestAnimationFrame(function() {
-								var newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
+								const newElementToFocus = D2L.Dom.Focus.getNextFocusable(lastFocusableTableElement, false);
 								if (newElementToFocus) {
 									newElementToFocus.focus();
 								}
@@ -537,7 +537,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_followLink(entity, rel) {
-		var href = this._getHref(entity, rel);
+		const href = this._getHref(entity, rel);
 		return this._followHref(href);
 	}
 
@@ -556,13 +556,13 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	async _parseActivities(entity) {
-		var extraParams = this._getExtraParams(this._getHref(entity, 'self'));
+		const extraParams = this._getExtraParams(this._getHref(entity, 'self'));
 
-		var promises = [];
+		const promises = [];
 		entity.entities.forEach(function(activity) {
 			promises.push(new Promise(function(resolve) {
 
-				var item = {
+				const item = {
 					displayName: '',
 					userHref: this._getUserHref(activity),
 					courseName: '',
@@ -573,9 +573,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					isDraft: this._determineIfActivityIsDraft(activity)
 				};
 
-				var getUserName = this._getUserPromise(activity, item);
-				var getCourseName = this._getCoursePromise(activity, item);
-				var getMasterTeacherName =
+				const getUserName = this._getUserPromise(activity, item);
+				const getCourseName = this._getCoursePromise(activity, item);
+				const getMasterTeacherName =
 					this._shouldDisplayColumn('masterTeacher')
 						? this._getMasterTeacherPromise(activity, item)
 						: Promise.resolve();
@@ -595,7 +595,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 	_determineIfActivityIsDraft(activity) {
 		if (activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
-			var evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
+			const evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
 			if (evaluation.properties && evaluation.properties.state === 'Draft') {
 				return true;
 			}
@@ -613,7 +613,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			}.bind(this))
 			.then(function(enrollment) {
 				if (enrollment && enrollment.entity && enrollment.entity.hasSubEntityByRel(Rels.userEnrollment)) {
-					var userEnrollment = enrollment.entity.getSubEntityByRel(Rels.userEnrollment);
+					const userEnrollment = enrollment.entity.getSubEntityByRel(Rels.userEnrollment);
 					if (userEnrollment.href) {
 						return this._followHref(userEnrollment.href);
 					}
@@ -727,7 +727,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 	_getSubmissionDate(entity) {
 		if (entity.hasSubEntityByClass('localized-formatted-date')) {
-			var i = entity.getSubEntityByClass('localized-formatted-date');
+			const i = entity.getSubEntityByClass('localized-formatted-date');
 			return i.properties.text;
 		}
 		return '';
@@ -735,17 +735,17 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 	_getRelativeUriProperty(entity, extraParams) {
 		if (entity.hasSubEntityByClass(Classes.relativeUri)) {
-			var i = entity.getSubEntityByClass(Classes.relativeUri);
+			const i = entity.getSubEntityByClass(Classes.relativeUri);
 			return this._buildRelativeUri(i.properties.path, extraParams);
 		}
 		return '';
 	}
 
 	_getDataProperty(item, prop) {
-		var result;
+		let result;
 		if (Array.isArray(prop) && prop.length > 0) {
 			result = item;
-			for (var i = 0; i < prop.length; i++) {
+			for (let i = 0; i < prop.length; i++) {
 				result = result[prop[i]];
 			}
 		} else {
@@ -803,7 +803,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 		const extraParams = [];
 
-		var filterVal = this._getQueryStringParam('filter', url);
+		const filterVal = this._getQueryStringParam('filter', url);
 		if (filterVal) {
 			extraParams.push(
 				{
@@ -812,7 +812,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 			);
 		}
-		var sortVal = this._getQueryStringParam('sort', url);
+		const sortVal = this._getQueryStringParam('sort', url);
 		if (sortVal) {
 			extraParams.push(
 				{

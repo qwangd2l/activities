@@ -41,7 +41,7 @@ function applySorts(activities, sorts, sortState) {
 }
 
 function createPageEndpoint(activities, sorts, filtersHref, sortsHref) {
-	var shouldFailOnLastLoadFirstTime = true;
+	let shouldFailOnLastLoadFirstTime = true;
 
 	return (url) => {
 
