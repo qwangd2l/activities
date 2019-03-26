@@ -4,7 +4,6 @@ import 'd2l-alert/d2l-alert.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
@@ -17,6 +16,8 @@ import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
+import './d2l-quick-eval-skeleton.js';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 
 /**
  * @customElement
@@ -50,7 +51,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				d2l-table-col-sort-button span {
 					color: var(--d2l-color-ferrite);
 				}
-				d2l-loading-spinner {
+				d2l-quick-eval-skeleton {
 					width: 100%;
 				}
 				d2l-alert {
@@ -83,6 +84,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 				d2l-activity-evaluation-icon-base {
 					padding-left: 0.6rem;
+				}
+				d2l-loading-spinner {
+					width: 100%;
 				}
 				:host(:dir(rtl)) d2l-activity-evaluation-icon-base {
 					padding-left: 0;
@@ -174,12 +178,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									<template is="dom-if" if="[[s.userHref]]">
 										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[localize('evaluate', 'displayName', s.displayName)]]</d2l-offscreen>
+									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]</d2l-offscreen>
 									<d2l-link
-										title="[[localize('evaluate', 'displayName', s.displayName)]]"
+										title="[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]"
 										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
-									>[[_getDataProperty(s, 'displayName')]]</d2l-link>
+									>[[_formatDisplayName(s, _headerColumns.0.meta.firstThenLast)]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
 								<d2l-td class="d2l-quick-eval-truncated-column d2l-activity-name-column">
@@ -205,7 +209,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				[[localize(_health.errorMessage)]]
 			</d2l-alert>
 			<d2l-offscreen role="alert" aria-live="aggressive" hidden$="[[!_loading]]">[[localize('loading')]]</d2l-offscreen>
-			<d2l-loading-spinner size="80" hidden$="[[!_loading]]"></d2l-loading-spinner>
+			<d2l-quick-eval-skeleton hidden$="[[!_fullListLoading]]"></d2l-quick-eval-skeleton>
+	     	<d2l-loading-spinner size="80" hidden$="[[!_isLoadingMore(_fullListLoading,_loading)]]"></d2l-loading-spinner>
+
 			<template is="dom-if" if="[[_shouldShowLoadMore(_pageNextHref, _loading)]]">
 				<div class="d2l-quick-eval-activities-list-load-more-container">
 					<d2l-button class="d2l-quick-eval-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
@@ -248,6 +254,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				value: [
 					{
 						key: 'displayName',
+						meta: { firstThenLast: true },
 						headers: [
 							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false, sorted: false, desc: false  },
 							{ key: 'lastName', sortClass: 'last-name', canSort: false, sorted: false, desc: false  }
@@ -274,6 +281,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			_data: {
 				type: Array,
 				value: [ ]
+			},
+			_numberOfCurrentlyShownActivities: {
+				type: Number,
+				computed: '_computeNumberOfCurrentlyShownActivities(_data)'
 			},
 			_fullListLoading: {
 				type: Boolean,
@@ -303,7 +314,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	static get observers() {
 		return [
 			'_loadData(entity)',
-			'_loadSorts(entity)'
+			'_loadSorts(entity)',
+			'_handleNameSwap(_headerColumns.0.headers.*)'
 		];
 	}
 	ready() {
@@ -321,6 +333,25 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	setLoadingState(state) {
 		this.set('_fullListLoading', state);
 		this.set('_loading', state);
+	}
+
+	_isLoadingMore(fullListLoading, isLoading) {
+		return !fullListLoading && isLoading;
+	}
+
+	_computeNumberOfCurrentlyShownActivities(data) {
+		return data.length;
+	}
+
+	_handleNameSwap(entry) {
+		if (entry && entry.path.endsWith('1.sorted')) {
+			const tmp = this._headerColumns[0].headers[0];
+			this.set('_headerColumns.0.headers.0', this._headerColumns[0].headers[1]);
+			this.set('_headerColumns.0.headers.1', tmp);
+			this.set('_headerColumns.0.headers.0.suffix', ',');
+			this.set('_headerColumns.0.headers.1.suffix', '');
+			this.set('_headerColumns.0.meta.firstThenLast', this._headerColumns[0].headers[0].key === 'firstName');
+		}
 	}
 
 	_myEntityStoreFetch(url) {
@@ -432,7 +463,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				return action;
 			}).bind(this))
 			.then((collectionAction => {
-				const collection = this._performSirenActionWithQueryParams(collectionAction);
+				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
+				const collection = this._performSirenActionWithQueryParams(collectionAction, customParams);
 				return collection;
 			}).bind(this))
 			.then((collection => {
@@ -620,13 +652,73 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			});
 	}
 
+	_localizeEvaluationText(
+		data,
+		firstThenLast
+	) {
+		const formattedDisplayName = this._formatDisplayName(data, firstThenLast);
+		return this.localize('evaluate', 'displayName', formattedDisplayName);
+	}
+
+	_formatDisplayName(
+		data,
+		firstThenLast
+	) {
+		const firstName = data.displayName.firstName;
+		const lastName = data.displayName.lastName;
+		const defaultDisplayName = data.displayName.defaultDisplayName;
+
+		if (!lastName && !firstName) {
+			return defaultDisplayName;
+		}
+		if (!lastName) {
+			return firstName;
+		}
+		if (!firstName) {
+			return lastName;
+		}
+
+		if (firstThenLast) {
+			return firstName + ' ' + lastName;
+		}
+
+		return lastName + ', ' + firstName;
+	}
+
+	_tryGetName(
+		entity,
+		rel,
+		defaultValue
+	) {
+		if (!entity || !entity.hasSubEntityByRel(rel)) {
+			return defaultValue;
+		}
+
+		const subEntity =  entity.getSubEntityByRel(rel);
+		if (!subEntity || !subEntity.properties || subEntity.hasClass('default-name')) {
+			return defaultValue;
+		}
+
+		return subEntity.properties.name;
+	}
+
 	_getUserPromise(entity, item) {
 		return this._followLink(entity, Rels.user)
 			.then(function(u) {
-				if (u && u.entity && u.entity.hasSubEntityByRel(Rels.displayName)) {
-					item.displayName = u.entity.getSubEntityByRel(Rels.displayName).properties.name;
+				if (u && u.entity) {
+					const firstName = this._tryGetName(u.entity, Rels.firstName, null);
+					const lastName = this._tryGetName(u.entity, Rels.lastName, null);
+					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
+
+					const displayName = {
+						'firstName': firstName,
+						'lastName': lastName,
+						'defaultDisplayName': defaultDisplayName
+					};
+
+					item.displayName = displayName;
 				}
-			});
+			}.bind(this));
 	}
 
 	_getUserHref(entity) {
@@ -725,7 +817,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		);
 	}
 
-	_performSirenActionWithQueryParams(action) {
+	_performSirenActionWithQueryParams(action, customParams) {
 		const url = new URL(action.href, window.location.origin);
 
 		if (!action.fields) {
@@ -737,6 +829,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				action.fields.push({name: key, value: value, type: 'hidden'});
 			}
 		});
+
+		if (customParams) {
+			Object.keys(customParams).forEach(function(paramName) {
+				action.fields.push({name: paramName, value: customParams[paramName], type: 'hidden'});
+			});
+		}
 
 		return this.performSirenAction(action);
 	}
