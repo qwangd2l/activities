@@ -7,7 +7,6 @@
 	"name": "d2l-activities",
 	"scripts": {
 		"build": "gulp build",
-		"install-attest": "npm install attest --registry=https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/attest/ && node scripts/remove_attest_from_project.js",
 		"lint": "npm run lint:wc && npm run lint:js",
 		"lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.html",
 		"lint:wc": "polymer lint -i \"./*\" \"components\" \"demo\" \"test\"",
