@@ -616,8 +616,10 @@ import SirenParse from 'siren-parser';
 			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate'];
 			const expectedCssClasses = ['d2l-quick-eval-30-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-20-column'];
 
-			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass);
-			assert.sameOrderedMembers(expectedCssClasses, actualCssClasses);
+			for (let i = 0; i < 4; i++) {
+				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
+				assert.equal(actualCssClass, expectedCssClasses[i]);
+			}
 		});
 		test('_getWidthCssClass returns correct value when passed column key (with master teacher on)', () => {
 			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate', 'masterTeacher'];
@@ -625,22 +627,25 @@ import SirenParse from 'siren-parser';
 
 			list.masterTeacher = true;
 
-			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass);
-			assert.sameOrderedMembers(expectedCssClasses, actualCssClasses);
+			for (let i = 0; i < 5; i++) {
+				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
+				assert.equal(actualCssClass, expectedCssClasses[i]);
+			}
 		});
 		suite('_getWidthCssClass throws an error when passed an invalid column key', () => {
-		    const testCases = [
-		        {name: 'master teacher on', masterTeacher: true},
-		        {name: 'master teacher off', masterTeacher: false}
-		    ];
-
-		    testCases.forEach(testCase => {
-		      test(testCase.name, () => {
-		        list.masterTeacher = testCase.masterTeacher;
-
-				assert.throws(() => list._getWidthCssClass('notARealColumnKey'), 'Invalid column key: notARealColumnKey');
-		      })
-		    })
+			[
+				{
+					name: 'master teacher on', masterTeacher: true
+				},
+				{
+					name: 'master teacher off', masterTeacher: false
+				}
+			].forEach((testCase) => {
+				test(testCase.name, () => {
+					list.masterTeacher = testCase.masterTeacher;
+					assert.throws(() => list._getWidthCssClass('notARealColumnKey'), 'Invalid column key: notARealColumnKey');
+				});
+			});
 		});
 		test('_formatDisplayName return firstName when firstName defined and lastName undefined', () => {
 			const expectedDisplayName = 'firstName';
