@@ -616,10 +616,8 @@ import SirenParse from 'siren-parser';
 			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate'];
 			const expectedCssClasses = ['d2l-quick-eval-30-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-20-column'];
 
-			for (let i = 0; i < 4; i++) {
-				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
-				assert.equal(actualCssClass, expectedCssClasses[i]);
-			}
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
 		});
 		test('_getWidthCssClass returns correct value when passed column key (with master teacher on)', () => {
 			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate', 'masterTeacher'];
@@ -627,10 +625,8 @@ import SirenParse from 'siren-parser';
 
 			list.masterTeacher = true;
 
-			for (let i = 0; i < 5; i++) {
-				const actualCssClass = list._getWidthCssClass(validColumnKeys[i]);
-				assert.equal(actualCssClass, expectedCssClasses[i]);
-			}
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
 		});
 		suite('_getWidthCssClass throws an error when passed an invalid column key', () => {
 			[
