@@ -778,7 +778,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				case 'submissionDate':
 					return 'd2l-quick-eval-15-column';
 				default:
-					throw Error('Invalid column key');
+					throw new Error(`Invalid column key: ${columnKey}`);
 			}
 		} else {
 			switch (columnKey) {
@@ -790,7 +790,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				case 'submissionDate':
 					return 'd2l-quick-eval-20-column';
 				default:
-					throw Error('Invalid column key');
+					throw new Error(`Invalid column key: ${columnKey}`);
 			}
 		}
 	}
