@@ -7,7 +7,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.fr = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'Évaluation enregistrée en tant que brouillon'
 		};
 	}
 };

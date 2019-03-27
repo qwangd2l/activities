@@ -7,7 +7,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.pt = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'Avaliação salva como rascunho'
 		};
 	}
 };

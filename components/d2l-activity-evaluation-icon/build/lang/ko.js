@@ -7,7 +7,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ko = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': '초안으로 평가 저장됨'
 		};
 	}
 };

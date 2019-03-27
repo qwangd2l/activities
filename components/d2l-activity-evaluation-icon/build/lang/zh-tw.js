@@ -7,7 +7,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.zhtw = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': '評估內容已儲存為草稿'
 		};
 	}
 };

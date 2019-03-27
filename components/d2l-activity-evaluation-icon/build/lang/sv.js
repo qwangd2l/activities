@@ -7,7 +7,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.sv = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'Utvärderingen sparades som utkast'
 		};
 	}
 };

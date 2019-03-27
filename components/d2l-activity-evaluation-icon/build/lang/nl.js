@@ -7,7 +7,7 @@ const LangNlImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.nl = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'Evaluatie opgeslagen als concept'
 		};
 	}
 };
