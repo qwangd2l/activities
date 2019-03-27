@@ -198,7 +198,7 @@ const ActivityListItemResponsiveConstantsImpl = (superClass) => class extends su
 
 	_getResponsiveConfig(width) {
 		let responsiveConfig  = this._responsiveConfigs[0];
-		for (var nextConfig of this._responsiveConfigs) {
+		for (const nextConfig of this._responsiveConfigs) {
 			if (nextConfig.minWidth > width) {
 				break;
 			}

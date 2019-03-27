@@ -1,9 +1,35 @@
 {
-	"entities":[
+	"entities": [
 		{
-			"rel":["https://api.brightspace.com/rels/display-name"],
-			"properties":{
-				"name":"Special User Name"
+			"rel": [
+				"https://api.brightspace.com/rels/display-name"
+			],
+			"properties": {
+				"name": "Special User Name"
+			}
+		},
+		{
+			"class": [
+				"first",
+				"name"
+			],
+			"rel": [
+				"https://api.brightspace.com/rels/first-name"
+			],
+			"properties": {
+				"name": "Special User"
+			}
+		},
+		{
+			"class": [
+				"last",
+				"name"
+			],
+			"rel": [
+				"https://api.brightspace.com/rels/last-name"
+			],
+			"properties": {
+				"name": "Name"
 			}
 		}
 	]

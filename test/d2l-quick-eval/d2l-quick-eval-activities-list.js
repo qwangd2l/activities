@@ -1,4 +1,5 @@
 import '@polymer/iron-test-helpers/mock-interactions.js';
+import SirenParse from 'siren-parser';
 
 (function() {
 	var list;
@@ -18,7 +19,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			var activityColumns = [];
 
-			activityColumns.push({ text: item.displayName, href: item.activityLink });
+			activityColumns.push({ text: item.displayName.defaultDisplayName, href: item.activityLink });
 			activityColumns.push({ href: item.activityNameHref });
 			activityColumns.push({ text: item.courseName });
 			activityColumns.push({ text: item.submissionDate });
@@ -67,7 +68,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 	var expectedData = [
 		{
-			displayName: 'Special User Name',
+			displayName: { firstName: 'Special User', lastName: 'Name', defaultDisplayName: 'Special User Name' },
 			userHref: 'data/userUnique.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/assignmentActivity.json',
@@ -77,7 +78,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: true
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/quizAttemptActivity.json',
@@ -87,7 +88,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: false
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/topicActivity.json',
@@ -111,7 +112,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 	var expectedNextData = [
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextAssignmentActivity.json',
@@ -121,7 +122,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: true
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextQuizAttemptActivity.json',
@@ -131,7 +132,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			isDraft: false
 		},
 		{
-			displayName: 'User Name',
+			displayName: { firstName: 'User', lastName: 'Name', defaultDisplayName: 'User Name' },
 			userHref: 'data/user.json',
 			courseName: 'Org Name',
 			activityNameHref: 'data/nextTopicActivity.json',
@@ -147,7 +148,7 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 		['Course'],
 		['Submission Date']
 	];
-	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Master Teacher']]);
+	var expectedColumnHeadersWithMasterTeacher = expectedColumnHeaders.concat([['Teacher']]);
 
 	suite('d2l-quick-eval-activities-list', function() {
 		setup(function() {
@@ -164,33 +165,33 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var alert = list.shadowRoot.querySelector('#list-alert');
 			assert.equal(true, alert.hasAttribute('hidden'));
 		});
-		test('_fullListLoading and _loading are set to true before data is loaded, and loading-spinner is present', () => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
-			assert.equal(loadingSpinner.hidden, false);
+		test('_fullListLoading and _loading are set to true before data is loaded, and loading-skeleton is present', () => {
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
+			assert.equal(loadingskeleton.hidden, false);
 			assert.equal(list._fullListLoading, true);
 			assert.equal(list._loading, true);
 		});
-		test('_fullListLoading and _loading is set to false after data is loaded and the loading spinner is hidden', (done) => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+		test('_fullListLoading and _loading is set to false after data is loaded and the loading skeleton is hidden', (done) => {
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(loadingskeleton.hidden, true);
 				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 				done();
 			});
 		});
 		test('setLoadingState lets consumers control the table loading', (done) => {
-			var loadingSpinner = list.shadowRoot.querySelector('d2l-loading-spinner');
+			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
 
 			loadPromise('data/unassessedActivities.json').then(function() {
-				assert.equal(loadingSpinner.hidden, true);
+				assert.equal(loadingskeleton.hidden, true);
 				assert.equal(list._fullListLoading, false);
 				assert.equal(list._loading, false);
 
 				list.setLoadingState(true);
 				requestAnimationFrame(function() {
-					assert.equal(loadingSpinner.hidden, false);
+					assert.equal(loadingskeleton.hidden, false);
 					assert.equal(list._fullListLoading, true);
 					assert.equal(list._loading, true);
 					done();
@@ -410,6 +411,27 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
 		});
+		test('when calling perform siren action with no query params and custom params, fields contain custom params', () => {
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET'
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(Object.keys(customParams).length, fields.length);
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
+		});
 		test('when calling perform siren action with query params, the query params are added as fields', () => {
 
 			const action = {
@@ -454,6 +476,44 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 
 			list._performSirenActionWithQueryParams(action);
 			sinon.assert.calledWith(stub, action);
+		});
+		test('when calling perform siren action with query params and custom params, fields contain query params and custom params', () => {
+
+			const defaultParams = [
+				{
+					type: 'hidden',
+					name : 'testname',
+					value: 'testvalue'
+				},
+				{
+					type: 'hidden',
+					name : 'anothertestname',
+					value: 'anothertestvalue'
+				}
+			];
+
+			const action = {
+				href : 'http://127.0.0.1/',
+				name: 'apply',
+				type: 'application/x-www-form-urlencoded',
+				method: 'GET',
+				fields : defaultParams
+			};
+
+			const customParams = { customParam1: 'custom', customParam2: 'custom2' };
+			sinon.stub(list, 'performSirenAction', function(passedAction) {
+				const fields = passedAction.fields;
+				assert.equal(4, fields.length);
+
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'testname' && elm.value === 'testvalue'; }));
+				assert.isTrue(fields.some(function(elm) { return elm.name === 'anothertestname' && elm.value === 'anothertestvalue'; }));
+
+				Object.keys(customParams).forEach(function(p) {
+					assert.isTrue(fields.some(function(elm) { return elm.name === p && elm.value === customParams[p]; }));
+				});
+			});
+
+			list._performSirenActionWithQueryParams(action, customParams);
 		});
 		test('when parsing url for sort and filter params and url is null, return empty array', () => {
 
@@ -552,6 +612,185 @@ import '@polymer/iron-test-helpers/mock-interactions.js';
 			var evalLink = list._buildRelativeUri(url, params);
 			assert.equal(evalLink, expectedEvalLink);
 		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher off)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate'];
+			const expectedCssClasses = ['d2l-quick-eval-30-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-20-column'];
 
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
+		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher on)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate', 'masterTeacher'];
+			const expectedCssClasses = ['d2l-quick-eval-25-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-15-column', 'd2l-quick-eval-20-column'];
+
+			list.masterTeacher = true;
+
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
+		});
+		suite('_getWidthCssClass throws an error when passed an invalid column key', () => {
+			[
+				{
+					name: 'master teacher on', masterTeacher: true
+				},
+				{
+					name: 'master teacher off', masterTeacher: false
+				}
+			].forEach((testCase) => {
+				test(testCase.name, () => {
+					list.masterTeacher = testCase.masterTeacher;
+					assert.throws(() => list._getWidthCssClass('notARealColumnKey'), 'Invalid column key: notARealColumnKey');
+				});
+			});
+		});
+		test('_formatDisplayName return firstName when firstName defined and lastName undefined', () => {
+			const expectedDisplayName = 'firstName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: expectedDisplayName,
+						lastName: '',
+						defaultDisplayName: ''
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return lastName when firstName undefined and lastName defined', () => {
+			const expectedDisplayName = 'lastName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: '',
+						lastName: expectedDisplayName,
+						defaultDisplayName: ''
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is firstNameLastName', () => {
+			const firstThenLast = true;
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: 'firstName',
+						lastName: 'lastName',
+						defaultDisplayName: ''
+					}
+				},
+				firstThenLast
+			);
+			assert.equal('firstName lastName', displayName);
+		});
+
+		test('_formatDisplayName return firstName and lastName when firstName defined and lastName defined and order is lastNameFirstName', () => {
+			const firstThenLast = true;
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: 'firstName',
+						lastName: 'lastName',
+						defaultDisplayName: ''
+					}
+				},
+				!firstThenLast
+			);
+			assert.equal('lastName, firstName', displayName);
+		});
+
+		test('_formatDisplayName return displayName when firstName undefined and lastName undefined', () => {
+			const expectedDisplayName = 'displayName';
+			const displayName = list._formatDisplayName(
+				{
+					displayName: {
+						firstName: '',
+						lastName: '',
+						defaultDisplayName: expectedDisplayName
+					}
+				}
+			);
+			assert.equal(expectedDisplayName, displayName);
+		});
+
+		test('_tryGetName returns default value when subentity has class "default-name"', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'defaultValue';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': ['default-name'],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': 'someName'
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, expectedName);
+			assert.equal(name, expectedName);
+		});
+
+		test('_tryGetName returns expected name value name subentity is valid', () => {
+			const nameRel = 'nameRel';
+			const expectedName = 'expectedName';
+
+			const userEntity = {
+				'entities': [
+					{
+						'class': [],
+						'rel': [ nameRel ],
+						'properties': {
+							'name': expectedName
+						}
+					}
+				]
+			};
+
+			const name = list._tryGetName(SirenParse(userEntity), nameRel, 'defaultValue');
+			assert.equal(name, expectedName);
+		});
+
+		test('firstName begins before lastName, clicking lastName puts it before firstName and clicking firstName puts it before lastName', (done) => {
+
+			var nameHeaders = list._headerColumns[0].headers;
+			assert.equal('firstName', nameHeaders[0].key);
+
+			list._headerColumns[0].headers[0].canSort = true;
+			list._headerColumns[0].headers[1].canSort = true;
+
+			flush(function() {
+				var lastNameHeader = list.shadowRoot.querySelector('#lastName');
+
+				var verifyFirstNameNameFirst = function() {
+					assert.equal('firstName', nameHeaders[0].key);
+					assert.equal(',', nameHeaders[0].suffix);
+					assert.equal('', nameHeaders[1].suffix);
+
+					done();
+				};
+
+				var verifyLastNameFirst = function() {
+					assert.equal('lastName', nameHeaders[0].key);
+					assert.equal(',', nameHeaders[0].suffix);
+					assert.equal('', nameHeaders[1].suffix);
+
+					lastNameHeader.removeEventListener('click', verifyLastNameFirst);
+
+					var firstNameHeader = list.shadowRoot.querySelector('#firstName');
+					firstNameHeader.addEventListener('click', verifyFirstNameNameFirst);
+
+					MockInteractions.tap(firstNameHeader);
+				};
+
+				lastNameHeader.addEventListener('click', verifyLastNameFirst);
+				MockInteractions.tap(lastNameHeader);
+
+			});
+		});
 	});
 })();

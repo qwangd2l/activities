@@ -1,7 +1,6 @@
 import { createSortEndpoint } from './sort-handler';
 import { createPageEndpoint } from './page-handler';
 import { formatActivities } from './activity-handler';
-import chunk from 'lodash-es/chunk';
 
 function formatName(firstName, lastName) {
 	return firstName + ' ' + lastName;
@@ -328,16 +327,6 @@ function parseActivities(data, activityNames, courses) {
 	return parsedActivities;
 }
 
-function getHrefForPageId(id) {
-	return `pages/${id}`;
-}
-
-function getHrefForNextPage(currentId, pages) {
-	if (currentId + 1 < pages) {
-		return getHrefForPageId(currentId + 1);
-	}
-}
-
 function getHrefForMasterTeacher(id) {
 	return `masterTeacher/${id}`;
 }
@@ -350,6 +339,7 @@ function getHrefForMasterTeacher(id) {
 * `mappings` (which is the return value) maps urls to siren endpoints to be consumed by the interceptor
 */
 function getMappings(table) {
+
 	const data = table.data;
 
 	const users = parseUsers(data);
@@ -389,14 +379,12 @@ function getMappings(table) {
 		mappings[getHrefForCourseId(i)] = formatCourse(course, getHrefForEnrollments(i));
 	});
 
-	const pagedActivities = chunk(activities, 3);
-	const pages = pagedActivities.length;
-
+	const pagesHref = 'pages/';
 	const sortsHref = 'sorts/';
-	for (let i = 0; i < pages; i++) {
-		mappings[getHrefForPageId(i)] = createPageEndpoint(activities, table.sorts, i, 'filters/', sortsHref, getHrefForNextPage(i, pages), i === 2);
-	}
-	mappings[sortsHref] = createSortEndpoint(table.sorts, getHrefForPageId(0), sortsHref);
+
+	mappings[pagesHref] = createPageEndpoint(activities, table.sorts, 'filters/', sortsHref);
+
+	mappings[sortsHref] = createSortEndpoint(table.sorts, pagesHref, sortsHref);
 
 	const formattedActivities = formatActivities(activities);
 	formattedActivities.forEach((activity, i) => {

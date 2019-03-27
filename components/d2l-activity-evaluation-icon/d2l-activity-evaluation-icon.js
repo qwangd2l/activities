@@ -43,7 +43,7 @@ class ActivityEvaluationIcon extends mixinBehaviors([D2L.PolymerBehaviors.Siren.
 			return;
 		}
 
-		var evaluation = entity.getSubEntityByClass('evaluation');
+		const evaluation = entity.getSubEntityByClass('evaluation');
 		if (evaluation.properties.state === 'Draft') {
 			this._draft = true;
 		}

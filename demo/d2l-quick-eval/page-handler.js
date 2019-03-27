@@ -1,6 +1,28 @@
 import { parseSortFromUrl, encodeSortState, decodeSortState } from './sort-handler';
 import { formatActivities } from './activity-handler';
-import chunk from 'lodash-es/chunk';
+
+function getQueryParamOrDefault(
+	relativeUrl,
+	queryParam,
+	defaultValue
+) {
+	const baseUrl = window.location.origin;
+	const fullUrl = new URL(relativeUrl, baseUrl);
+
+	return fullUrl.searchParams.get(queryParam) || defaultValue;
+}
+
+function setQueryParam(
+	relativeUrl,
+	queryParam,
+	value
+) {
+	const baseUrl = window.location.origin;
+	const fullUrl = new URL(relativeUrl, baseUrl);
+	fullUrl.searchParams.set(queryParam, value);
+
+	return fullUrl.pathname.substr(1) + fullUrl.search;
+}
 
 function applySorts(activities, sorts, sortState) {
 	sortState.reverse().forEach(appliedSort => {
@@ -18,36 +40,40 @@ function applySorts(activities, sorts, sortState) {
 	return activities;
 }
 
-function addSortToHref(href, sortState) {
-	if (href) {
-		if (sortState && sortState.length > 0) {
-			return `${href}?sort=${encodeSortState(sortState)}`;
-		}
-		return href;
-	}
-}
-
-function createPageEndpoint(activities, sorts, pageNumber, filtersHref, sortsHref, nextPageHref, failFirstTime) {
-	var shouldFail = failFirstTime;
+function createPageEndpoint(activities, sorts, filtersHref, sortsHref) {
+	let shouldFailOnLastLoadFirstTime = true;
 
 	return (url) => {
+
+		const bookmark = parseInt(getQueryParamOrDefault(url, 'bookmark', 0));
+		const pageSize = parseInt(getQueryParamOrDefault(url, 'pageSize', 3));
+		const nextBookmark = bookmark + pageSize;
+
 		const serializedSortState = parseSortFromUrl(url);
 		const sortState = decodeSortState(serializedSortState);
 
 		const sortedActivities = applySorts(activities, sorts, sortState);
 		const formattedSortedActivities = formatActivities(sortedActivities);
-		const pagedActivities = chunk(formattedSortedActivities, 3);
+		const pagedActivities = formattedSortedActivities.slice(bookmark, Math.min(formattedSortedActivities.length, nextBookmark));
 
-		if (shouldFail) {
-			shouldFail = false;
+		const nextPageHrefWithBookmark = setQueryParam(url, 'bookmark', nextBookmark);
+		const nextPageHrefWithBookmarkAndSort = setQueryParam(nextPageHrefWithBookmark, 'sort', encodeSortState(sortState));
+
+		const nextSortHrefWithBookmark = setQueryParam(sortsHref, 'bookmark', nextBookmark);
+		const nextSortHrefWithBookmarkAndSort = setQueryParam(nextSortHrefWithBookmark, 'sort', encodeSortState(sortState));
+
+		const hasMoreActivities = nextBookmark < activities.length;
+
+		if (shouldFailOnLastLoadFirstTime && !hasMoreActivities) {
+			shouldFailOnLastLoadFirstTime = false;
 			throw new Error('simulated error');
 		}
 
-		return formatPage(pagedActivities[pageNumber], filtersHref, addSortToHref(sortsHref, sortState), addSortToHref(nextPageHref, sortState));
+		return formatPage(pagedActivities, filtersHref, nextSortHrefWithBookmarkAndSort, nextPageHrefWithBookmarkAndSort, hasMoreActivities);
 	};
 }
 
-function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
+function formatPage(entities, filterLocation, sortsLocation, nextLocation, hasMoreActivities) {
 
 	const entity = {
 		'links': [
@@ -68,7 +94,7 @@ function formatPage(entities, filterLocation, sortsLocation, nextLocation) {
 		'entities': entities
 	};
 
-	if (nextLocation) {
+	if (hasMoreActivities) {
 		entity.links.push({
 			'rel': [
 				'next'
