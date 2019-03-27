@@ -612,7 +612,37 @@ import SirenParse from 'siren-parser';
 			var evalLink = list._buildRelativeUri(url, params);
 			assert.equal(evalLink, expectedEvalLink);
 		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher off)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate'];
+			const expectedCssClasses = ['d2l-quick-eval-30-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-25-column', 'd2l-quick-eval-20-column'];
 
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
+		});
+		test('_getWidthCssClass returns correct value when passed column key (with master teacher on)', () => {
+			const validColumnKeys = ['displayName', 'activityName', 'courseName', 'submissionDate', 'masterTeacher'];
+			const expectedCssClasses = ['d2l-quick-eval-25-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-20-column', 'd2l-quick-eval-15-column', 'd2l-quick-eval-20-column'];
+
+			list.masterTeacher = true;
+
+			const actualCssClasses = validColumnKeys.map(list._getWidthCssClass.bind(list));
+			assert.deepEqual(expectedCssClasses, actualCssClasses);
+		});
+		suite('_getWidthCssClass throws an error when passed an invalid column key', () => {
+			[
+				{
+					name: 'master teacher on', masterTeacher: true
+				},
+				{
+					name: 'master teacher off', masterTeacher: false
+				}
+			].forEach((testCase) => {
+				test(testCase.name, () => {
+					list.masterTeacher = testCase.masterTeacher;
+					assert.throws(() => list._getWidthCssClass('notARealColumnKey'), 'Invalid column key: notARealColumnKey');
+				});
+			});
+		});
 		test('_formatDisplayName return firstName when firstName defined and lastName undefined', () => {
 			const expectedDisplayName = 'firstName';
 			const displayName = list._formatDisplayName(
@@ -762,6 +792,5 @@ import SirenParse from 'siren-parser';
 
 			});
 		});
-
 	});
 })();
