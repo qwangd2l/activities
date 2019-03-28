@@ -7,7 +7,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ja = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': '評価が下書きとして保存されました'
 		};
 	}
 };

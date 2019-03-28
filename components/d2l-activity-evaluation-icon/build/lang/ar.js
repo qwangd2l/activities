@@ -7,7 +7,7 @@ const LangArImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.ar = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'تم حفظ التقييم كمسودة'
 		};
 	}
 };

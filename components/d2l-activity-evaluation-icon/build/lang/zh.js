@@ -7,7 +7,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.zh = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': '评估已另存为草稿'
 		};
 	}
 };

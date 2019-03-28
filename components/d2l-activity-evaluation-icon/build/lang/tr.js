@@ -7,7 +7,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.tr = {
-			'draftInfo': 'Evaluation saved as draft'
+			'draftInfo': 'Değerlendirme taslak olarak kaydedildi'
 		};
 	}
 };
