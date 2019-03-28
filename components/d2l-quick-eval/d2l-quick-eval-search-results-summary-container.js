@@ -2,8 +2,8 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {QuickEvalLocalize} from './QuickEvalLocalize.js';
 import 'd2l-link/d2l-link.js';
 
-class D2LQuickEvalSearchResultsContainer extends QuickEvalLocalize(PolymerElement) {
-	static get is() { return 'd2l-quick-eval-search-results-container'; }
+class D2LQuickEvalSearchResultsSummaryContainer extends QuickEvalLocalize(PolymerElement) {
+	static get is() { return 'd2l-quick-eval-search-results-summary-container'; }
 	static get template() {
 		return html `
 		<style>
@@ -27,7 +27,7 @@ class D2LQuickEvalSearchResultsContainer extends QuickEvalLocalize(PolymerElemen
 				margin-left: 2.3em;
 			}
 		</style>
-		<div class="d2l-msg-container" hidden$="[[!_showSearchResultSummary]]">
+		<div class="d2l-msg-container">
 			<div class="d2l-msg-container-inner">
 				<div class="d2l-msg-container-text">
 					<span class="d2l-quick-eval-search-results-summary">[[_getSummaryString(searchResultsCount)]]</span>
@@ -56,7 +56,7 @@ class D2LQuickEvalSearchResultsContainer extends QuickEvalLocalize(PolymerElemen
 	_linkClicked() {
 		this.dispatchEvent(
 			new CustomEvent(
-				'd2l-quick-eval-search-results-container-clear-search',
+				'd2l-quick-eval-search-results-summary-container-clear-search',
 				{
 					composed: true,
 					bubbles: true
@@ -66,4 +66,4 @@ class D2LQuickEvalSearchResultsContainer extends QuickEvalLocalize(PolymerElemen
 	}
 }
 
-window.customElements.define(D2LQuickEvalSearchResultsContainer.is, D2LQuickEvalSearchResultsContainer);
+window.customElements.define(D2LQuickEvalSearchResultsSummaryContainer.is, D2LQuickEvalSearchResultsSummaryContainer);
