@@ -37,8 +37,12 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 	});
 
 	suite('_loadSorts', () => {
-		test('_loadSorts silently does nothing on null entity', () => {
-			return list._loadSorts(null);
+		test('_loadSorts does not call _followLink on null entity', () => {
+			const stub = sinon.stub(list, '_followLink');
+			return list._loadSorts(null)
+				.then(() => {
+					expect(stub.notCalled).to.be.true;
+				});
 		});
 
 		suite('_loadSorts error cases', () => {
@@ -71,9 +75,6 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 						})
 						.catch(() => {
 							done();
-						})
-						.catch((err) => {
-							done(err);
 						});
 				});
 			});
@@ -125,18 +126,20 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 			const testData = [
 				{
 					name: 'header not found',
-					currentTarget: {}
+					id: {}
 				},
 				{
 					name: 'unsortable header',
-					currentTarget: 'activityName'
+					id: 'activityName'
 				}
 			];
 			testData.forEach(testCase => {
 				test(testCase.name, (done) => {
 					var stub = sinon.stub(list, '_fetchSortedData');
 					const e = {
-						currentTarget: testCase.currentTarget
+						currentTarget: {
+							id: testCase.id
+						}
 					};
 
 					list._updateSortState(e)
