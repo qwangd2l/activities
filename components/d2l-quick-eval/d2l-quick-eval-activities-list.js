@@ -378,7 +378,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 
 		return this._followLink(entity, Rels.sorts)
 			.then(sortsEntity => {
-
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject(new Error('Could not load sorts endpoint'));
 				}
@@ -460,17 +459,13 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				if (!action) {
 					return Promise.reject(new Error(`Could not find apply action in ${sortsEntity}`));
 				}
-				return action;
-			}).bind(this))
-			.then((collectionAction => {
 				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
-				const collection = this._performSirenActionWithQueryParams(collectionAction, customParams);
-				return collection;
+				return this._performSirenActionWithQueryParams(action, customParams);
 			}).bind(this))
 			.then((collection => {
 				this.entity = collection;
 				this._dispatchSortUpdatedEvent(collection);
-				return Promise.resolve();
+				return Promise.resolve(collection);
 			}).bind(this));
 	}
 
