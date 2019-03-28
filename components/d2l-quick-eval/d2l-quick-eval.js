@@ -6,7 +6,7 @@ import {Rels} from 'd2l-hypermedia-constants';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-alert/d2l-alert.js';
 import 'd2l-common/components/d2l-hm-filter/d2l-hm-filter.js';
-import 'd2l-search-widget/d2l-search-widget.js';
+import 'd2l-common/components/d2l-hm-search/d2l-hm-search.js';
 import './d2l-quick-eval-activities-list.js';
 import './d2l-quick-eval-search-results-container.js';
 
@@ -20,7 +20,6 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 			<style>
 				:host {
 					display: block;
-					--d2l-search-widget-height: 42.5px;
 				}
 				h1 {
 					@apply --d2l-heading-1;
@@ -36,7 +35,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				:host(:dir(rtl)) .d2l-quick-eval-activity-list-modifiers {
 					float: left;
 				}
-				d2l-search-widget {
+				d2l-hm-search {
 					display: inline-block;
 					width: 250px;
 					margin-left: 2rem;
@@ -56,7 +55,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 					margin-bottom: 0.5rem;
 				}
 				d2l-quick-eval-search-results-container {
-					margin-bottom: 32px;
+					margin-bottom: 42px;
 					margin-top: 18px;
 					display: block;
 				}
@@ -70,7 +69,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				</template>
 				<div class="d2l-quick-eval-activity-list-modifiers">
 					<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterIds]]"></d2l-hm-filter>
-					<d2l-search-widget hidden$="[[!searchEnabled]]"></d2l-search-widget>
+					<d2l-hm-search hidden$="[[!searchEnabled]]"></d2l-hm-search>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -128,7 +127,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.addEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.addEventListener('d2l-hm-filter-error', this._filterError);
 		this.addEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
-		this.addEventListener('d2l-search-widget-results-changed', this._searchResultsChanged);
+		this.addEventListener('d2l-hm-filter-results-changed', this._searchResultsChanged);
 		this.addEventListener('d2l-quick-eval-search-results-container-clear-search', this._clearSearchResults);
 	}
 
@@ -138,7 +137,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.removeEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.removeEventListener('d2l-hm-filter-error', this._filterError);
 		this.removeEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
-		this.removeEventListener('d2l-search-widget-results-changed', this._searchResultsChanged);
+		this.removeEventListener('d2l-hm-filter-results-changed', this._searchResultsChanged);
 		this.removeEventListener('d2l-quick-eval-search-results-container-clear-search', this._clearSearchResults);
 	}
 
