@@ -284,7 +284,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			},
 			_numberOfActivitiesToShow: {
 				type: Number,
-				computed: '_computerNumberOfActivitiesToShow(_data, _numberOfActivitiesToShow)',
+				computed: '_computeNumberOfActivitiesToShow(_data, _numberOfActivitiesToShow)',
 				value: 0
 			},
 			_fullListLoading: {
@@ -340,7 +340,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return !fullListLoading && isLoading;
 	}
 
-	_computerNumberOfActivitiesToShow(data, currentNumberOfActivitiesShown) {
+	_computeNumberOfActivitiesToShow(data, currentNumberOfActivitiesShown) {
 		return Math.max(data.length, currentNumberOfActivitiesShown);
 	}
 

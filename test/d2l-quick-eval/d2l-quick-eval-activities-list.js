@@ -793,11 +793,11 @@ import SirenParse from 'siren-parser';
 			});
 		});
 
-		test('_computerNumberOfActivitiesToShow returns max of data lenght, and previously shown number of activities', function() {
-			const numberOfActivitiesToShowWhenDataLarger = list._computerNumberOfActivitiesToShow([1, 2, 3, 4], 1);
+		test('_computeNumberOfActivitiesToShow returns max of data length, and previously shown number of activities', function() {
+			const numberOfActivitiesToShowWhenDataLarger = list._computeNumberOfActivitiesToShow([1, 2, 3, 4], 1);
 			assert.equal(4, numberOfActivitiesToShowWhenDataLarger);
 
-			const numberOfActivitiesToShowWhenPreviousLarger = list._computerNumberOfActivitiesToShow([1], 5);
+			const numberOfActivitiesToShowWhenPreviousLarger = list._computeNumberOfActivitiesToShow([1], 5);
 			assert.equal(5, numberOfActivitiesToShowWhenPreviousLarger);
 		});
 	});
