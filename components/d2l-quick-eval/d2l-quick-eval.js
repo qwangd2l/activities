@@ -68,7 +68,12 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 					<h1>[[headerText]]</h1>
 				</template>
 				<div class="d2l-quick-eval-activity-list-modifiers">
-					<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterIds]]"></d2l-hm-filter>
+					<d2l-hm-filter
+						href="[[_filterHref]]"
+						token="[[token]]"
+						category-whitelist="[[_filterIds]]"
+						result-size="[[_numberOfActivitiesToShow]]">
+					</d2l-hm-filter>
 					<d2l-hm-search hidden$="[[!searchEnabled]]"></d2l-hm-search>
 				</div>
 			</div>
@@ -104,6 +109,10 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				type: Array,
 				computed: '_getFilterIds(masterTeacher)'
 			},
+			_numberOfActivitiesToShow: {
+				type: Number,
+				value: 20
+			},
 			_showFilterError: {
 				type: Boolean,
 				value: false
@@ -127,6 +136,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.addEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.addEventListener('d2l-hm-filter-error', this._filterError);
 		this.addEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
+		this.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', this._updateNumberOfActivitiesToShow);
 	}
 
 	detached() {
@@ -135,6 +145,13 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.removeEventListener('d2l-hm-filter-filters-updated', this._filtersChanged);
 		this.removeEventListener('d2l-hm-filter-error', this._filterError);
 		this.removeEventListener('d2l-quick-eval-activities-list-sort-updated', this._sortChanged);
+		this.removeEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', this._updateNumberOfActivitiesToShow);
+	}
+
+	_updateNumberOfActivitiesToShow(e) {
+		if (e && e.detail) {
+			this.set('_numberOfActivitiesToShow', e.detail.count);
+		}
 	}
 
 	_getFilterHref(entity) {
