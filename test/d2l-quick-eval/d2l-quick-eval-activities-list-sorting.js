@@ -223,7 +223,7 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 
 			followLinkStub.withArgs(list.entity, Rels.sorts).returns(Promise.resolve({ entity: sorts }));
 			performActionStub.withArgs(sortAction).returns(sorts);
-			performActionStub.withArgs(applyAction, undefined).returns(collection);
+			performActionStub.withArgs(applyAction, sinon.match.any).returns(collection);
 
 			return list._fetchSortedData('activity-name', false)
 				.then(actual => {

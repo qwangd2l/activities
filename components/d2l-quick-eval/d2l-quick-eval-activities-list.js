@@ -285,7 +285,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			_numberOfActivitiesToShow: {
 				type: Number,
 				computed: '_computeNumberOfActivitiesToShow(_data, _numberOfActivitiesToShow)',
-				value: 0
+				value: 20
 			},
 			_fullListLoading: {
 				type: Boolean,
@@ -316,7 +316,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return [
 			'_loadData(entity)',
 			'_loadSorts(entity)',
-			'_handleNameSwap(_headerColumns.0.headers.*)'
+			'_handleNameSwap(_headerColumns.0.headers.*)',
+			'_dispatchPageSizeEvent(_numberOfActivitiesToShow)'
 		];
 	}
 	ready() {
@@ -879,6 +880,21 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		});
 
 		return parsedUrl.pathname + parsedUrl.search;
+	}
+
+	_dispatchPageSizeEvent(numberOfActivitiesToShow) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-quick-eval-activities-list-activities-shown-number-updated',
+				{
+					detail: {
+						count: numberOfActivitiesToShow
+					},
+					composed: true,
+					bubbles: true
+				}
+			)
+		);
 	}
 
 }
