@@ -792,5 +792,13 @@ import SirenParse from 'siren-parser';
 
 			});
 		});
+
+		test('_computeNumberOfActivitiesToShow returns max of data length, and previously shown number of activities', function() {
+			const numberOfActivitiesToShowWhenDataLarger = list._computeNumberOfActivitiesToShow([1, 2, 3, 4], 1);
+			assert.equal(4, numberOfActivitiesToShowWhenDataLarger);
+
+			const numberOfActivitiesToShowWhenPreviousLarger = list._computeNumberOfActivitiesToShow([1], 5);
+			assert.equal(5, numberOfActivitiesToShowWhenPreviousLarger);
+		});
 	});
 })();

@@ -282,9 +282,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				type: Array,
 				value: [ ]
 			},
-			_numberOfCurrentlyShownActivities: {
+			_numberOfActivitiesToShow: {
 				type: Number,
-				computed: '_computeNumberOfCurrentlyShownActivities(_data)'
+				computed: '_computeNumberOfActivitiesToShow(_data, _numberOfActivitiesToShow)',
+				value: 0
 			},
 			_fullListLoading: {
 				type: Boolean,
@@ -339,8 +340,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return !fullListLoading && isLoading;
 	}
 
-	_computeNumberOfCurrentlyShownActivities(data) {
-		return data.length;
+	_computeNumberOfActivitiesToShow(data, currentNumberOfActivitiesShown) {
+		return Math.max(data.length, currentNumberOfActivitiesShown);
 	}
 
 	_handleNameSwap(entry) {
@@ -459,7 +460,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				if (!action) {
 					return Promise.reject(new Error(`Could not find apply action in ${sortsEntity}`));
 				}
-				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
+				const customParams = this._numberOfActivitiesToShow > 0 ? {pageSize: this._numberOfActivitiesToShow} : undefined;
 				return this._performSirenActionWithQueryParams(action, customParams);
 			}).bind(this))
 			.then((collection => {
