@@ -601,8 +601,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_determineIfActivityIsDraft(activity) {
-		if (activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
-			const evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
+		if (activity.hasSubEntityByRel(Rels.evaluation)) {
+			const evaluation = activity.getSubEntityByRel(Rels.evaluation);
 			if (evaluation.properties && evaluation.properties.state === 'Draft') {
 				return true;
 			}
