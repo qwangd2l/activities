@@ -185,6 +185,7 @@ import SirenParse from 'siren-parser';
 			list.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', function(e) {
 				assert.equal(expectedNumberOfActivitiesToShow, list._numberOfActivitiesToShow);
 				assert.equal(expectedNumberOfActivitiesToShow, e.detail.count);
+				list._data = [];
 				done();
 			});
 
