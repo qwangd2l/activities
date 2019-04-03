@@ -154,7 +154,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 														aria-live="assertive"
 														aria-sort$="[[_getAriaSortValue(header.sorted, header.desc)]]"
 													>
-														<span>[[localize(header.key)]]</span>
+														<span aria-hidden="true">[[localize(header.key)]]</span>
 													</d2l-table-col-sort-button>
 													<template is="dom-if" if="[[header.suffix]]">
 														<span>[[header.suffix]]&nbsp;</span>
