@@ -20,6 +20,18 @@
         ],
         "type":"image/jpeg",
         "href":"../images/banner-narrow-high-density-min-size.jpg"
-     }
+     },
+     {
+      "class":[
+         "tile",
+         "low-density",
+         "max"
+      ],
+      "rel":[
+         "alternate"
+      ],
+      "type":"image/jpeg",
+      "href":"../images/tile-low-density-max-size.jpg"
+    }
   ]
 }
