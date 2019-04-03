@@ -149,6 +149,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 														desc$="[[header.desc]]"
 														on-click="_updateSortState"
 														id="[[header.key]]"
+														title="[[_localizeSortText(header.key)]]"
 														aria-label$="[[_localizeSortText(header.key)]]"
 														aria-live="assertive"
 														aria-sort$="[[_getAriaSortValue(header.sorted, header.desc)]]"
