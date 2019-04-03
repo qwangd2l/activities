@@ -149,6 +149,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 														desc$="[[header.desc]]"
 														on-click="_updateSortState"
 														id="[[header.key]]"
+														aria-label$="[[_localizeSortText(header.key)]]"
+														aria-live="assertive"
+														aria-sort$="[[_getAriaSortValue(header.sorted, header.desc)]]"
 													>
 														<span>[[localize(header.key)]]</span>
 													</d2l-table-col-sort-button>
@@ -647,6 +650,21 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					item.courseName = o.entity.properties.name;
 				}
 			});
+	}
+
+	_getAriaSortValue(sorted, desc) {
+		if (!sorted) {
+			return 'none';
+		}
+		if (desc) {
+			return 'descending';
+		}
+		return 'ascending';
+	}
+
+	_localizeSortText(columnName) {
+		const localizedColumnName = this.localize(columnName);
+		return this.localize('sortBy', 'columnName', localizedColumnName);
 	}
 
 	_localizeEvaluationText(

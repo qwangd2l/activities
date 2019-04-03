@@ -10,7 +10,6 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'activityName': 'Activity Name',
 			'caughtUp': 'You\'re all caught up!',
 			'checkBackOften': 'Check back often for new submissions.',
-			'clearSearch': 'Clear Search',
 			'courseName': 'Course',
 			'displayName': 'First Name, Last Name',
 			'evaluate': 'Evaluate {displayName}',
@@ -25,8 +24,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
-			'searchResultsSingle': '1 Search Result',
-			'searchResultsMultiple': '{num} Search Results',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Submission Date',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'
