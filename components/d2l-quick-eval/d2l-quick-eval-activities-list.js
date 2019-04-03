@@ -176,7 +176,13 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 							<d2l-tr>
 								<d2l-td class="d2l-username-column">
 									<template is="dom-if" if="[[s.userHref]]">
-										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
+										<d2l-profile-image
+											class="d2l-user-badge-image"
+											href="[[s.userHref]]"
+											token="[[token]]"
+											small=""
+											aria-hidden="true">
+										</d2l-profile-image>
 									</template>
 									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]</d2l-offscreen>
 									<d2l-link
