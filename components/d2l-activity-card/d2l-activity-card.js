@@ -150,8 +150,8 @@ class D2lActivityCard extends PolymerElement {
 		}
 		this.addEventListener('d2l-organization-accessible', this._onD2lOrganizationAccessible);
 	}
-	disconnectedCalledback() {
-		super.disconnectedCalledback();
+	disconnectedCallback() {
+		super.disconnectedCallback();
 		const image = this.shadowRoot.querySelector('d2l-course-image');
 		if (image) {
 			image.removeEventListener('course-image-loaded', this._activityImageLoaded);
@@ -232,14 +232,14 @@ class D2lActivityCard extends PolymerElement {
 	_onD2lOrganizationAccessible(e) {
 		if (e && e.detail && e.detail.organization) {
 			if (e.detail.organization.name) {
-				this._accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
+				this._accessibilityData.organizationName = e.detail.organization.name;
 			}
 			if (e.detail.organization.code) {
 				this._accessibilityData.organizationCode = e.detail.organization.code;
 			}
 		}
 		if (e.detail.semesterName) {
-			this._accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
+			this._accessibilityData.semesterName = e.detail.semesterName;
 		}
 		this._accessibilityText = this._accessibilityDataToString(this._accessibilityData);
 	}
