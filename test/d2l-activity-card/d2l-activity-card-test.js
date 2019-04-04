@@ -171,6 +171,10 @@ describe('d2l-activity-card', () => {
 				expect(component._activityHomepage).to.equal(testActivityHomepage);
 			});
 
+			it('should set card href to activity homepage', () => {
+				expect(component._cardHref).to.equal(testActivityHomepage);
+			});
+
 			it('should show course code and semester', () => {
 				const organizationInfo = component.shadowRoot.querySelector('.d2l-activity-card-content-organization-info').shadowRoot.innerHTML;
 				expect(organizationInfo).to.contain('Test Semester Name');
@@ -182,6 +186,27 @@ describe('d2l-activity-card', () => {
 				expect(component._accessibilityText).to.contain(testCourseCode);
 				expect(component._accessibilityText).to.contain(testSemester);
 			});
+		});
+	});
+
+	describe('override click to get an event instead', () => {
+		beforeEach((done) => {
+			component = fixture('d2l-activity-card-href-click-fixture');
+			afterNextRender(component, done);
+		});
+
+		it('should set card href to javascript:void(0)', () => {
+			expect(component._cardHref).to.equal('javascript:void(0)');
+		});
+
+		it('click event fired', (done) => {
+			component.addEventListener('d2l-activity-card-clicked', (e) => {
+				expect(e.detail.path).to.equal(testActivityHomepage);
+				expect(e.detail.orgUnitId).to.equal('1');
+				done();
+			});
+			const d2lCard = component.shadowRoot.querySelector('d2l-card');
+			d2lCard.click();
 		});
 	});
 });

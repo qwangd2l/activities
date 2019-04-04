@@ -57,7 +57,7 @@ class D2lActivityCard extends PolymerElement {
 				}
 			</style>
 
-			<d2l-card text="[[_accessibilityText]]" href$="[[_activityHomepage]]">
+			<d2l-card text="[[_accessibilityText]]" href$="[[_cardHref]]" on-click="_sendClickEvent">
 				<div class="d2l-activity-card-header-container" slot="header">
 					<d2l-card-loading-shimmer class="d2l-activity-card-loading-shimmer" loading="[[_imageLoading]]">
 						<d2l-course-image
@@ -130,6 +130,15 @@ class D2lActivityCard extends PolymerElement {
 			_imageLoading: {
 				type: Boolean,
 				value: true
+			},
+			sendEventOnClick: {
+				type: Boolean,
+				value: false,
+			},
+			_cardHref: {
+				type: String,
+				value: 'javascript:void(0)',
+				computed: '_cardHrefComputed(sendEventOnClick, _activityHomepage)'
 			}
 		};
 	}
@@ -250,6 +259,34 @@ class D2lActivityCard extends PolymerElement {
 	}
 	_activityImageLoaded() {
 		this._imageLoading = false;
+	}
+	_cardHrefComputed(sendEventOnClick, activityHomepage) {
+		if (sendEventOnClick) {
+			return 'javascript:void(0)';
+		} else {
+			return activityHomepage;
+		}
+	}
+	_sendClickEvent() {
+		this.dispatchEvent(new CustomEvent('d2l-activity-card-clicked', {
+			detail: {
+				path: this._activityHomepage,
+				orgUnitId: this._getOrgUnitId()
+			},
+			bubbles: true,
+			composed: true
+		}));
+	}
+	_getOrgUnitId() {
+		if (!this._organizationUrl) {
+			return;
+		}
+		const match = /[0-9]+$/.exec(this._organizationUrl);
+
+		if (!match) {
+			return;
+		}
+		return match[0];
 	}
 }
 
