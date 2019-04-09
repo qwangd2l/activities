@@ -184,11 +184,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 											aria-hidden="true">
 										</d2l-profile-image>
 									</template>
-									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]</d2l-offscreen>
 									<d2l-link
 										title="[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]"
-										aria-describedby$="d2l-quick-eval-activities-list-username"
 										href="[[s.activityLink]]"
+										aria-label="[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]"
 									>[[_formatDisplayName(s, _headerColumns.0.meta.firstThenLast)]]</d2l-link>
 									<d2l-activity-evaluation-icon-base draft$="[[s.isDraft]]"></d2l-activity-evaluation-icon-base>
 								</d2l-td>
