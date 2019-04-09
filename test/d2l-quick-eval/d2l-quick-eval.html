@@ -125,7 +125,7 @@
 						)
 					);
 				});
-				test('the filter, search and list exist', function() {
+				test('the filter, search, and list exist', function() {
 					assert.isNotNull(filter);
 					assert.isNotNull(search);
 					assert.isNotNull(list);
@@ -281,7 +281,7 @@
 					quickEval.addEventListener('d2l-hm-search-results-loading', function() {
 						assert.equal(list._loading, true);
 						assert.equal(list._fullListLoading, true);
-						assert.equal(quickEval._showFilterError, false);
+						assert.equal(quickEval._showSearchError, false);
 						assert.equal(alert.hidden, true);
 						done();
 					});
@@ -289,7 +289,7 @@
 					waitForSearch(function() {
 						assert.equal(list._loading, false);
 						assert.equal(list._fullListLoading, false);
-						assert.equal(quickEval._showFilterError, false);
+						assert.equal(quickEval._showSearchError, false);
 						assert.equal(alert.hidden, true);
 						performSearch('test');
 					});
@@ -320,7 +320,7 @@
 					quickEval.addEventListener('d2l-hm-search-results-loading', function() {
 						assert.equal(list._loading, true);
 						assert.equal(list._fullListLoading, true);
-						assert.equal(quickEval._showFilterError, false);
+						assert.equal(quickEval._showSearchError, false);
 						assert.equal(alert.hidden, true);
 
 						quickEval.addEventListener('d2l-hm-search-error', function() {
@@ -349,11 +349,11 @@
 						performSearch('test');
 					});
 					quickEval.addEventListener('d2l-hm-search-results-loaded', function() {
-						assert.isFalse(quickEval._showFilterError);
+						assert.isFalse(quickEval._showSearchError);
 						assert.isTrue(alert.hidden);
 						done();
 					});
-					assert.isFalse(quickEval._showFilterError);
+					assert.isFalse(quickEval._showSearchError);
 					assert.isTrue(alert.hidden);
 					waitForSearch(function() {
 						validHref = search.searchAction.href;
