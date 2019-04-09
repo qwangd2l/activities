@@ -109,7 +109,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				computed: '_getFilterHref(entity)'
 			},
 			_searchAction: {
-				type: String,
+				type: Object,
 				computed: '_getSearchAction(entity)'
 			},
 			_filterIds: {
@@ -172,16 +172,8 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 	}
 
 	_getAction(entity, name) {
-		if (entity) {
-			if (entity.hasActionByName) {
-				if (entity.hasActionByName(name)) {
-					return entity.getActionByName(name);
-				}
-			} else {
-				if (entity.actions) {
-					return this._findInArray(entity.actions, a => a.name === name);
-				}
-			}
+		if (entity && entity.hasActionByName && entity.hasActionByName(name)) {
+			return entity.getActionByName(name);
 		}
 		return null;
 	}
