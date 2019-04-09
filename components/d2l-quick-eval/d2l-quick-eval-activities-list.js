@@ -176,7 +176,13 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 							<d2l-tr>
 								<d2l-td class="d2l-username-column">
 									<template is="dom-if" if="[[s.userHref]]">
-										<d2l-profile-image class="d2l-user-badge-image" href="[[s.userHref]]" token="[[token]]" small=""></d2l-profile-image>
+										<d2l-profile-image
+											class="d2l-user-badge-image"
+											href="[[s.userHref]]"
+											token="[[token]]"
+											small=""
+											aria-hidden="true">
+										</d2l-profile-image>
 									</template>
 									<d2l-offscreen id="d2l-quick-eval-activities-list-username">[[_localizeEvaluationText(s, _headerColumns.0.meta.firstThenLast)]]</d2l-offscreen>
 									<d2l-link
@@ -282,9 +288,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				type: Array,
 				value: [ ]
 			},
-			_numberOfCurrentlyShownActivities: {
+			_numberOfActivitiesToShow: {
 				type: Number,
-				computed: '_computeNumberOfCurrentlyShownActivities(_data)'
+				computed: '_computeNumberOfActivitiesToShow(_data, _numberOfActivitiesToShow)',
+				value: 20
 			},
 			_fullListLoading: {
 				type: Boolean,
@@ -315,7 +322,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return [
 			'_loadData(entity)',
 			'_loadSorts(entity)',
-			'_handleNameSwap(_headerColumns.0.headers.*)'
+			'_handleNameSwap(_headerColumns.0.headers.*)',
+			'_dispatchPageSizeEvent(_numberOfActivitiesToShow)'
 		];
 	}
 	ready() {
@@ -339,8 +347,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return !fullListLoading && isLoading;
 	}
 
-	_computeNumberOfCurrentlyShownActivities(data) {
-		return data.length;
+	_computeNumberOfActivitiesToShow(data, currentNumberOfActivitiesShown) {
+		return Math.max(data.length, currentNumberOfActivitiesShown);
 	}
 
 	_handleNameSwap(entry) {
@@ -459,7 +467,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				if (!action) {
 					return Promise.reject(new Error(`Could not find apply action in ${sortsEntity}`));
 				}
-				const customParams = this._numberOfCurrentlyShownActivities > 0 ? {pageSize: this._numberOfCurrentlyShownActivities} : undefined;
+				const customParams = this._numberOfActivitiesToShow > 0 ? {pageSize: this._numberOfActivitiesToShow} : undefined;
 				return this._performSirenActionWithQueryParams(action, customParams);
 			}).bind(this))
 			.then((collection => {
@@ -601,8 +609,8 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_determineIfActivityIsDraft(activity) {
-		if (activity.hasSubEntityByRel('https://api.brightspace.com/rels/evaluation')) {
-			const evaluation = activity.getSubEntityByRel('https://api.brightspace.com/rels/evaluation');
+		if (activity.hasSubEntityByRel(Rels.evaluation)) {
+			const evaluation = activity.getSubEntityByRel(Rels.evaluation);
 			if (evaluation.properties && evaluation.properties.state === 'Draft') {
 				return true;
 			}
@@ -878,6 +886,21 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		});
 
 		return parsedUrl.pathname + parsedUrl.search;
+	}
+
+	_dispatchPageSizeEvent(numberOfActivitiesToShow) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-quick-eval-activities-list-activities-shown-number-updated',
+				{
+					detail: {
+						count: numberOfActivitiesToShow
+					},
+					composed: true,
+					bubbles: true
+				}
+			)
+		);
 	}
 
 }

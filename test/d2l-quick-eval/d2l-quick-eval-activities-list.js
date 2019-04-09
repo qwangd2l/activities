@@ -157,13 +157,39 @@ import SirenParse from 'siren-parser';
 		test('instantiating the element works', function() {
 			assert.equal(list.tagName.toLowerCase(), 'd2l-quick-eval-activities-list');
 		});
+		test('_numberOfActivitiesToShow starts with default value of 20', function() {
+			assert.equal(20, list._numberOfActivitiesToShow);
+		});
 		test('attributes are set correctly', function() {
 			assert.equal(list.href, 'blah');
 			assert.equal(list.token, 't');
 		});
 		test('no alert displayed when healthy', function() {
-			var alert = list.shadowRoot.querySelector('#list-alert');
+			const alert = list.shadowRoot.querySelector('#list-alert');
 			assert.equal(true, alert.hasAttribute('hidden'));
+		});
+		test('when _updateNumberOfActivitiesToShow updated, event "d2l-quick-eval-activities-list-activities-shown-number-updated" fires', function(done) {
+			const expectedNumberOfActivitiesToShow = 50;
+
+			list.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', function(e) {
+				assert.equal(expectedNumberOfActivitiesToShow, e.detail.count);
+				done();
+			});
+
+			list._numberOfActivitiesToShow = expectedNumberOfActivitiesToShow;
+		});
+		test('when data size increased, _numberOfActivitiesToShow matches size and event is triggered', function(done) {
+			const expectedNumberOfActivitiesToShow = 100;
+			const fakeData = new Array(expectedNumberOfActivitiesToShow);
+
+			list.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', function(e) {
+				assert.equal(expectedNumberOfActivitiesToShow, list._numberOfActivitiesToShow);
+				assert.equal(expectedNumberOfActivitiesToShow, e.detail.count);
+				list._data = [];
+				done();
+			});
+
+			list._data = fakeData;
 		});
 		test('_fullListLoading and _loading are set to true before data is loaded, and loading-skeleton is present', () => {
 			var loadingskeleton = list.shadowRoot.querySelector('d2l-quick-eval-skeleton');
@@ -791,6 +817,14 @@ import SirenParse from 'siren-parser';
 				MockInteractions.tap(lastNameHeader);
 
 			});
+		});
+
+		test('_computeNumberOfActivitiesToShow returns max of data length, and previously shown number of activities', function() {
+			const numberOfActivitiesToShowWhenDataLarger = list._computeNumberOfActivitiesToShow([1, 2, 3, 4], 1);
+			assert.equal(4, numberOfActivitiesToShowWhenDataLarger);
+
+			const numberOfActivitiesToShowWhenPreviousLarger = list._computeNumberOfActivitiesToShow([1], 5);
+			assert.equal(5, numberOfActivitiesToShowWhenPreviousLarger);
 		});
 	});
 })();

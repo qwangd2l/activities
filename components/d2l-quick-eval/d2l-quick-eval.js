@@ -68,7 +68,12 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 					<h1>[[headerText]]</h1>
 				</template>
 				<div class="d2l-quick-eval-activity-list-modifiers">
-					<d2l-hm-filter href="[[_filterHref]]" token="[[token]]" category-whitelist="[[_filterIds]]"></d2l-hm-filter>
+					<d2l-hm-filter
+						href="[[_filterHref]]"
+						token="[[token]]"
+						category-whitelist="[[_filterIds]]"
+						result-size="[[_numberOfActivitiesToShow]]">
+					</d2l-hm-filter>
 					<d2l-hm-search hidden$="[[!searchEnabled]]" token="[[token]]" search-action="[[_searchAction]]" placeholder="[[localize('search')]]"></d2l-hm-search>
 				</div>
 			</div>
@@ -111,6 +116,10 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				type: Array,
 				computed: '_getFilterIds(masterTeacher)'
 			},
+			_numberOfActivitiesToShow: {
+				type: Number,
+				value: 20
+			},
 			_showFilterError: {
 				type: Boolean,
 				value: false
@@ -142,6 +151,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.addEventListener('d2l-hm-search-results-loaded', this._searchResultsLoaded);
 		this.addEventListener('d2l-quick-eval-search-results-summary-container-clear-search', this._clearSearchResults);
 		this.addEventListener('d2l-hm-search-error', this._searchError);
+		this.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', this._updateNumberOfActivitiesToShow);
 	}
 
 	detached() {
@@ -154,6 +164,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.removeEventListener('d2l-hm-search-results-loaded', this._searchResultsLoaded);
 		this.removeEventListener('d2l-quick-eval-search-results-summary-container-clear-search', this._clearSearchResults);
 		this.removeEventListener('d2l-hm-search-error', this._searchError);
+		this.removeEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', this._updateNumberOfActivitiesToShow);
 	}
 
 	_getSearchAction(entity) {
@@ -173,6 +184,12 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 			}
 		}
 		return null;
+	}
+
+	_updateNumberOfActivitiesToShow(e) {
+		if (e && e.detail) {
+			this.set('_numberOfActivitiesToShow', e.detail.count);
+		}
 	}
 
 	_getFilterHref(entity) {

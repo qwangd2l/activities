@@ -105,6 +105,26 @@
 				test('instantiating the element works', function() {
 					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-quick-eval');
 				});
+				test('_numberOfActivitiesToShow starts with default value of 20', function() {
+					assert.equal(20, quickEval._numberOfActivitiesToShow);
+				});
+				test('when event "d2l-quick-eval-activities-list-activities-shown-number-updated" fired, result-size attribute updated on d2l-hm-filter', function(done) {
+					const expectedResultSize = 333;
+
+					quickEval.addEventListener('d2l-quick-eval-activities-list-activities-shown-number-updated', function() {
+						flush(function() {
+							assert.equal(expectedResultSize, quickEval._numberOfActivitiesToShow);
+							assert.equal(expectedResultSize, filter.getAttribute('result-size'));
+							done();
+						});
+					});
+					quickEval.dispatchEvent(
+						new CustomEvent(
+							'd2l-quick-eval-activities-list-activities-shown-number-updated',
+							{ detail: { count: expectedResultSize } }
+						)
+					);
+				});
 				test('the filter, search and list exist', function() {
 					assert.isNotNull(filter);
 					assert.isNotNull(search);
