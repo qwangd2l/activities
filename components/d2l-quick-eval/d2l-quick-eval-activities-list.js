@@ -407,9 +407,17 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									const descending = sort.properties.direction === 'descending';
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
+
+									if (descending) {
+										this.set(`_headerColumns.${i}.ariaSort`, 'descending');
+									} else {
+										this.set(`_headerColumns.${i}.ariaSort`, 'ascending');
+									}
+
 								} else {
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, false);
+									this.set(`_headerColumns.${i}.ariaSort`, 'none');
 								}
 							}
 						}
