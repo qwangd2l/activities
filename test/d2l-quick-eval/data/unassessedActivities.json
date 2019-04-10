@@ -1,4 +1,17 @@
 {
+	"actions": [
+		{
+			"name": "search",
+			"href": "components/d2l-activities/test/d2l-quick-eval/data/unassessedActivities.json",
+			"method": "GET",
+			"fields": [
+				{
+					"name": "collectionSearch",
+					"type": "search"
+				}
+			]
+		}
+	],
 	"links":[
 		{
 			"rel":["next"],
