@@ -254,8 +254,9 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 	}
 
 	_clearSearchResults() {
-		const search = this.shadowRoot.querySelector('d2l-hm-search');
+		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
 		list.searchApplied = false;
+		const search = this.shadowRoot.querySelector('d2l-hm-search');
 		search.clearSearch();
 	}
 
