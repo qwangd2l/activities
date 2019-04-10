@@ -29,6 +29,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'search': 'Search',
 			'searchResultsSingle': '1 Sökresultat',
 			'searchResultsMultiple': '{num} Sökresultat',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Inlämningsdatum',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

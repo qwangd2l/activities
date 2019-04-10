@@ -29,6 +29,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'search': 'Search',
 			'searchResultsSingle': '1 Arama Sonucu',
 			'searchResultsMultiple': '{num} Arama Sonuçları',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Gönderme Tarihi',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

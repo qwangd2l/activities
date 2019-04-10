@@ -29,6 +29,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'search': 'Search',
 			'searchResultsSingle': '1 نتيجة البحث',
 			'searchResultsMultiple': '{num} نتائج البحث',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'تاريخ الإرسال',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

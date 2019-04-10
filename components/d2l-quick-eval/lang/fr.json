@@ -2,6 +2,7 @@
    "activityName" : "Nom de l'activité",
    "caughtUp" : "You're all caught up!",
    "checkBackOften" : "Check back often for new submissions.",
+   "clearSearch": "Vider Rechercher",
    "courseName" : "Cours",
    "displayName" : "Prénom et Nom de famille",
    "evaluate" : "Evaluate {displayName}",
@@ -18,6 +19,9 @@
    "noResults" : "No results here.",
    "noSubmissions" : "There are no submissions that need your attention.",
    "search": "Search",
+   "searchResultsSingle": "1 résultat de recherche",
+   "searchResultsMultiple": "{num} résultats de recherche",
+   "sortBy": "Sort by {columnName}",
    "submissionDate" : "Date de soumission",
    "tableTitle" : "List of unevaluated Learner submissions from across courses and tools",
    "tryAgain" : "Try Again"

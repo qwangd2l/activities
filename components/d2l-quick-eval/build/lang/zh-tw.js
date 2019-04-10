@@ -29,6 +29,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'search': 'Search',
 			'searchResultsSingle': '1 筆搜尋結果',
 			'searchResultsMultiple': '{num} 筆搜尋結果',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': '提交日期',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

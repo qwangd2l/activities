@@ -29,6 +29,7 @@ const LangEsImpl = (superClass) => class extends superClass {
 			'search': 'Search',
 			'searchResultsSingle': '1 Resultado de búsqueda',
 			'searchResultsMultiple': '{num} Resultados de búsqueda',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Fecha del material enviado',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'
