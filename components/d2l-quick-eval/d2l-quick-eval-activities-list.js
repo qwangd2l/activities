@@ -140,12 +140,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 						<dom-repeat items="[[_headerColumns]]" as="headerColumn">
 							<template>
 								<template is="dom-if" if="[[_shouldDisplayColumn(headerColumn.key)]]">
-									<d2l-th
-										class$=[[_getWidthCssClass(headerColumn.key)]]
-										aria-live="assertive"
-										aria-sort$="[[headerColumn.ariaSort]]"
-										scope="col"
-									>
+									<d2l-th class$=[[_getWidthCssClass(headerColumn.key)]]>
 										<dom-repeat items="[[headerColumn.headers]]" as="header">
 											<template>
 												<template is="dom-if" if="[[header.canSort]]">
@@ -266,28 +261,23 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 						headers: [
 							{ key: 'firstName', sortClass: 'first-name', suffix: ',', canSort: false, sorted: false, desc: false  },
 							{ key: 'lastName', sortClass: 'last-name', canSort: false, sorted: false, desc: false  }
-						],
-						ariaSort: 'none'
+						]
 					},
 					{
 						key: 'activityName',
-						headers: [{ key: 'activityName', sortClass: 'activity-name', canSort: false, sorted: false, desc: false }],
-						ariaSort: 'none'
+						headers: [{ key: 'activityName', sortClass: 'activity-name', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'courseName',
-						headers: [{ key: 'courseName', sortClass: 'course-name', canSort: false, sorted: false, desc: false }],
-						ariaSort: 'none',
+						headers: [{ key: 'courseName', sortClass: 'course-name', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'submissionDate',
-						headers: [{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, sorted: false, desc: false }],
-						ariaSort: 'none',
+						headers: [{ key: 'submissionDate', sortClass: 'completion-date', canSort: false, sorted: false, desc: false }]
 					},
 					{
 						key: 'masterTeacher',
-						headers: [{ key: 'masterTeacher', canSort: false }],
-						ariaSort: 'none'
+						headers: [{ key: 'masterTeacher', canSort: false }]
 					}
 				]
 			},
@@ -408,16 +398,9 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
 
-									if (descending) {
-										this.set(`_headerColumns.${i}.ariaSort`, 'descending');
-									} else {
-										this.set(`_headerColumns.${i}.ariaSort`, 'ascending');
-									}
-
 								} else {
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, false);
-									this.set(`_headerColumns.${i}.ariaSort`, 'none');
 								}
 							}
 						}
@@ -439,17 +422,10 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 					this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
 
-					if (descending) {
-						this.set(`_headerColumns.${i}.ariaSort`, 'descending');
-					} else {
-						this.set(`_headerColumns.${i}.ariaSort`, 'ascending');
-					}
-
 					result = this._fetchSortedData(header.sortClass, descending);
 				}
 				else {
 					this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
-					this.set(`_headerColumns.${i}.ariaSort`, 'none');
 				}
 			});
 		});
