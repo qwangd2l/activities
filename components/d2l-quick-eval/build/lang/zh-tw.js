@@ -10,6 +10,7 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'activityName': '活動名稱',
 			'caughtUp': 'You\'re all caught up!',
 			'checkBackOften': 'Check back often for new submissions.',
+			'clearSearch': '清除搜尋',
 			'courseName': '課程',
 			'displayName': '名字，姓氏',
 			'evaluate': 'Evaluate {displayName}',
@@ -24,6 +25,9 @@ const LangZhtwImpl = (superClass) => class extends superClass {
 			'noCriteriaMatch': 'There are no submissions that match your criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
+			'searchResultsSingle': '1 筆搜尋結果',
+			'searchResultsMultiple': '{num} 筆搜尋結果',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': '提交日期',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

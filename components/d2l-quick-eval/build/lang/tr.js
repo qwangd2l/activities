@@ -10,6 +10,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'activityName': 'Etkinlik Adı',
 			'caughtUp': 'You\'re all caught up!',
 			'checkBackOften': 'Check back often for new submissions.',
+			'clearSearch': 'Aramayı Temizle',
 			'courseName': 'Ders',
 			'displayName': 'Ad, Soyad',
 			'evaluate': 'Evaluate {displayName}',
@@ -24,6 +25,9 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'noCriteriaMatch': 'There are no submissions that match your criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
+			'searchResultsSingle': '1 Arama Sonucu',
+			'searchResultsMultiple': '{num} Arama Sonuçları',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Gönderme Tarihi',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'
