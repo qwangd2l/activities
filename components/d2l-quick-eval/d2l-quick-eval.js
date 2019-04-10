@@ -55,8 +55,8 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 					margin-bottom: 0.5rem;
 				}
 				d2l-quick-eval-search-results-summary-container {
-					margin-bottom: 42px;
-					margin-top: 18px;
+					margin-bottom: 18px;
+					margin-top: 12.25px;
 					display: block;
 				}
 				[hidden] {
