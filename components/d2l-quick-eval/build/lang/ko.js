@@ -27,6 +27,7 @@ const LangKoImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 검색 결과',
 			'searchResultsMultiple': '{num} 검색 결과',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': '제출일',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

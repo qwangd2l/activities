@@ -27,6 +27,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 搜索结果',
 			'searchResultsMultiple': '{num} 搜索结果',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': '提交日期',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

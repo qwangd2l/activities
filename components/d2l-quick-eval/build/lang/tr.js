@@ -27,6 +27,7 @@ const LangTrImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 Arama Sonucu',
 			'searchResultsMultiple': '{num} Arama Sonuçları',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Gönderme Tarihi',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

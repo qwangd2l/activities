@@ -27,6 +27,7 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 Search Result',
 			'searchResultsMultiple': '{num} Search Results',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Submission Date',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

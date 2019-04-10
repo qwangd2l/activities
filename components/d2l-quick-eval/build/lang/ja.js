@@ -27,6 +27,7 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 検索結果',
 			'searchResultsMultiple': '{num} 検索結果',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': '送信日',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

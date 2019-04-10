@@ -149,8 +149,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 														desc$="[[header.desc]]"
 														on-click="_updateSortState"
 														id="[[header.key]]"
+														title="[[_localizeSortText(header.key)]]"
+														aria-label$="[[_localizeSortText(header.key)]]"
+														aria-live="assertive"
 													>
-														<span>[[localize(header.key)]]</span>
+														<span aria-hidden="true">[[localize(header.key)]]</span>
 													</d2l-table-col-sort-button>
 													<template is="dom-if" if="[[header.suffix]]">
 														<span>[[header.suffix]]&nbsp;</span>
@@ -399,6 +402,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 									const descending = sort.properties.direction === 'descending';
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, true);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, descending);
+
 								} else {
 									this.set(`_headerColumns.${i}.headers.${j}.sorted`, false);
 									this.set(`_headerColumns.${i}.headers.${j}.desc`, false);
@@ -652,6 +656,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					item.courseName = o.entity.properties.name;
 				}
 			});
+	}
+
+	_localizeSortText(columnName) {
+		const localizedColumnName = this.localize(columnName);
+		return this.localize('sortBy', 'columnName', localizedColumnName);
 	}
 
 	_localizeEvaluationText(

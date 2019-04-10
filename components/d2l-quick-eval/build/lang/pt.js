@@ -27,6 +27,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 Resultado da Pesquisa',
 			'searchResultsMultiple': '{num} Resultados de Pesquisa',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Data do Envio',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'

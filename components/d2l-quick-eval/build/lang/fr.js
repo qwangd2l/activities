@@ -27,6 +27,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'searchResultsSingle': '1 résultat de recherche',
 			'searchResultsMultiple': '{num} résultats de recherche',
+			'sortBy': 'Sort by {columnName}',
 			'submissionDate': 'Date de soumission',
 			'tableTitle': 'List of unevaluated Learner submissions from across courses and tools',
 			'tryAgain': 'Try Again'
