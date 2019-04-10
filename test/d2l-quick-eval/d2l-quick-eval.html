@@ -27,7 +27,7 @@
 		<script type="module">
 			import '@polymer/iron-test-helpers/mock-interactions.js';
 
-			var quickEval, filter, filterDropdown, list;
+			var quickEval, filter, filterDropdown, list, search;
 
 			var expectedFirstCellData = 'Special User Name';
 			var expectedFilters = ['Activity Name', 'Course', 'Date'];
@@ -58,6 +58,16 @@
 				}
 			}
 
+			function waitForSearch(callback) {
+				if (search.searchAction) {
+					callback(search);
+				} else {
+					setTimeout(function() {
+						waitForSearch(callback);
+					}, 30);
+				}
+			}
+
 			var clickFilter = function(filterOptionName) {
 				var firstFilterTab = filterDropdown.shadowRoot.querySelectorAll('d2l-filter-dropdown-page')[0];
 				var filterOptions = firstFilterTab.shadowRoot.querySelectorAll('d2l-menu-item-checkbox');
@@ -68,6 +78,16 @@
 					}
 				}
 			};
+
+			function performSearch(searchString) {
+				const searchBar = search.shadowRoot.querySelector('d2l-input-search');
+				if (searchString) {
+					search.value = searchString;
+					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-search'));
+				} else {
+					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-clear'));
+				}
+			}
 
 			var clearFilter = function() {
 				var clearButton = filterDropdown.shadowRoot.querySelector('d2l-button-subtle');
@@ -80,6 +100,7 @@
 					filter = quickEval.shadowRoot.querySelector('d2l-hm-filter');
 					filterDropdown = filter.shadowRoot.querySelector('d2l-filter-dropdown');
 					list = quickEval.shadowRoot.querySelector('d2l-quick-eval-activities-list');
+					search = quickEval.shadowRoot.querySelector('d2l-hm-search');
 				});
 				test('instantiating the element works', function() {
 					assert.equal(quickEval.tagName.toLowerCase(), 'd2l-quick-eval');
@@ -104,8 +125,9 @@
 						)
 					);
 				});
-				test('the filter and list exist', function() {
+				test('the filter, search, and list exist', function() {
 					assert.isNotNull(filter);
+					assert.isNotNull(search);
 					assert.isNotNull(list);
 				});
 				test('the list loads data', function(done) {
@@ -136,7 +158,7 @@
 					waitForFilter(function() { filter.href = 'data/filters-on.json'; });
 				});
 				test('when a filter is selected an updating event is fired and the table is set to loading', function(done) {
-					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					var alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-filter-error-alert');
 					quickEval.addEventListener('d2l-hm-filter-filters-updating', function() {
 						assert.equal(list._loading, true);
 						assert.equal(list._fullListLoading, true);
@@ -154,7 +176,7 @@
 					});
 				});
 				test('if there is an error when the filter is updating, the table is set back to not loading', function(done) {
-					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					var alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-filter-error-alert');
 					var filtersSelected = 0;
 					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function() {
 						assert.equal(list._loading, false);
@@ -230,7 +252,7 @@
 					waitForFilter(function() { clickFilter('Assignment Name'); });
 				});
 				test('if there is an error with the filter, we catch an event and display an alert, and clear that after a successful filter action', function(done) {
-					var alert = quickEval.shadowRoot.querySelector('d2l-alert');
+					var alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-filter-error-alert');
 					var filtersSelected = 0;
 					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function() {
 						assert.isFalse(quickEval._showFilterError);
@@ -253,6 +275,91 @@
 					assert.isFalse(quickEval._showFilterError);
 					assert.isTrue(alert.hidden);
 					waitForFilter(function() { filter.href = 'data/filters-error.json'; });
+				});
+				test('when a search is performed a loading event is fired and the table is set to loading', function(done) {
+					const alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-search-error-alert');
+					quickEval.addEventListener('d2l-hm-search-results-loading', function() {
+						assert.equal(list._loading, true);
+						assert.equal(list._fullListLoading, true);
+						assert.equal(quickEval._showSearchError, false);
+						assert.equal(alert.hidden, true);
+						done();
+					});
+
+					waitForSearch(function() {
+						assert.equal(list._loading, false);
+						assert.equal(list._fullListLoading, false);
+						assert.equal(quickEval._showSearchError, false);
+						assert.equal(alert.hidden, true);
+						performSearch('test');
+					});
+				});
+				test('when a search is performed, a loaded event is fired when the results are returned', function(done) {
+					quickEval.addEventListener('d2l-hm-search-results-loaded', function(e) {
+						assert.deepEqual(e.detail.results, list.entity);
+						done();
+					});
+
+					waitForSearch(function() {
+						performSearch('test');
+					});
+				});
+				test('clearing search causes event to fire', function(done) {
+					quickEval.addEventListener('d2l-hm-search-results-loaded', function(e) {
+						assert.deepEqual(e.detail.results, list.entity);
+						done();
+					});
+
+					waitForSearch(function() {
+						quickEval._clearSearchResults();
+					});
+				});
+				test('if there is an error when the search is updating, the table is set back to not loading', function(done) {
+					const alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-search-error-alert');
+					let validHref;
+					quickEval.addEventListener('d2l-hm-search-results-loading', function() {
+						assert.equal(list._loading, true);
+						assert.equal(list._fullListLoading, true);
+						assert.equal(quickEval._showSearchError, false);
+						assert.equal(alert.hidden, true);
+
+						quickEval.addEventListener('d2l-hm-search-error', function() {
+							assert.equal(list._loading, false);
+							assert.equal(list._fullListLoading, false);
+							assert.equal(quickEval._showSearchError, true);
+							assert.equal(alert.hidden, false);
+							search.searchAction.href = validHref;
+							done();
+						});
+					});
+
+					waitForSearch(function() {
+						validHref = search.searchAction.href;
+						search.searchAction.href = 'invalid';
+						performSearch('test');
+					});
+				});
+				test('if there is an error with the search, we catch an event and display an alert, and clear that after a successful search action', function(done) {
+					const alert = quickEval.shadowRoot.querySelector('#d2l-quick-eval-search-error-alert');
+					let validHref;
+					quickEval.addEventListener('d2l-hm-search-error', function() {
+						assert.isTrue(quickEval._showSearchError);
+						assert.isFalse(alert.hidden);
+						search.searchAction.href = validHref;
+						performSearch('test');
+					});
+					quickEval.addEventListener('d2l-hm-search-results-loaded', function() {
+						assert.isFalse(quickEval._showSearchError);
+						assert.isTrue(alert.hidden);
+						done();
+					});
+					assert.isFalse(quickEval._showSearchError);
+					assert.isTrue(alert.hidden);
+					waitForSearch(function() {
+						validHref = search.searchAction.href;
+						search.searchAction.href = 'invalid';
+						performSearch('test');
+					});
 				});
 			});
 
