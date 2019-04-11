@@ -86,7 +86,10 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 			<d2l-alert type="critical" hidden$="[[!_showSearchError]]" id="d2l-quick-eval-search-error-alert">
 				[[localize('failedToSearch')]]
 			</d2l-alert>
-			<d2l-quick-eval-search-results-summary-container search-results-count="[[_searchResultsCount]]" hidden$="[[!_searchResultsMessageEnabled(_showSearchResultSummary, searchEnabled)]]"></d2l-quick-eval-search-results-summary-container>
+			<d2l-quick-eval-search-results-summary-container 
+				search-results-count="[[_searchResultsCount]]" 
+				hidden$="[[!_searchResultsMessageEnabled(_showSearchResultSummary, searchEnabled)]]">
+			</d2l-quick-eval-search-results-summary-container>
 			<d2l-quick-eval-activities-list href="[[href]]" token="[[token]]" master-teacher="[[masterTeacher]]"></d2l-quick-eval-activities-list>
 		`;
 	}
