@@ -70,7 +70,14 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 						category-whitelist="[[_filterIds]]"
 						result-size="[[_numberOfActivitiesToShow]]">
 					</d2l-hm-filter>
-					<d2l-hm-search hidden$="[[!searchEnabled]]" token="[[token]]" search-action="[[_searchAction]]" placeholder="[[localize('search')]]"></d2l-hm-search>
+					<d2l-hm-search 
+						hidden$="[[!searchEnabled]]" 
+						token="[[token]]" 
+						search-action="[[_searchAction]]" 
+						placeholder="[[localize('search')]]"
+						result-size="[[_numberOfActivitiesToShow]]"
+						aria-label="[[localize('search')]]">
+					</d2l-hm-search>
 				</div>
 			</div>
 			<d2l-alert type="critical" hidden$="[[!_showFilterError]]" id="d2l-quick-eval-filter-error-alert">
