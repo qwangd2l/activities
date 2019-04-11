@@ -36,7 +36,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				d2l-hm-search {
 					display: inline-block;
 					width: 250px;
-					margin-left: 2rem;
+					margin-left: .25rem;
 				}
 				.d2l-quick-eval-top-bar {
 					padding-top: 0.25rem;
