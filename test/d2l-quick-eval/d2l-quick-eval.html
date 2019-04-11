@@ -296,6 +296,7 @@
 				});
 				test('when a search is performed, a loaded event is fired when the results are returned', function(done) {
 					quickEval.addEventListener('d2l-hm-search-results-loaded', function(e) {
+						assert.equal(list.searchApplied, true);
 						assert.deepEqual(e.detail.results, list.entity);
 						done();
 					});
