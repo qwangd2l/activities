@@ -225,7 +225,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					<d2l-button class="d2l-quick-eval-activities-list-load-more" onclick="[[_loadMore]]">[[localize('loadMore')]]</d2l-button>
 				</div>
 			</template>
-			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
+			<template is="dom-if" if="[[_shouldShowNoSubmissions(_data.length, _loading, _health.isHealthy, filterApplied, searchApplied)]]">
 				<div class="d2l-quick-eval-no-submissions">
 					<d2l-quick-eval-no-submissions-image></d2l-quick-eval-no-submissions-image>
 					<h2 class="d2l-quick-eval-no-submissions-heading">[[localize('caughtUp')]]</h2>
@@ -233,7 +233,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					<p class="d2l-body-standard">[[localize('checkBackOften')]]</p>
 				</div>
 			</template>
-			<template is="dom-if" if="[[_shouldShowNoCriteriaResults(_data.length, _loading, _health.isHealthy, criteriaApplied)]]">
+			<template is="dom-if" if="[[_shouldShowNoCriteriaResults(_data.length, _loading, _health.isHealthy, filterApplied, searchApplied)]]">
 				<div class="d2l-quick-eval-no-criteria-results">
 					<d2l-quick-eval-no-criteria-results-image></d2l-quick-eval-no-criteria-results-image>
 					<h2 class="d2l-quick-eval-no-criteria-results-heading">[[localize('noResults')]]</h2>
@@ -253,7 +253,11 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				value: false,
 				reflectToAttribute: true
 			},
-			criteriaApplied: {
+			filterApplied: {
+				type: Boolean,
+				value: false
+			},
+			searchApplied: {
 				type: Boolean,
 				value: false
 			},
@@ -372,12 +376,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		return hasPageNextHref && !isLoading;
 	}
 
-	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy, criteriaApplied) {
-		return !dataLength && !isLoading && isHealthy && !criteriaApplied;
+	_shouldShowNoSubmissions(dataLength, isLoading, isHealthy, filterApplied, searchApplied) {
+		return !dataLength && !isLoading && isHealthy && !(filterApplied || searchApplied);
 	}
 
-	_shouldShowNoCriteriaResults(dataLength, isLoading, isHealthy, criteriaApplied) {
-		return !dataLength && !isLoading && isHealthy && criteriaApplied;
+	_shouldShowNoCriteriaResults(dataLength, isLoading, isHealthy, filterApplied, searchApplied) {
+		return !dataLength && !isLoading && isHealthy && (filterApplied || searchApplied);
 	}
 
 	_loadSorts(entity) {

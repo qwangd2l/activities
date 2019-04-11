@@ -23,7 +23,7 @@ const LangArImpl = (superClass) => class extends superClass {
 			'loadMore': 'تحميل المزيد',
 			'loading': 'يتم الآن التحميل',
 			'masterTeacher': 'Teacher',
-			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noCriteriaMatch': 'There are no submissions that match your criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'search': 'Search',

@@ -23,7 +23,7 @@ const LangEsImpl = (superClass) => class extends superClass {
 			'loadMore': 'Cargar más',
 			'loading': 'Cargando',
 			'masterTeacher': 'Teacher',
-			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noCriteriaMatch': 'There are no submissions that match your criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'search': 'Search',

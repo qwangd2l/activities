@@ -205,7 +205,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 
 	_filtersLoaded(e) {
 		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
-		list.criteriaApplied = e.detail.totalSelectedFilters > 0;
+		list.filterApplied = e.detail.totalSelectedFilters > 0;
 		this._showFilterError = false;
 	}
 
@@ -244,6 +244,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.entity = e.detail.results;
 		this._showSearchResultSummary = !e.detail.searchIsCleared;
 		this._searchResultsCount = this.entity.entities && this.entity.entities.length ? this.entity.entities.length : 0;
+		list.searchApplied = !e.detail.searchIsCleared;
 		this._clearErrors();
 	}
 

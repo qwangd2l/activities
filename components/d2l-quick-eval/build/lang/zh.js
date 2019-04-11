@@ -23,7 +23,7 @@ const LangZhImpl = (superClass) => class extends superClass {
 			'loadMore': '加载更多',
 			'loading': '正在加载',
 			'masterTeacher': 'Teacher',
-			'noCriteriaMatch': 'There are no submissions that match your filter criteria.',
+			'noCriteriaMatch': 'There are no submissions that match your criteria.',
 			'noResults': 'No results here.',
 			'noSubmissions': 'There are no submissions that need your attention.',
 			'search': 'Search',

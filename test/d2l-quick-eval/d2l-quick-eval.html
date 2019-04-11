@@ -82,7 +82,7 @@
 			function performSearch(searchString) {
 				const searchBar = search.shadowRoot.querySelector('d2l-input-search');
 				if (searchString) {
-					search.value = searchString;
+					searchBar.value = searchString;
 					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-search'));
 				} else {
 					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-clear'));
@@ -148,7 +148,7 @@
 					var filtersSelected = 0;
 					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function(e) {
 						assert.equal(e.detail.totalSelectedFilters, filtersSelected);
-						assert.equal(list.criteriaApplied, filtersSelected > 0);
+						assert.equal(list.filterApplied, filtersSelected > 0);
 						if (filtersSelected === 1) {
 							done();
 						}
@@ -296,6 +296,7 @@
 				});
 				test('when a search is performed, a loaded event is fired when the results are returned', function(done) {
 					quickEval.addEventListener('d2l-hm-search-results-loaded', function(e) {
+						assert.equal(list.searchApplied, true);
 						assert.deepEqual(e.detail.results, list.entity);
 						done();
 					});
