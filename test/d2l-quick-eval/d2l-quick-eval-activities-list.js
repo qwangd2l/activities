@@ -257,8 +257,43 @@ import SirenParse from 'siren-parser';
 				});
 			});
 		});
-		test('if there is no data in the list and filters/search has been applied, d2l-quick-eval-no-criteria-results-image is shown', (done) => {
-			list.setAttribute('criteria-applied', '');
+		test('if there is no data in the list and filters have been applied, d2l-quick-eval-no-criteria-results-image is shown', (done) => {
+			list.setAttribute('filter-applied', '');
+
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
+				assert.notEqual(noCriteriaResultsComponent.style.display, 'none');
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.equal(noSubmissionComponent, null);
+				//This is here because of how dom-if works, we need to load activities once to ensure we actually
+				//render the d2l-quick-eval-no-criteria-results component and instantly hide it.
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
+					assert.equal(noCriteriaResultsComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
+		test('if there is no data in the list and search has been applied, d2l-quick-eval-no-criteria-results-image is shown', (done) => {
+			list.setAttribute('search-applied', '');
+
+			loadPromise('data/emptyUnassessedActivities.json').then(function() {
+				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
+				assert.notEqual(noCriteriaResultsComponent.style.display, 'none');
+				var noSubmissionComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-submissions');
+				assert.equal(noSubmissionComponent, null);
+				//This is here because of how dom-if works, we need to load activities once to ensure we actually
+				//render the d2l-quick-eval-no-criteria-results component and instantly hide it.
+				loadPromise('data/unassessedActivities.json').then(function() {
+					var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');
+					assert.equal(noCriteriaResultsComponent.style.display, 'none');
+					done();
+				});
+			});
+		});
+		test('if there is no data in the list and filters and search have been applied, d2l-quick-eval-no-criteria-results-image is shown', (done) => {
+			list.setAttribute('filter-applied', '');
+			list.setAttribute('search-applied', '');
 
 			loadPromise('data/emptyUnassessedActivities.json').then(function() {
 				var noCriteriaResultsComponent = list.shadowRoot.querySelector('.d2l-quick-eval-no-criteria-results');

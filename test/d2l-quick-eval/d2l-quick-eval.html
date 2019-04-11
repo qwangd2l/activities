@@ -148,7 +148,7 @@
 					var filtersSelected = 0;
 					quickEval.addEventListener('d2l-hm-filter-filters-loaded', function(e) {
 						assert.equal(e.detail.totalSelectedFilters, filtersSelected);
-						assert.equal(list.criteriaApplied, filtersSelected > 0);
+						assert.equal(list.filterApplied, filtersSelected > 0);
 						if (filtersSelected === 1) {
 							done();
 						}
