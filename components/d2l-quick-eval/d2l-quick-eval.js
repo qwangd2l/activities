@@ -23,17 +23,15 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				}
 				h1 {
 					@apply --d2l-heading-1;
-					float: left;
 					margin: 0;
 				}
-				:host(:dir(rtl)) h1 {
-					float: right;
-				}
 				.d2l-quick-eval-activity-list-modifiers {
-					float: right;
+					position: absolute;
+					right: 0;
+					bottom: 0;
 				}
 				:host(:dir(rtl)) .d2l-quick-eval-activity-list-modifiers {
-					float: left;
+					left: 0;
 				}
 				d2l-hm-search {
 					display: inline-block;
@@ -42,21 +40,19 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 				}
 				.d2l-quick-eval-top-bar {
 					padding-top: 0.25rem;
+					position: relative;
 				}
 				d2l-quick-eval-activities-list {
 					display: block;
 					padding-top: 1rem;
-				}
-				.clear {
-					clear: both;
 				}
 				d2l-alert {
 					margin: auto;
 					margin-bottom: 0.5rem;
 				}
 				d2l-quick-eval-search-results-summary-container {
-					margin-bottom: 42px;
-					margin-top: 18px;
+					margin-bottom: 0.9rem;
+					margin-top: 0.9rem;
 					display: block;
 				}
 				[hidden] {
@@ -77,7 +73,6 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 					<d2l-hm-search hidden$="[[!searchEnabled]]" token="[[token]]" search-action="[[_searchAction]]" placeholder="[[localize('search')]]"></d2l-hm-search>
 				</div>
 			</div>
-			<div class="clear"></div>
 			<d2l-alert type="critical" hidden$="[[!_showFilterError]]" id="d2l-quick-eval-filter-error-alert">
 				[[localize('failedToFilter')]]
 			</d2l-alert>
