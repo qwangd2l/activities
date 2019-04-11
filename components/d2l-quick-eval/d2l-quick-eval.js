@@ -249,13 +249,11 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 		this.entity = e.detail.results;
 		this._showSearchResultSummary = !e.detail.searchIsCleared;
 		this._searchResultsCount = this.entity.entities && this.entity.entities.length ? this.entity.entities.length : 0;
-		list.searchApplied = true;
+		list.searchApplied = !e.detail.searchIsCleared;
 		this._clearErrors();
 	}
 
 	_clearSearchResults() {
-		const list = this.shadowRoot.querySelector('d2l-quick-eval-activities-list');
-		list.searchApplied = false;
 		const search = this.shadowRoot.querySelector('d2l-hm-search');
 		search.clearSearch();
 	}

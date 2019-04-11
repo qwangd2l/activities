@@ -82,7 +82,7 @@
 			function performSearch(searchString) {
 				const searchBar = search.shadowRoot.querySelector('d2l-input-search');
 				if (searchString) {
-					search.value = searchString;
+					searchBar.value = searchString;
 					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-search'));
 				} else {
 					MockInteractions.click(searchBar.shadowRoot.querySelector('.d2l-input-search-clear'));
