@@ -282,7 +282,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 					},
 					{
 						key: 'masterTeacher',
-						headers: [{ key: 'masterTeacher', canSort: false }]
+						headers: [{ key: 'masterTeacher', sortClass: 'primary-facilitator', canSort: false, sorted: false, desc: false }]
 					}
 				]
 			},

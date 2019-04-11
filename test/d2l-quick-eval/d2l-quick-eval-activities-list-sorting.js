@@ -36,6 +36,27 @@ suite('d2l-quick-eval-activities-list-sorting', () => {
 		expect(list._headerColumns.filter(column => column.headers.some(h => h.canSort))).to.be.empty;
 	});
 
+	test('headers have expected sort classes', () => {
+		const expectedKeyToSortClassHeaderMappings = {
+			'firstName': 'first-name',
+			'lastName': 'last-name',
+			'activityName': 'activity-name',
+			'courseName': 'course-name',
+			'submissionDate': 'completion-date',
+			'masterTeacher': 'primary-facilitator'
+		};
+		const listOfHeaders = list._headerColumns
+			.map(x=> x.headers)
+			.reduce((acc, val) => acc.concat(val), []);
+
+		const keyToSortClassHeaderMappings = {};
+		listOfHeaders.forEach(header => {
+			keyToSortClassHeaderMappings[header.key] = header.sortClass;
+		});
+
+		expect(keyToSortClassHeaderMappings).to.deep.equal(expectedKeyToSortClassHeaderMappings);
+	});
+
 	suite('_loadSorts', () => {
 		test('_loadSorts does not call _followLink on null entity', () => {
 			const stub = sinon.stub(list, '_followLink');

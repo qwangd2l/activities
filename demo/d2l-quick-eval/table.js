@@ -55,6 +55,15 @@ export default
 				const yname = y.rowData.localizedFormattedDate;
 				return compare(xname, yname);
 			}
+		},
+		{
+			'class': 'primary-facilitator',
+			'id': 'byPrimaryFacilitator',
+			'fn': (x, y) => {
+				const xname = x.rowData.masterTeacher.firstName + ' ' + x.rowData.masterTeacher.lastName;
+				const yname = y.rowData.masterTeacher.firstName + ' ' + y.rowData.masterTeacher.lastName;
+				return compare(xname, yname);
+			}
 		}
 	],
 	data: [
