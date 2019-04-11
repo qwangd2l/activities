@@ -76,7 +76,7 @@ class D2LQuickEval extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBeha
 						search-action="[[_searchAction]]" 
 						placeholder="[[localize('search')]]"
 						result-size="[[_numberOfActivitiesToShow]]"
-						aria-label="[[localize('search')]]">
+						aria-label$="[[localize('search')]]">
 					</d2l-hm-search>
 				</div>
 			</div>
