@@ -861,5 +861,13 @@ import SirenParse from 'siren-parser';
 			const numberOfActivitiesToShowWhenPreviousLarger = list._computeNumberOfActivitiesToShow([1], 5);
 			assert.equal(5, numberOfActivitiesToShowWhenPreviousLarger);
 		});
+
+		test('_loadData sets _pageNextHref to empty string when no entities present on entity', function() {
+			const entityWithoutEntities = { };
+			list._pageNextHref = 'notAnEmptyString';
+
+			list._loadData(entityWithoutEntities);
+			assert.equal('', list._pageNextHref);
+		});
 	});
 })();

@@ -497,6 +497,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				this._data = result;
 			} else {
 				this._data = [];
+				this._pageNextHref = '';
 			}
 			this._clearAlerts();
 
