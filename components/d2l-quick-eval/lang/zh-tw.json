@@ -21,6 +21,7 @@
    "search": "Search",
    "searchResultsSingle": "1 筆搜尋結果",
    "searchResultsMultiple": "{num} 筆搜尋結果",
+   "searchResultsMore": "{num}+ Search Results",
    "sortBy": "Sort by {columnName}",
    "submissionDate" : "提交日期",
    "tableTitle" : "List of unevaluated Learner submissions from across courses and tools",

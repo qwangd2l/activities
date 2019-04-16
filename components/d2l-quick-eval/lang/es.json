@@ -21,6 +21,7 @@
    "search": "Search",
    "searchResultsSingle": "1 Resultado de búsqueda",
    "searchResultsMultiple": "{num} Resultados de búsqueda",
+   "searchResultsMore": "{num}+ Search Results",
    "sortBy": "Sort by {columnName}",
    "submissionDate" : "Fecha del material enviado",
    "tableTitle" : "List of unevaluated Learner submissions from across courses and tools",
