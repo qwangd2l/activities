@@ -18,6 +18,7 @@ import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
 import './d2l-quick-eval-skeleton.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
+import {StringEndsWith} from './compatability/universal-methods.js';
 
 /**
  * @customElement
@@ -358,7 +359,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_handleNameSwap(entry) {
-		if (entry && entry.path.endsWith('1.sorted')) {
+		if (entry && StringEndsWith(entry.path, '1.sorted')) {
 			const tmp = this._headerColumns[0].headers[0];
 			this.set('_headerColumns.0.headers.0', this._headerColumns[0].headers[1]);
 			this.set('_headerColumns.0.headers.1', tmp);
