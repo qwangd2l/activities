@@ -1,5 +1,3 @@
-import SirenParse from 'siren-parser';
-
 (function() {
 	var component;
 
@@ -209,15 +207,15 @@ import SirenParse from 'siren-parser';
 				assert.deepEqual(params, expectedParams);
 			});
 		});
-		suite('creating evaluation link (_buildRelativeUri)', function() {
-			test('when creating the evaluation link, if there are no extra params, return original link', () => {
+		suite('creating a link (_buildRelativeUri)', function() {
+			test('when creating a link, if there are no extra params, return original link', () => {
 				const url = '/d2l/lms/tool/mark.d2l?ou=122041&db=1004';
 				const params = [];
 
 				var evalLink = component._buildRelativeUri(url, params);
 				assert.equal(evalLink, url);
 			});
-			test('when creating the evaluation link, if there are extra params, return correct link', () => {
+			test('when creating a link, if there are extra params, return correct link', () => {
 				const url = '/d2l/lms/tool/mark.d2l?ou=122041&db=1004';
 				const params = [
 					{
@@ -234,7 +232,7 @@ import SirenParse from 'siren-parser';
 				var evalLink = component._buildRelativeUri(url, params);
 				assert.equal(evalLink, expectedEvalLink);
 			});
-			test('when creating the evaluation link, if there are extra params and url has no original params, return correct link', () => {
+			test('when creating a, if there are extra params and url has no original params, return correct link', () => {
 				const url = '/d2l/lms/tool/122041/mark/1004/';
 				const params = [
 					{
@@ -250,46 +248,6 @@ import SirenParse from 'siren-parser';
 
 				var evalLink = component._buildRelativeUri(url, params);
 				assert.equal(evalLink, expectedEvalLink);
-			});
-		});
-		suite('_tryGetName', function() {
-			test('_tryGetName returns default value when subentity has class "default-name"', () => {
-				const nameRel = 'nameRel';
-				const expectedName = 'defaultValue';
-
-				const userEntity = {
-					'entities': [
-						{
-							'class': ['default-name'],
-							'rel': [ nameRel ],
-							'properties': {
-								'name': 'someName'
-							}
-						}
-					]
-				};
-
-				const name = component._tryGetName(SirenParse(userEntity), nameRel, expectedName);
-				assert.equal(name, expectedName);
-			});
-			test('_tryGetName returns expected name value name subentity is valid', () => {
-				const nameRel = 'nameRel';
-				const expectedName = 'expectedName';
-
-				const userEntity = {
-					'entities': [
-						{
-							'class': [],
-							'rel': [ nameRel ],
-							'properties': {
-								'name': expectedName
-							}
-						}
-					]
-				};
-
-				const name = component._tryGetName(SirenParse(userEntity), nameRel, 'defaultValue');
-				assert.equal(name, expectedName);
 			});
 		});
 	});

@@ -1,4 +1,4 @@
-import '../../components/d2l-quick-eval/behaviors/d2l-quick-eval-siren-helper-behavior.js';
+import '../../../components/d2l-quick-eval/behaviors/d2l-quick-eval-siren-helper-behavior.js';
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 
