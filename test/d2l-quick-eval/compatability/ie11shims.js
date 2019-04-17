@@ -1,4 +1,9 @@
-import { DictToQueryString, StringEndsWith, GetQueryStringParams, GetQueryStringParam } from '../../../components/d2l-quick-eval/compatability/universal-methods.js';
+import {
+	DictToQueryString,
+	StringEndsWith,
+	GetQueryStringParams,
+	GetQueryStringParam
+} from '../../../components/d2l-quick-eval/compatability/ie11shims.js';
 
 suite('StringEndsWith', () => {
 	const testCases = [
