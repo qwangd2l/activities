@@ -1,4 +1,9 @@
-import { StringEndsWith, GetQueryStringParams, GetQueryStringParam } from '../../../components/d2l-quick-eval/compatability/universal-methods.js';
+import {
+	DictToQueryString,
+	StringEndsWith,
+	GetQueryStringParams,
+	GetQueryStringParam
+} from '../../../components/d2l-quick-eval/compatability/ie11shims.js';
 
 suite('StringEndsWith', () => {
 	const testCases = [
@@ -73,6 +78,44 @@ suite('GetQueryStringParam', () => {
 
 		test(`Given ${url} searching for query param ${name} should return ${expectedResult}`, () => {
 			assert.equal(expectedResult, GetQueryStringParam(name, new window.URL(url)));
+		});
+	});
+});
+
+suite('DictToQueryString', () => {
+	const testCases = [
+		{ params: {}, expectedStringParams: [] },
+		{ params: {'x': null }, expectedStringParams: ['x=null'] },
+		{ params: {'x': undefined }, expectedStringParams: ['x=undefined'] },
+		{ params: {'x': 1 }, expectedStringParams: ['x=1'] },
+		{ params: {'x': 1, 'y': 2 }, expectedStringParams: ['x=1', 'y=2'] },
+		{ params: {'y': 2, 'x': 1 }, expectedStringParams: ['x=1', 'y=2'] },
+		{ params: {'x': '??' }, expectedStringParams: ['x=%3F%3F'] },
+		{ params: {'??': 1 }, expectedStringParams: ['%3F%3F=1'] },
+	];
+
+	testCases.forEach(function(testCase) {
+		const params = testCase.params;
+		const expectedStringParams = testCase.expectedStringParams;
+
+		test(`Given ${JSON.stringify(params)} should contains these query params ${JSON.stringify(expectedStringParams)}`, () => {
+			const result = DictToQueryString(params);
+
+			if (expectedStringParams && expectedStringParams.length > 0) {
+				assert.equal('?', result[0]);
+
+				const stringParams = result.substr(1).split('&');
+
+				expectedStringParams.forEach(function(expectedStringParam) {
+					assert.isTrue(
+						stringParams.some(function(stringParam) { return stringParam === expectedStringParam; }),
+						`Query param string '${expectedStringParam}' not found in '${result}'`
+					);
+				});
+			}
+			else {
+				assert.equal('', result);
+			}
 		});
 	});
 });

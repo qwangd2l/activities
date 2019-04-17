@@ -1,6 +1,10 @@
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import {GetQueryStringParams, GetQueryStringParam} from '../compatability/universal-methods.js';
+import {
+	DictToQueryString, 
+	GetQueryStringParams, 
+	GetQueryStringParam
+} from '../compatability/ie11shims.js';
 
 window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
@@ -91,12 +95,12 @@ D2L.PolymerBehaviors.Siren.D2LSirenHelperBehaviorImpl = {
 		}
 
 		const parsedUrl = new window.URL(url, 'https://notused.com');
+		const searchParams = GetQueryStringParams(parsedUrl.search);
 
 		extraParams.forEach(param => {
-			parsedUrl.searchParams.set(param.name, param.value);
+			searchParams[param.name] = param.value;
 		});
-
-		return parsedUrl.pathname + parsedUrl.search;
+		return parsedUrl.pathname + DictToQueryString(searchParams);
 	}
 };
 

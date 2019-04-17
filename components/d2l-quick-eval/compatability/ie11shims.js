@@ -14,6 +14,22 @@ const StringEndsWith = (str, search) => {
 	return str.substring(str.length - search.length, str.length) === search;
 };
 
+const DictToQueryString = (queryParams) => {
+	if (queryParams === null || queryParams === undefined) {
+		return '';
+	}
+
+	const queryParamsAsString = Object.keys(queryParams).map(function(key) {
+		return window.encodeURIComponent(key) + '=' + window.encodeURIComponent(queryParams[key]);
+	});
+
+	if (queryParamsAsString.length <= 0) {
+		return '';
+	}
+
+	return '?' + queryParamsAsString.join('&');
+};
+
 const GetQueryStringParams = (queryString) => {
 	const query = {};
 	if (queryString) {
@@ -44,4 +60,4 @@ const GetQueryStringParam = (name, url) => {
 	return null;
 };
 
-export { StringEndsWith, GetQueryStringParam, GetQueryStringParams };
+export { DictToQueryString, StringEndsWith, GetQueryStringParam, GetQueryStringParams };
