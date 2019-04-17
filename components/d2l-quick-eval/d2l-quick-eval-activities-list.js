@@ -18,7 +18,7 @@ import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
 import './d2l-quick-eval-skeleton.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
-import {StringEndsWith, GetQueryStringParams, GetQueryStringParam} from './compatability/universal-methods.js';
+import {DictToQueryString, StringEndsWith, GetQueryStringParams, GetQueryStringParam} from './compatability/universal-methods.js';
 
 /**
  * @customElement
@@ -890,12 +890,12 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		}
 
 		const parsedUrl = new window.URL(url, 'https://notused.com');
+		const searchParams = GetQueryStringParams(parsedUrl.search);
 
 		extraParams.forEach(param => {
-			parsedUrl.searchParams.set(param.name, param.value);
+			searchParams[param.name] = param.value;
 		});
-
-		return parsedUrl.pathname + parsedUrl.search;
+		return parsedUrl.pathname + DictToQueryString(searchParams);
 	}
 
 	_dispatchPageSizeEvent(numberOfActivitiesToShow) {
