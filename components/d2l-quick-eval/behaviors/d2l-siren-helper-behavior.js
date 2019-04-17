@@ -1,5 +1,6 @@
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+import {GetQueryStringParams, GetQueryStringParam} from '../compatability/universal-methods.js';
 
 window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
@@ -36,14 +37,14 @@ D2L.PolymerBehaviors.Siren.D2LSirenHelperBehaviorImpl = {
 
 	_performSirenActionWithQueryParams: function(action, customParams) {
 		const url = new URL(action.href, window.location.origin);
-
+		const searchParams = GetQueryStringParams(url.search);
 		if (!action.fields) {
 			action.fields = [];
 		}
 
-		url.searchParams.forEach(function(value, key) {
+		Object.keys(searchParams).forEach(function(key) {
 			if (!action.fields.filter(x => x.name === key)[0]) {
-				action.fields.push({name: key, value: value, type: 'hidden'});
+				action.fields.push({name: key, value: searchParams[key], type: 'hidden'});
 			}
 		});
 
@@ -60,8 +61,9 @@ D2L.PolymerBehaviors.Siren.D2LSirenHelperBehaviorImpl = {
 		if (!url || url === '') return [];
 
 		const extraParams = [];
+		const parsedUrl = new URL(url);
 
-		const filterVal = this._getQueryStringParam('filter', url);
+		const filterVal = GetQueryStringParam('filter', parsedUrl);
 		if (filterVal) {
 			extraParams.push(
 				{
@@ -70,7 +72,7 @@ D2L.PolymerBehaviors.Siren.D2LSirenHelperBehaviorImpl = {
 				}
 			);
 		}
-		const sortVal = this._getQueryStringParam('sort', url);
+		const sortVal = GetQueryStringParam('sort', parsedUrl);
 		if (sortVal) {
 			extraParams.push(
 				{
@@ -81,11 +83,6 @@ D2L.PolymerBehaviors.Siren.D2LSirenHelperBehaviorImpl = {
 		}
 
 		return extraParams;
-	},
-
-	_getQueryStringParam: function(name, url) {
-		const parsedUrl = new window.URL(url);
-		return parsedUrl.searchParams.get(name);
 	},
 
 	_buildRelativeUri: function(url, extraParams) {
