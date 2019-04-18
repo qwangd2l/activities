@@ -1,8 +1,8 @@
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import {
-	DictToQueryString, 
-	GetQueryStringParams, 
+	DictToQueryString,
+	GetQueryStringParams,
 	GetQueryStringParam
 } from '../compatability/ie11shims.js';
 
