@@ -5,32 +5,25 @@ import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-table/d2l-table.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-offscreen/d2l-offscreen.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import 'd2l-polymer-behaviors/d2l-dom-focus.js';
 import 'd2l-link/d2l-link.js';
 import 'd2l-users/components/d2l-profile-image.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {Rels, Classes} from 'd2l-hypermedia-constants';
 import '../d2l-activity-name/d2l-activity-name.js';
 import '../d2l-activity-evaluation-icon/d2l-activity-evaluation-icon-base.js';
 import './d2l-quick-eval-no-submissions-image.js';
 import './d2l-quick-eval-no-criteria-results-image.js';
 import './d2l-quick-eval-skeleton.js';
+import './behaviors/d2l-quick-eval-siren-helper-behavior.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
-import {
-	DictToQueryString,
-	StringEndsWith,
-	GetQueryStringParams,
-	GetQueryStringParam
-} from './compatability/ie11shims.js';
+import {StringEndsWith} from './compatability/ie11shims.js';
 
 /**
  * @customElement
  * @polymer
  */
 
-class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], QuickEvalLocalize(PolymerElement)) {
+class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.QuickEval.D2LQuickEvalSirenHelperBehavior], QuickEvalLocalize(PolymerElement)) {
 	static get template() {
 		const quickEvalActivitiesListTemplate = html`
 			<style include="d2l-table-style">
@@ -374,10 +367,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		}
 	}
 
-	_myEntityStoreFetch(url) {
-		return window.D2L.Siren.EntityStore.fetch(url, this.token);
-	}
-
 	_shouldShowLoadMore(hasPageNextHref, isLoading) {
 		return hasPageNextHref && !isLoading;
 	}
@@ -396,7 +385,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			return Promise.resolve();
 		}
 
-		return this._followLink(entity, Rels.sorts)
+		return this._getSortsPromise(entity)
 			.then(sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject(new Error('Could not load sorts endpoint'));
@@ -453,7 +442,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 	}
 
 	_fetchSortedData(sortClass, descending) {
-		return this._followLink(this.entity, Rels.sorts)
+		return this._getSortsPromise(this.entity)
 			.then((sortsEntity => {
 				if (!sortsEntity || !sortsEntity.entity) {
 					return Promise.reject(new Error('Could not load sorts endpoint'));
@@ -565,25 +554,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		this.set('_health', { isHealthy: false, errorMessage: 'failedToLoadData' });
 	}
 
-	_followLink(entity, rel) {
-		const href = this._getHref(entity, rel);
-		return this._followHref(href);
-	}
-
-	_getHref(entity, rel) {
-		if (entity && entity.hasLinkByRel && entity.hasLinkByRel(rel)) {
-			return entity.getLinkByRel(rel).href;
-		}
-		return '';
-	}
-
-	_followHref(href) {
-		if (href) {
-			return this._myEntityStoreFetch(href);
-		}
-		return Promise.resolve();
-	}
-
 	async _parseActivities(entity) {
 		const extraParams = this._getExtraParams(this._getHref(entity, 'self'));
 
@@ -615,58 +585,20 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 			}.bind(this)));
 		}.bind(this));
 
-		this._filterHref = this._getHref(entity, Rels.filters);
-		this._pageNextHref = this._getHref(entity, 'next');
+		this._filterHref = this._getFilterHref(entity);
+		this._pageNextHref = this._getPageNextHref(entity);
 
 		const result = await Promise.all(promises);
 		return result;
 	}
 
 	_determineIfActivityIsDraft(activity) {
-		if (activity.hasSubEntityByRel(Rels.evaluation)) {
-			const evaluation = activity.getSubEntityByRel(Rels.evaluation);
-			if (evaluation.properties && evaluation.properties.state === 'Draft') {
-				return true;
-			}
+		const evaluation = this._getEvaluation(activity);
+		if (evaluation && evaluation.properties && evaluation.properties.state === 'Draft') {
+			return true;
 		}
 
 		return false;
-	}
-
-	_getMasterTeacherPromise(entity, item) {
-		return this._followLink(entity, Rels.organization)
-			.then(function(org) {
-				if (org && org.entity) {
-					return this._followLink(org.entity, 'https://enrollments.api.brightspace.com/rels/primary-facilitators');
-				}
-			}.bind(this))
-			.then(function(enrollment) {
-				if (enrollment && enrollment.entity && enrollment.entity.hasSubEntityByRel(Rels.userEnrollment)) {
-					const userEnrollment = enrollment.entity.getSubEntityByRel(Rels.userEnrollment);
-					if (userEnrollment.href) {
-						return this._followHref(userEnrollment.href);
-					}
-				}
-			}.bind(this))
-			.then(function(userEnrollment) {
-				if (userEnrollment && userEnrollment.entity) {
-					return this._followLink(userEnrollment.entity, Rels.user);
-				}
-			}.bind(this))
-			.then(function(user) {
-				if (user && user.entity && user.entity.hasSubEntityByRel(Rels.displayName)) {
-					item.masterTeacher = user.entity.getSubEntityByRel(Rels.displayName).properties.name;
-				}
-			}.bind(this));
-	}
-
-	_getCoursePromise(entity, item) {
-		return this._followLink(entity, Rels.organization)
-			.then(function(o) {
-				if (o && o.entity && o.entity.properties) {
-					item.courseName = o.entity.properties.name;
-				}
-			});
 	}
 
 	_localizeSortText(columnName) {
@@ -705,74 +637,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 		}
 
 		return lastName + ', ' + firstName;
-	}
-
-	_tryGetName(
-		entity,
-		rel,
-		defaultValue
-	) {
-		if (!entity || !entity.hasSubEntityByRel(rel)) {
-			return defaultValue;
-		}
-
-		const subEntity =  entity.getSubEntityByRel(rel);
-		if (!subEntity || !subEntity.properties || subEntity.hasClass('default-name')) {
-			return defaultValue;
-		}
-
-		return subEntity.properties.name;
-	}
-
-	_getUserPromise(entity, item) {
-		return this._followLink(entity, Rels.user)
-			.then(function(u) {
-				if (u && u.entity) {
-					const firstName = this._tryGetName(u.entity, Rels.firstName, null);
-					const lastName = this._tryGetName(u.entity, Rels.lastName, null);
-					const defaultDisplayName = this._tryGetName(u.entity, Rels.displayName, '');
-
-					const displayName = {
-						'firstName': firstName,
-						'lastName': lastName,
-						'defaultDisplayName': defaultDisplayName
-					};
-
-					item.displayName = displayName;
-				}
-			}.bind(this));
-	}
-
-	_getUserHref(entity) {
-		if (entity.hasLinkByRel(Rels.user)) {
-			const link = entity.getLinkByRel(Rels.user);
-			return link.href;
-		}
-		return '';
-	}
-
-	_getActivityNameHref(entity) {
-		if (entity.hasLinkByRel(Rels.Activities.userActivityUsage)) {
-			const link = entity.getLinkByRel(Rels.Activities.userActivityUsage);
-			return link.href;
-		}
-		return '';
-	}
-
-	_getSubmissionDate(entity) {
-		if (entity.hasSubEntityByClass('localized-formatted-date')) {
-			const i = entity.getSubEntityByClass('localized-formatted-date');
-			return i.properties.text;
-		}
-		return '';
-	}
-
-	_getRelativeUriProperty(entity, extraParams) {
-		if (entity.hasSubEntityByClass(Classes.relativeUri)) {
-			const i = entity.getSubEntityByClass(Classes.relativeUri);
-			return this._buildRelativeUri(i.properties.path, extraParams);
-		}
-		return '';
 	}
 
 	_getDataProperty(item, prop) {
@@ -837,70 +701,6 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Si
 				}
 			)
 		);
-	}
-
-	_performSirenActionWithQueryParams(action, customParams) {
-		const url = new URL(action.href, window.location.origin);
-		const searchParams = GetQueryStringParams(url.search);
-		if (!action.fields) {
-			action.fields = [];
-		}
-
-		Object.keys(searchParams).forEach(function(key) {
-			if (!action.fields.filter(x => x.name === key)[0]) {
-				action.fields.push({name: key, value: searchParams[key], type: 'hidden'});
-			}
-		});
-
-		if (customParams) {
-			Object.keys(customParams).forEach(function(paramName) {
-				action.fields.push({name: paramName, value: customParams[paramName], type: 'hidden'});
-			});
-		}
-
-		return this.performSirenAction(action);
-	}
-
-	_getExtraParams(url) {
-		if (!url || url === '') return [];
-
-		const extraParams = [];
-		const parsedUrl = new URL(url);
-
-		const filterVal = GetQueryStringParam('filter', parsedUrl);
-		if (filterVal) {
-			extraParams.push(
-				{
-					name: 'filter',
-					value: filterVal
-				}
-			);
-		}
-		const sortVal = GetQueryStringParam('sort', parsedUrl);
-		if (sortVal) {
-			extraParams.push(
-				{
-					name: 'sort',
-					value: sortVal
-				}
-			);
-		}
-
-		return extraParams;
-	}
-
-	_buildRelativeUri(url, extraParams) {
-		if (extraParams.length === 0) {
-			return url;
-		}
-
-		const parsedUrl = new window.URL(url, 'https://notused.com');
-		const searchParams = GetQueryStringParams(parsedUrl.search);
-
-		extraParams.forEach(param => {
-			searchParams[param.name] = param.value;
-		});
-		return parsedUrl.pathname + DictToQueryString(searchParams);
 	}
 
 	_dispatchPageSizeEvent(numberOfActivitiesToShow) {
