@@ -216,12 +216,17 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 					margin-top: 0.7rem;
 					margin-right: 0.5rem;
 				}
+				.d2l-activity-list-item-header-no-margin {
+					margin: 0;
+				}
 			</style>
 			<div class="d2l-activity-list-item-container" style="visibility:hidden;">
 				<hr class="d2l-activity-list-item-top-line" />
-				<a class="d2l-focusable" href$="[[_activityHomepage]]">
-					<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
-				</a>
+				<h1 class="d2l-activity-list-item-header-no-margin">
+					<a class="d2l-focusable" href$="[[_activityHomepage]]" aria-label$="[[_accessibilityDataToString(_accessibilityData)]]">
+						<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
+					</a>
+				</h1>
 				<div class="d2l-activity-list-item-link-container">
 					<div class="d2l-activity-list-item-image">
 						<div class="d2l-activity-list-item-image-shimmer" hidden$="[[!imageShimmer]]"></div>
@@ -243,7 +248,7 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 							</div>
 						</div>
 
-						<div>
+						<div aria-hidden="true">
 							<div hidden$="[[!_textPlaceholder]]">
 								<div class="d2l-activity-list-item-text-placeholder d2l-activity-list-item-title-placeholder"></div>
 							</div>
