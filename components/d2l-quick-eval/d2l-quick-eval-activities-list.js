@@ -498,7 +498,7 @@ class D2LQuickEvalActivitiesList extends mixinBehaviors([D2L.PolymerBehaviors.Qu
 
 		} catch (e) {
 			// Unable to load activities from entity.
-			this._handleFullLoadFailure().bind(this);
+			this._handleFullLoadFailure();
 			return Promise.reject(e);
 		} finally {
 			this._fullListLoading = false;
