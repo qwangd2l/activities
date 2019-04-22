@@ -222,11 +222,11 @@ class D2lActivityListItem extends mixinBehaviors([IronResizableBehavior, D2L.Pol
 			</style>
 			<div class="d2l-activity-list-item-container" style="visibility:hidden;">
 				<hr class="d2l-activity-list-item-top-line" />
-				<h1 class="d2l-activity-list-item-header-no-margin">
+				<h2 class="d2l-activity-list-item-header-no-margin">
 					<a class="d2l-focusable" href$="[[_activityHomepage]]" aria-label$="[[_accessibilityDataToString(_accessibilityData)]]">
 						<span class="d2l-activity-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 					</a>
-				</h1>
+				</h2>
 				<div class="d2l-activity-list-item-link-container">
 					<div class="d2l-activity-list-item-image">
 						<div class="d2l-activity-list-item-image-shimmer" hidden$="[[!imageShimmer]]"></div>
